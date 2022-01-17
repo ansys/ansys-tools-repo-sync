@@ -1,0 +1,53 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "ansys-tools-repo-sync"
+authors = [{name = "ANSYS, Inc."}]
+maintainers = [{name = "PyAnsys developers", "email" = "pyansys.support@ansys.com"}]
+readme = "README.rst"
+license = {file = "LICENSE"}
+classifiers = ["License :: OSI Approved :: MIT License"]
+dynamic = ["version", "description"]
+requires-python = ">=3.7"
+dependencies = [
+    "setuptools>=42.0",
+    "mypy-protobuf==3.1.0",
+    "importlib-resources>=1.3"
+]
+
+[project.optional-dependencies]
+pre-commit = [
+    "pre-commit~=2.16.0",
+    "mypy==0.931",
+    "types-setuptools==57.4.7",
+]
+test = [
+    "pytest~=6.0",
+]
+doc = [
+    "sphinx",
+    "numpydoc",
+    "pyansys-sphinx-theme",
+    "sphinx-copybutton",
+]
+
+[project.urls]
+Source = "https://github.com/ansys/ansys-tools-repo-sync"
+
+[tool.flit.module]
+name = "ansys.tools.repo_sync"
+
+[tool.black]
+line-length = 120
+target-version = ['py37']
+
+[tool.pydocstyle]
+convention = "numpy"
+
+[tool.mypy]
+python_version = 3.7
+strict = true
+
+ignore_missing_imports = true
