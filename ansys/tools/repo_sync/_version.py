@@ -1,4 +1,4 @@
-"""Version of ``ansys-tools-example-coverage`` module.
+"""Version of ``ansys-tools-repo-sync`` module.
 
 On the ``main`` branch, use 'dev0' to denote a development version.
 For example:
