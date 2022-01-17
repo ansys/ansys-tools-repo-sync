@@ -2,7 +2,8 @@ import os
 
 from github import Github
 
-PAT = os.environ('GH_PAT')  # this must be a secret
+# use secret
+PAT = os.environ('GH_PAT') 
 
 org_name = 'pyansys'
 repo_name = 'synchronization-demo'
@@ -13,14 +14,13 @@ os.system(f'git clone https://{PAT}@github.com/{org_name}/{repo_name}')
 
 os.chdir(repo_name)
 
-# there is a smarter way of doing this, use subprocess
+# should be using subprocess...
 try:
     os.system(f'git checkout -b {branch_name}')
 except:
     os.system(f'git checkout {branch_name}')
 
 # add a sample file
-
 with open('testing.txt', 'w') as fid:
     fid.write('hello world')
 
