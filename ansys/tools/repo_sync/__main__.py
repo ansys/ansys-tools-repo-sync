@@ -17,5 +17,7 @@ if __name__ == "__main__":
                         help='Name of the repository.')
     parser.add_argument('-t', '--token',
                         help='Personal access token.')
+    parser.add_argument('-f', '--file',
+                        help='Add a specific file.')
     args = parser.parse_args()
     synchronize_repositories(args.folder)
