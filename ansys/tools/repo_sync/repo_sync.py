@@ -8,15 +8,17 @@ import github
 # import git  # To be investigated.
 
 
-def synchronize(token: str = None, repository: str = "synchronization-demo", filename: str = None, organization: str = "pyansys"):
-    """Synchronize the content of two differents repositories.
-        - clone the content of the reference repository
-        - create a new branch
-        - add/ remove some folders/files.
-        - push the modification into the destination repository
-        - create a pull request to merge the modification into the main branch of the destination repository
+def synchronize(
+    token: str = None, repository: str = "synchronization-demo", filename: str = None, organization: str = "pyansys"
+):
+    """Synchronize the content of two different repositories.
+    - clone the content of the reference repository
+    - create a new branch
+    - add/ remove some folders/files.
+    - push the modification into the destination repository
+    - create a pull request to merge the modification into the main branch of the destination repository
     """
-    
+
     # use secret
     if not token:
         token = os.environ.get("GH_PAT")
@@ -109,11 +111,13 @@ def synchronize(token: str = None, repository: str = "synchronization-demo", fil
     os.chdir(parent_folder)
     shutil.rmtree(os.path.join(parent_folder, repository), onerror=on_rm_error)
 
-def on_rm_error( func, path, exc_info):
+
+def on_rm_error(func, path, exc_info):
     # path contains the path of the file that couldn't be removed
     # let's just assume that it's read-only and unlink it.
     os.chmod(path, stat.S_IWRITE)
-    os.unlink( path )
+    os.unlink(path)
+
 
 if __name__ == "__main__":
     synchronize()
