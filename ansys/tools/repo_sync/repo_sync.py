@@ -11,7 +11,7 @@ import github
 def synchronize(
     token: str = None, repository: str = "synchronization-demo", filename: str = None, organization: str = "pyansys"
 ):
-    """Synchronize the content of two differents repositories.
+    """Synchronize the content of two different repositories.
     - clone the content of the reference repository
     - create a new branch
     - add/ remove some folders/files.
