@@ -1,7 +1,7 @@
 """
 Run with:
 
-python -m ansys.tools.repo_sync -f "path_to_package"
+python -m ansys.tools.repo_sync -f "Organization" -r "repository"
 
 """
 
@@ -16,4 +16,5 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--token", help="Personal access token.")
     parser.add_argument("-f", "--filename", help="Add a specific file.")
     args = parser.parse_args()
-    synchronize(args.folder)
+    #synchronize(args.organization, args.repository, args.token, args.filename)
+    synchronize()
