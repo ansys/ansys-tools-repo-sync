@@ -14,6 +14,6 @@ if __name__ == "__main__":
     parser.add_argument("-o", "--organization", help="Name of the organization. Default value is ``pyansys``.")
     parser.add_argument("-r", "--repository", help="Name of the repository.")
     parser.add_argument("-t", "--token", help="Personal access token.")
-    parser.add_argument("-f", "--filename", help="Add a specific file.")
+    parser.add_argument("-p", "--protos", help="Path to the folder containing the *.protos file to copy")
     args = parser.parse_args()
-    synchronize(repository=args.repository, organization=args.organization)
+    synchronize(repository=args.repository, organization=args.organization, protos_path = args.protos)
