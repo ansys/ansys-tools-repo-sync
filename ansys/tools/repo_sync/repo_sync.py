@@ -11,7 +11,10 @@ import github
 
 
 def synchronize(
-    token: str = None, repository: str = "synchronization-demo2", protos_path: str = r"D:\GitHub\synchronization-demo\ansys\api\test\v0", organization: str = "pyansys"
+    token: str = None,
+    repository: str = "synchronization-demo2",
+    protos_path: str = r"D:\GitHub\synchronization-demo\ansys\api\test\v0",
+    organization: str = "pyansys",
 ):
     """Synchronize the content of two different repositories.
     - clone the content of the reference repository
@@ -76,7 +79,6 @@ def synchronize(
         )
         stdout, stderr = process.communicate()
 
-
         if protos_path:
             message = f"Add entire content from {protos_path}"
         else:
@@ -106,7 +108,7 @@ def synchronize(
         os.chdir(parent_folder)
         shutil.rmtree(os.path.join(parent_folder, repository), onerror=on_rm_error)
         os.chdir(os.path.dirname(os.getcwd()))
-    
+
     print("Synchronization Succeeded...")
 
 
