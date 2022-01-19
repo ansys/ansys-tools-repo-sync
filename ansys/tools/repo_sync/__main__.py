@@ -16,5 +16,4 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--token", help="Personal access token.")
     parser.add_argument("-f", "--filename", help="Add a specific file.")
     args = parser.parse_args()
-    #synchronize(args.organization, args.repository, args.token, args.filename)
-    synchronize()
+    synchronize(repository=args.repository, organization=args.organization)
