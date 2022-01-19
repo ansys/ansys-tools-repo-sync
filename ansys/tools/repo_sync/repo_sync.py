@@ -41,15 +41,6 @@ def synchronize(
         )
         stdout, stderr = process.communicate()
 
-        # # Set the username
-        # process = subprocess.Popen(
-        #     'git config user.name "Max"',
-        #     shell=True,
-        #     stdout=subprocess.PIPE,
-        #     stderr=subprocess.PIPE,
-        # )
-        # stdout, stderr = process.communicate()
-
         os.chdir(repository)
 
         # Create a new branch.
