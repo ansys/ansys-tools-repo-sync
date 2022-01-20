@@ -1,7 +1,7 @@
 """
 Run with:
 
-python -m ansys.tools.repo_sync -f "Organization" -r "repository"
+python -m ansys.tools.repo_sync -o "Organization" -r "repository"
 
 """
 
