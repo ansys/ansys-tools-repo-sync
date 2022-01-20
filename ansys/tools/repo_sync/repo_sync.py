@@ -11,9 +11,9 @@ import github
 
 def synchronize(
     token: str = None,
-    repository: str = "synchronization-demo2",
-    protos_path: str = r"D:\GitHub\synchronization-demo\ansys\api\test\v0",
+    repository: str = "synchronization-demo-private",
     organization: str = "pyansys",
+    protos_path: str = r"D:\GitHub\synchronization-demo-public\ansys\api\test\v0",
 ):
     """Synchronize the content of two different repositories.
     - clone the content of the reference repository
@@ -30,6 +30,7 @@ def synchronize(
     user_name = os.environ.get("git_bot_user")
     organization = "pyansys"
     branch_name = "sync/sync_branch"
+    origin_directory = os.path.join(os.getcwd(), protos_path)
 
     # Create a temporary folder
     with tempfile.TemporaryDirectory() as temp_dir:
@@ -61,14 +62,10 @@ def synchronize(
             )
             stdout, stderr = process.communicate()
 
-        # # Add a sample file.
-        # with open("testing.txt", "w") as f:
-        #     f.write("hello world")
-
         # Add protos.
         # copy subdirectory example
         origin_directory = protos_path
-        shutil.copytree(origin_directory, os.path.join(os.getcwd(), "protos"))
+        shutil.copytree(origin_directory, os.path.join(os.getcwd(), "protos"), ignore=shutil.ignore_patterns('*.py', '*.cpp'))
 
         # unsafe, should add specific file or directory
         process = subprocess.Popen(
@@ -79,7 +76,7 @@ def synchronize(
         stdout, stderr = process.communicate()
 
         if protos_path:
-            message = f"Add entire content from {protos_path}"
+            message = f"""Add folder content from 'ansys\\api\\test\\v0'."""
         else:
             message = f"Copy all files located into the {repository} repository from branch {branch_name}."
 
