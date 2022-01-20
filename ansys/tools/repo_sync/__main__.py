@@ -15,5 +15,7 @@ if __name__ == "__main__":
     parser.add_argument("-r", "--repository", help="Name of the repository.")
     parser.add_argument("-t", "--token", help="Personal access token.")
     parser.add_argument("-p", "--protos", help="Path to the folder containing the *.protos file to copy")
+    parser.add_argument("-m", "--manifest", help="Manifest to mention prohibited extension files.")
+
     args = parser.parse_args()
-    synchronize(repository=args.repository, organization=args.organization, protos_path = args.protos)
+    synchronize(manifest=args.manifest, repository=args.repository, organization=args.organization, protos_path = args.protos)

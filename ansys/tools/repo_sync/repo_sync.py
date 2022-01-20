@@ -10,6 +10,7 @@ import github
 
 
 def synchronize(
+    manifest: str,
     token: str = None,
     repository: str = "synchronization-demo-private",
     organization: str = "pyansys",
@@ -62,10 +63,16 @@ def synchronize(
             )
             stdout, stderr = process.communicate()
 
+        # Read manifest
+        with open(manifest, "r") as f:
+            prohibited_extensions = f.readlines()
+        extensions = [extension.split("\n") for extension in prohibited_extensions]
+
+
         # Add protos.
         # copy subdirectory example
         origin_directory = protos_path
-        shutil.copytree(origin_directory, os.path.join(os.getcwd(), "protos"), ignore=shutil.ignore_patterns('*.py', '*.cpp'))
+        shutil.copytree(origin_directory, os.path.join(os.getcwd(), "protos"), ignore=shutil.ignore_patterns(*extensions))
 
         # unsafe, should add specific file or directory
         process = subprocess.Popen(
