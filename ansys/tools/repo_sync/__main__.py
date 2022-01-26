@@ -18,4 +18,6 @@ if __name__ == "__main__":
     parser.add_argument("-m", "--manifest", help="Manifest to mention prohibited extension files.")
 
     args = parser.parse_args()
-    synchronize(manifest=args.manifest, repository=args.repository, organization=args.organization, protos_path = args.protos)
+    synchronize(
+        manifest=args.manifest, repository=args.repository, organization=args.organization, protos_path=args.protos
+    )
