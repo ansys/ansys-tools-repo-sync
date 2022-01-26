@@ -68,7 +68,11 @@ def synchronize(
             prohibited_extensions = f.read().splitlines()
 
         # Add protos.
-        shutil.copytree(os.path.join(origin_directory, protos_path), os.path.join(os.getcwd(), protos_path), ignore=shutil.ignore_patterns(*prohibited_extensions))
+        shutil.copytree(
+            os.path.join(origin_directory, protos_path),
+            os.path.join(os.getcwd(), protos_path),
+            ignore=shutil.ignore_patterns(*prohibited_extensions),
+        )
 
         # unsafe, should add specific file or directory
         process = subprocess.Popen(
