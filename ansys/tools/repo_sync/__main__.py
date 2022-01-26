@@ -16,8 +16,13 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--token", help="Personal access token.")
     parser.add_argument("-p", "--protos", help="Path to the folder containing the *.protos file to copy")
     parser.add_argument("-m", "--manifest", help="Manifest to mention prohibited extension files.")
+    parser.add_argument("-d", "--dry-run", help="Simulate the behavior of the synchronization without performing it.")
 
     args = parser.parse_args()
     synchronize(
-        manifest=args.manifest, repository=args.repository, organization=args.organization, protos_path=args.protos
+        manifest=args.manifest,
+        repository=args.repository,
+        organization=args.organization,
+        protos_path=args.protos,
+        dry_run=args.dry_run,
     )

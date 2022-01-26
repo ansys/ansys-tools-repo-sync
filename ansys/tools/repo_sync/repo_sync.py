@@ -15,6 +15,7 @@ def synchronize(
     repository: str = "synchronization-demo-public",
     organization: str = "pyansys",
     protos_path: str = r"ansys\api\test\v0",
+    dry_run: bool = True,
 ):
     """Synchronize the content of two different repositories.
     - clone the content of the reference repository
@@ -87,24 +88,34 @@ def synchronize(
         else:
             message = f"Copy all files located into the {repository} repository from branch {branch_name}."
 
-        process = subprocess.Popen(
-            ["git", "commit", "-am", message],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        stdout, stderr = process.communicate()
+        if dry_run:
+            process = subprocess.Popen(
+                ["git", "commit", "-am", message, "--dry-run"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            stdout, stderr = process.communicate()
+            print("Dry-run synchronization output:")
+            print(stdout)
+        else:
+            process = subprocess.Popen(
+                ["git", "commit", "-am", message],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            stdout, stderr = process.communicate()
 
-        process = subprocess.Popen(
-            ["git", "push", "-u", "origin", branch_name],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        stdout, stderr = process.communicate()
+            process = subprocess.Popen(
+                ["git", "push", "-u", "origin", branch_name],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            stdout, stderr = process.communicate()
 
-        # Create pull request.
-        gh = github.Github(token)
-        repo = gh.get_repo(f"{organization}/{repository}")
-        pr = repo.create_pull(title=message, body=message, head=branch_name, base="main")
+            # Create pull request.
+            gh = github.Github(token)
+            repo = gh.get_repo(f"{organization}/{repository}")
+            pr = repo.create_pull(title=message, body=message, head=branch_name, base="main")
 
         # Delete the git repository that was created.
         parent_folder = os.path.dirname(os.getcwd())
@@ -112,7 +123,8 @@ def synchronize(
         shutil.rmtree(os.path.join(parent_folder, repository), onerror=on_rm_error)
         os.chdir(os.path.dirname(os.getcwd()))
 
-    print("Synchronization Succeeded...")
+    if not dry_run:
+        print("Synchronization Succeeded...")
 
 
 def on_rm_error(func, path, exc_info):
