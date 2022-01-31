@@ -30,7 +30,6 @@ def synchronize(
         token = os.environ.get("GH_PAT")
 
     user_name = os.environ.get("git_bot_user")
-    organization = "pyansys"
     branch_name = "sync/sync_branch"
     origin_directory = os.path.join(os.getcwd())
 
