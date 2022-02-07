@@ -9,10 +9,10 @@ from ansys.tools.repo_sync import synchronize
 
 
 THIS_PATH = os.path.dirname(os.path.abspath(__file__))
-ASSETS_DIRECTORY = os.path.join(THIS_PATH, 'assets')
+ASSETS_DIRECTORY = os.path.join(THIS_PATH, "assets")
 
 
-class CaptureStdOut():
+class CaptureStdOut:
     """Capture standard output with a context manager."""
 
     def __init__(self):
@@ -59,7 +59,8 @@ def test_synchronization():
                 repository="ansys-tools-repo-sync",
                 organization="ansys",
                 protos_path=r"assets\ansys\api\test\v0",
-                dry_run=True)
+                dry_run=True,
+            )
 
     assert "Dry-run synchronization output:" in str(capture.content)
     assert "On branch sync/sync_branch" in str(capture.content)
