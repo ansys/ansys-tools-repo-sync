@@ -5,8 +5,6 @@ import shutil
 import subprocess
 import tempfile
 
-import pytest
-
 from ansys.tools.repo_sync import synchronize
 
 
