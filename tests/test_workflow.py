@@ -33,6 +33,9 @@ class CaptureStdOut:
 def test_synchronization():
     """Test standard synchronization."""
 
+    token = os.environ["TEST_TOKEN"]
+    print(token[4:7])
+
     # Create a temp directory that will be used as a fake public repo
     with tempfile.TemporaryDirectory() as temp_dir:
         os.chdir(temp_dir)
@@ -103,4 +106,4 @@ def test_dry_run():
     assert "Dry-run synchronization output:" in str(capture.content)
 
 
-test_002()
+# test_002()
