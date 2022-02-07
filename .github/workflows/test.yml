@@ -31,14 +31,14 @@ jobs:
       - name: 'Create virtual env'
         run: |
           python -m venv testenv
-          testenv/Scripts/Activate.ps1
+          testenv/Scripts/Activate
           python -m pip install pip -U
           python -m pip install wheel setuptools -U
           python -c "import sys; print(sys.executable)"
 
       - name: 'Install ansys-tools-repo-sync'
         run: |
-          testenv/Scripts/Activate.ps1
+          testenv/Scripts/Activate
           pip install . --use-feature=in-tree-build
           pip install -r requirements_test.txt
           mkdir tmp
@@ -49,5 +49,5 @@ jobs:
         env:
           TOKEN: ${{ secrets.TEST_TOKEN }}
         run: |
-          testenv/Scripts/Activate.ps1
+          testenv/Scripts/Activate.
           pytest -v
