@@ -100,7 +100,7 @@ def test_dry_run():
                 repository="ansys-tools-repo-sync",
                 organization="ansys",
                 protos_path=r"assets\ansys\api\test\v0",
-                dry_run=False,
+                dry_run=True,
             )
 
     assert "Dry-run synchronization output:" in str(capture.content)
