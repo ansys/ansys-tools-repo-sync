@@ -47,7 +47,7 @@ jobs:
 
       - name: 'Unit testing'
         env:
-          TOKKEN: ${{ secrets.TEST_TOKEN }}
+          TOKEN: ${{ secrets.TEST_TOKEN }}
         run: |
           testenv\Scripts\Activate.ps1
           pytest -v

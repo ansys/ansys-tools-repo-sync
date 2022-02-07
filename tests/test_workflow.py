@@ -33,7 +33,7 @@ class CaptureStdOut:
 def test_synchronization():
     """Test standard synchronization."""
 
-    token = os.environ["TEST_TOKEN"]
+    token = os.environ["TOKEN"]
     print(token[4:7])
 
     # Create a temp directory that will be used as a fake public repo
