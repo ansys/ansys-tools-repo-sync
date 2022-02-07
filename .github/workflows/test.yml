@@ -1,5 +1,4 @@
-# check spelling, codestyle
-name: Style Check
+name: Test
 
 on: [pull_request, workflow_dispatch]
 
