@@ -60,7 +60,7 @@ def test_synchronization():
                 repository="ansys-tools-repo-sync",
                 organization="ansys",
                 protos_path=os.path.join("assets", "ansys", "api", "test", "v0"),
-                dry_run=True,
+                dry_run=False,
             )
 
     assert "Dry-run synchronization output:" in str(capture.content)
@@ -102,6 +102,3 @@ def test_dry_run():
             )
 
     assert "Dry-run synchronization output:" in str(capture.content)
-
-
-# test_002()
