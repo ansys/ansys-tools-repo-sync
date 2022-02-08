@@ -91,8 +91,7 @@ def synchronize(
             stderr=subprocess.PIPE,
         )
         stdout, stderr = process.communicate()
-        print(stdout)
-        print(stderr)
+
 
         if protos_path:
             message = f"""Add folder content from {protos_path}."""
@@ -115,6 +114,8 @@ def synchronize(
                 stderr=subprocess.PIPE,
             )
             stdout, stderr = process.communicate()
+            print(stdout)
+            print(stderr)
 
             process = subprocess.Popen(
                 ["git", "push", "-u", "origin", branch_name],
@@ -122,6 +123,8 @@ def synchronize(
                 stderr=subprocess.PIPE,
             )
             stdout, stderr = process.communicate()
+            print(stdout)
+            print(stderr)
 
             # # Create pull request.
             # gh = github.Github(token)
