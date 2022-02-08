@@ -73,7 +73,9 @@ def synchronize(
             os.path.join(os.getcwd(), protos_path),
             ignore=shutil.ignore_patterns(*prohibited_extensions),
         )
-
+        print("----------------------")
+        print(os.path.join(origin_directory, protos_path))
+        print(os.path.join(os.getcwd(), protos_path))
         # unsafe, should add specific file or directory
         process = subprocess.Popen(
             ["git", "add", "--a"],
