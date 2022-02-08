@@ -34,7 +34,9 @@ def test_synchronization():
     """Test standard synchronization."""
 
     token = os.environ["TOKEN"]
+    print("Test To")
     print(token[4:7])
+    print("Test To2")
 
     # Create a temp directory that will be used as a fake public repo
     with tempfile.TemporaryDirectory() as temp_dir:
