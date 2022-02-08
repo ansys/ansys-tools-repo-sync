@@ -84,6 +84,13 @@ def synchronize(
             stderr=subprocess.PIPE,
         )
         stdout, stderr = process.communicate()
+
+        process = subprocess.Popen(
+            ["git", "status"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        stdout, stderr = process.communicate()
         print(stdout)
         print(stderr)
 
