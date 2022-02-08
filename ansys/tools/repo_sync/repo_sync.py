@@ -74,8 +74,9 @@ def synchronize(
         )
 
         print("********-----********")
-        print(os.path.join(origin_directory, protos_path))
-        print(os.path.join(os.getcwd(), protos_path))
+        print(os.listdir(os.path.join(origin_directory, protos_path)))
+        print("\n")
+        print(os.listdir(os.path.join(os.getcwd(), protos_path)))
         # unsafe, should add specific file or directory
         process = subprocess.Popen(
             ["git", "add", "--a"],
