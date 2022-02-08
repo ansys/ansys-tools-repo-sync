@@ -90,10 +90,6 @@ def synchronize(
             ignore=shutil.ignore_patterns(*prohibited_extensions),
         )
 
-        print("********-----********")
-        print(os.listdir(os.path.join(origin_directory, protos_path)))
-        print("\n")
-        print(os.listdir(os.path.join(os.getcwd())))
         # unsafe, should add specific file or directory
         process = subprocess.Popen(
             ["git", "add", "--a"],
@@ -101,14 +97,6 @@ def synchronize(
             stderr=subprocess.PIPE,
         )
         stdout, stderr = process.communicate()
-
-        process = subprocess.Popen(
-            ["git", "status"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        stdout, stderr = process.communicate()
-
 
         if protos_path:
             message = f"""Add folder content from {protos_path}."""
@@ -131,8 +119,6 @@ def synchronize(
                 stderr=subprocess.PIPE,
             )
             stdout, stderr = process.communicate()
-            print(stdout)
-            print(stderr)
 
             process = subprocess.Popen(
                 ["git", "push", "-u", "origin", branch_name],
@@ -140,8 +126,6 @@ def synchronize(
                 stderr=subprocess.PIPE,
             )
             stdout, stderr = process.communicate()
-            print(stdout)
-            print(stderr)
 
             # Create pull request.
             gh = github.Github(token)
