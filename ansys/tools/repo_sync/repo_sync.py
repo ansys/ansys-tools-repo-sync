@@ -29,7 +29,7 @@ def synchronize(
     if not token:
         token = os.environ.get("TOKEN")
 
-    user_name = os.environ.get("git_bot_user")
+    user_name = os.environ.get("BOT_NAME")
     branch_name = "sync/sync_branch"
     origin_directory = os.path.join(os.getcwd())
 

@@ -48,6 +48,7 @@ jobs:
       - name: 'Unit testing'
         env:
           TOKEN: ${{ secrets.TEST_TOKEN }}
+          BOT_NAME: ${{ secrets.BOT_NAME }}
         run: |
           testenv/bin/activate
           pytest -v
