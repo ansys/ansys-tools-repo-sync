@@ -61,7 +61,7 @@ def test_synchronization():
                 token=None,
                 repository="ansys-tools-repo-sync",
                 organization="ansys",
-                protos_path=r"assets\ansys\api\test\v0",
+                protos_path=os.path.join("assets", "ansys", "api", "test", "v0"),
                 dry_run=True,
             )
 
@@ -99,7 +99,7 @@ def test_dry_run():
                 token=None,
                 repository="ansys-tools-repo-sync",
                 organization="ansys",
-                protos_path=r"assets\ansys\api\test\v0",
+                protos_path=os.path.join("assets", "ansys", "api", "test", "v0"),
                 dry_run=True,
             )
 
