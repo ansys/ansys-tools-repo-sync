@@ -10,6 +10,7 @@ from ansys.tools.repo_sync import synchronize
 
 THIS_PATH = os.path.dirname(os.path.abspath(__file__))
 ASSETS_DIRECTORY = os.path.join(THIS_PATH, "assets")
+TOKEN = os.environ["TOKEN"]
 
 
 class CaptureStdOut:
@@ -55,10 +56,10 @@ def test_synchronization():
         with capture:
             synchronize(
                 manifest=os.path.join(ASSETS_DIRECTORY, "manifest.txt"),
-                token=None,
+                token=TOKEN,
                 repository="ansys-tools-repo-sync",
                 organization="ansys",
-                protos_path=r"assets\ansys\api\test\v0",
+                protos_path=os.path.join("assets", "ansys", "api", "test", "v0"),
                 dry_run=True,
             )
 
@@ -93,14 +94,14 @@ def test_dry_run():
         with capture:
             synchronize(
                 manifest=os.path.join(ASSETS_DIRECTORY, "manifest.txt"),
-                token=None,
+                token=TOKEN,
                 repository="ansys-tools-repo-sync",
                 organization="ansys",
-                protos_path=r"assets\ansys\api\test\v0",
-                dry_run=False,
+                protos_path=os.path.join("assets", "ansys", "api", "test", "v0"),
+                dry_run=True,
             )
 
     assert "Dry-run synchronization output:" in str(capture.content)
 
 
-test_002()
+# test_002()

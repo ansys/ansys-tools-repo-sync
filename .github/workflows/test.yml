@@ -1,0 +1,53 @@
+name: Test
+
+env:
+  python.version: 3.8
+  python.venv: 'testvenv'
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+    tags:
+     - 'v*'
+     - v*
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: 'Create virtual env'
+        run: |
+          python -m venv testenv
+          testenv/bin/activate
+          python -m pip install pip -U
+          python -m pip install wheel setuptools -U
+          python -c "import sys; print(sys.executable)"
+
+      - name: 'Install ansys-tools-repo-sync'
+        run: |
+          testenv/bin/activate
+          pip install . --use-feature=in-tree-build
+          pip install -r requirements_test.txt
+          mkdir tmp
+          cd tmp
+          python -c "import ansys.tools.repo_sync; print('Imported ansys.tools.repo_sync')"
+
+      - name: 'Unit testing'
+        env:
+          TOKEN: ${{ secrets.TEST_TOKEN }}
+        run: |
+          testenv/bin/activate
+          pytest -v

@@ -27,7 +27,7 @@ def synchronize(
 
     # use secret
     if not token:
-        token = os.environ.get("GH_PAT")
+        token = os.environ.get("TOKEN")
 
     user_name = os.environ.get("git_bot_user")
     branch_name = "sync/sync_branch"
