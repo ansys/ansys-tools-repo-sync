@@ -49,6 +49,7 @@ jobs:
         env:
           TOKEN: ${{ secrets.TEST_TOKEN }}
           BOT_NAME: ${{ secrets.BOT_NAME }}
+          BOT_EMAIL: ${{ secrets.BOT_EMAIL }}
         run: |
           testenv/bin/activate
           pytest -v
