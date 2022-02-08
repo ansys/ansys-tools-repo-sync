@@ -67,7 +67,7 @@ def test_synchronization():
                 dry_run=True,
             )
 
-    assert "Dry-run synchronization output:" in str(capture.content)
+    assert "Dry-run synchronization output:2" in str(capture.content)
     assert "On branch sync/sync_branch" in str(capture.content)
     assert "Changes to be committed:" in str(capture.content)
     assert "new file:   assets/ansys/api/test/v0/test.proto" in str(capture.content)
@@ -105,7 +105,7 @@ def test_dry_run():
                 dry_run=True,
             )
 
-    assert "Dry-run synchronization output:" in str(capture.content)
+    assert "Dry-run synchronization output:2" in str(capture.content)
 
 
 # test_002()
