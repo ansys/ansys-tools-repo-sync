@@ -63,6 +63,10 @@ def test_synchronization():
                 dry_run=False,
             )
 
+    print(synchronize.ORIGIN)
+    print(synchronize.DESTINATION)
+    print(synchronize.STDOUT)
+
     assert "Dry-run synchronization output:" in str(capture.content)
     assert "On branch sync/sync_branch" in str(capture.content)
     assert "Changes to be committed:" in str(capture.content)

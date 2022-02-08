@@ -7,7 +7,7 @@ import tempfile
 import github
 
 # import git  # To be investigated.
-
+global ORIGIN, DESTINATION, STDOUT
 
 def synchronize(
     manifest: str,
@@ -73,9 +73,9 @@ def synchronize(
             os.path.join(os.getcwd(), protos_path),
             ignore=shutil.ignore_patterns(*prohibited_extensions),
         )
-        print("----------------------")
-        assert os.path.join(origin_directory, protos_path) =="Test"
-        assert os.path.join(os.getcwd(), protos_path) == "Test"
+
+        ORIGIN = os.path.join(origin_directory, protos_path)
+        DESTINATION = os.path.join(os.getcwd(), protos_path)
         # unsafe, should add specific file or directory
         process = subprocess.Popen(
             ["git", "add", "--a"],
@@ -83,7 +83,7 @@ def synchronize(
             stderr=subprocess.PIPE,
         )
         stdout, stderr = process.communicate()
-        assert stdout == "Test"
+        STDOUT = stdout
 
         if protos_path:
             message = f"""Add folder content from {protos_path}."""
