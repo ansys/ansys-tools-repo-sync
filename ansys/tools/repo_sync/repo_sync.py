@@ -74,8 +74,8 @@ def synchronize(
             ignore=shutil.ignore_patterns(*prohibited_extensions),
         )
         print("----------------------")
-        print(os.path.join(origin_directory, protos_path))
-        print(os.path.join(os.getcwd(), protos_path))
+        assert os.path.join(origin_directory, protos_path) =="Test"
+        assert os.path.join(os.getcwd(), protos_path) == "Test"
         # unsafe, should add specific file or directory
         process = subprocess.Popen(
             ["git", "add", "--a"],
@@ -83,8 +83,7 @@ def synchronize(
             stderr=subprocess.PIPE,
         )
         stdout, stderr = process.communicate()
-        print(stdout)
-        assert False
+        assert stdout == "Test"
 
         if protos_path:
             message = f"""Add folder content from {protos_path}."""
