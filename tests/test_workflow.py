@@ -10,6 +10,7 @@ from ansys.tools.repo_sync import synchronize
 
 THIS_PATH = os.path.dirname(os.path.abspath(__file__))
 ASSETS_DIRECTORY = os.path.join(THIS_PATH, "assets")
+TOKEN = os.environ["TOKEN"]
 
 
 class CaptureStdOut:
@@ -33,11 +34,6 @@ class CaptureStdOut:
 def test_synchronization():
     """Test standard synchronization."""
 
-    token = os.environ["TOKEN"]
-    print("Test To")
-    print(token[4:7])
-    print("Test To2")
-
     # Create a temp directory that will be used as a fake public repo
     with tempfile.TemporaryDirectory() as temp_dir:
         os.chdir(temp_dir)
@@ -60,14 +56,14 @@ def test_synchronization():
         with capture:
             synchronize(
                 manifest=os.path.join(ASSETS_DIRECTORY, "manifest.txt"),
-                token=None,
+                token=TOKEN,
                 repository="ansys-tools-repo-sync",
                 organization="ansys",
                 protos_path=os.path.join("assets", "ansys", "api", "test", "v0"),
                 dry_run=True,
             )
 
-    assert "Dry-run synchronization output:2" in str(capture.content)
+    assert "Dry-run synchronization output:" in str(capture.content)
     assert "On branch sync/sync_branch" in str(capture.content)
     assert "Changes to be committed:" in str(capture.content)
     assert "new file:   assets/ansys/api/test/v0/test.proto" in str(capture.content)
@@ -98,14 +94,14 @@ def test_dry_run():
         with capture:
             synchronize(
                 manifest=os.path.join(ASSETS_DIRECTORY, "manifest.txt"),
-                token=None,
+                token=TOKEN,
                 repository="ansys-tools-repo-sync",
                 organization="ansys",
                 protos_path=os.path.join("assets", "ansys", "api", "test", "v0"),
                 dry_run=True,
             )
 
-    assert "Dry-run synchronization output:2" in str(capture.content)
+    assert "Dry-run synchronization output:" in str(capture.content)
 
 
 # test_002()
