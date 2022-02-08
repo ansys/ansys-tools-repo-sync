@@ -84,6 +84,8 @@ def synchronize(
             stderr=subprocess.PIPE,
         )
         stdout, stderr = process.communicate()
+        print(stdout)
+        print(stderr)
 
         if protos_path:
             message = f"""Add folder content from {protos_path}."""
