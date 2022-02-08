@@ -8,6 +8,7 @@ import github
 
 # import git  # To be investigated.
 
+
 def synchronize(
     manifest: str,
     token: str = None,
@@ -112,10 +113,10 @@ def synchronize(
             )
             stdout, stderr = process.communicate()
 
-            # Create pull request.
-            gh = github.Github(token)
-            repo = gh.get_repo(f"{organization}/{repository}")
-            pr = repo.create_pull(title=message, body=message, head=branch_name, base="main")
+            # # Create pull request.
+            # gh = github.Github(token)
+            # repo = gh.get_repo(f"{organization}/{repository}")
+            # pr = repo.create_pull(title=message, body=message, head=branch_name, base="main")
 
         # Delete the git repository that was created.
         parent_folder = os.path.dirname(os.getcwd())
