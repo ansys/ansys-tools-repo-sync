@@ -57,8 +57,8 @@ def test_synchronization():
             synchronize(
                 manifest=os.path.join(ASSETS_DIRECTORY, "manifest.txt"),
                 token=TOKEN,
-                repository="ansys-tools-repo-sync",
-                organization="ansys",
+                repository="synchronization-demo-public",
+                organization="pyansys",
                 protos_path=os.path.join("assets", "ansys", "api", "test", "v0"),
                 dry_run=False,
             )
