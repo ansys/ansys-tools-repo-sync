@@ -65,13 +65,21 @@ def test_synchronization():
                 dry_run=False,
             )
 
-        gh = github.Github(TOKEN)
-        repo = gh.get_repo("ansys/ansys-tools-repo-sync")
-        pull_requests = repo.get_pulls()
-        print("**********")
-        print(pull_requests)
+    gh = github.Github(TOKEN)
+    repo = gh.get_repo("ansys/ansys-tools-repo-sync")
 
-    print(capture.content)
+    for pull_request in repo.get_pulls():
+        if pull_request.title =="Add folder content from assets/ansys/api/test/v0.":
+            pull_request.edit(state="closed")
+            break
+
+    branch_name = "sync/sync_branch"
+    try:
+        ref = repo.get_git_ref(branch_name)
+        ref.delete()
+    except github.GithubException.UnknownObjectException:
+        print('No such branch', branch_name)
+
     assert "Synchronization Succeeded2..." in str(capture.content)
 
 
