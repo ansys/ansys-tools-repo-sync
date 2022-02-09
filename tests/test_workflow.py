@@ -6,6 +6,7 @@ import subprocess
 import tempfile
 
 import github
+from github.GithubException import UnknownObjectException
 
 from ansys.tools.repo_sync import synchronize
 
@@ -77,7 +78,7 @@ def test_synchronization():
     try:
         ref = repo.get_git_ref(branch_name)
         ref.delete()
-    except github.GithubException.UnknownObjectException:
+    except UnknownObjectException:
         print('No such branch', branch_name)
 
     assert "Synchronization Succeeded2..." in str(capture.content)
