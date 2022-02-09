@@ -71,6 +71,8 @@ def test_synchronization():
 
     for pull_request in repo.get_pulls():
         if pull_request.title == "Add folder content from assets/ansys/api/test/v0.":
+            import time
+            time.sleep(50)
             pull_request.edit(state="closed")
             assert False
             break
