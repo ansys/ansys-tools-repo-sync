@@ -29,7 +29,8 @@ def synchronize(
     if not token:
         token = os.environ.get("TOKEN")
 
-    user_name = os.environ.get("git_bot_user")
+    user_name = os.environ.get("BOT_NAME")
+    user_email = os.environ.get("BOT_EMAIL")
     branch_name = "sync/sync_branch"
     origin_directory = os.path.join(os.getcwd())
 
@@ -46,6 +47,21 @@ def synchronize(
         stdout, stderr = process.communicate()
 
         os.chdir(repository)
+
+        # Set credential
+        process = subprocess.Popen(
+            ["git", "config", "user.name", f"{user_name}"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        stdout, stderr = process.communicate()
+
+        process = subprocess.Popen(
+            ["git", "config", "user.email", f"{user_email}"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        stdout, stderr = process.communicate()
 
         # Create a new branch.
         try:

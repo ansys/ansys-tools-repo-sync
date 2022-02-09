@@ -60,13 +60,10 @@ def test_synchronization():
                 repository="ansys-tools-repo-sync",
                 organization="ansys",
                 protos_path=os.path.join("assets", "ansys", "api", "test", "v0"),
-                dry_run=True,
+                dry_run=False,
             )
-
-    assert "Dry-run synchronization output:" in str(capture.content)
-    assert "On branch sync/sync_branch" in str(capture.content)
-    assert "Changes to be committed:" in str(capture.content)
-    assert "new file:   assets/ansys/api/test/v0/test.proto" in str(capture.content)
+    print(capture.content)
+    assert "Synchronization Succeeded..." in str(capture.content)
 
 
 def test_dry_run():
@@ -102,6 +99,3 @@ def test_dry_run():
             )
 
     assert "Dry-run synchronization output:" in str(capture.content)
-
-
-# test_002()
