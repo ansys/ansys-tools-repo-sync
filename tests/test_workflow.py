@@ -79,7 +79,7 @@ def test_synchronization():
         ref = repo.get_git_ref(branch_name)
         ref.delete()
     except UnknownObjectException:
-        print('No such branch', branch_name)
+        print("No such branch", branch_name)
 
     assert "Synchronization Succeeded2..." in str(capture.content)
 
