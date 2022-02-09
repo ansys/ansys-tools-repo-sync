@@ -5,6 +5,8 @@ import shutil
 import subprocess
 import tempfile
 
+import github
+
 from ansys.tools.repo_sync import synchronize
 
 
@@ -62,8 +64,15 @@ def test_synchronization():
                 protos_path=os.path.join("assets", "ansys", "api", "test", "v0"),
                 dry_run=False,
             )
+
+        gh = github.Github(TOKEN)
+        repo = gh.get_repo("ansys/ansys-tools-repo-sync")
+        pull_requests = repo.get_pulls()
+        print("**********")
+        print(pull_requests)
+
     print(capture.content)
-    assert "Synchronization Succeeded..." in str(capture.content)
+    assert "Synchronization Succeeded2..." in str(capture.content)
 
 
 def test_dry_run():
