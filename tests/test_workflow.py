@@ -70,7 +70,7 @@ def test_synchronization():
     repo = gh.get_repo("ansys/ansys-tools-repo-sync")
 
     for pull_request in repo.get_pulls():
-        if pull_request.title =="Add folder content from assets/ansys/api/test/v0.":
+        if pull_request.title == "Add folder content from assets/ansys/api/test/v0.":
             pull_request.edit(state="closed")
             break
 
