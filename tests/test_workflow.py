@@ -4,6 +4,10 @@ import io
 import shutil
 import subprocess
 import tempfile
+import time
+
+import github
+from github.GithubException import UnknownObjectException
 
 from ansys.tools.repo_sync import synchronize
 
@@ -62,7 +66,27 @@ def test_synchronization():
                 protos_path=os.path.join("assets", "ansys", "api", "test", "v0"),
                 dry_run=False,
             )
-    print(capture.content)
+
+    gh = github.Github(TOKEN)
+    repo = gh.get_repo("ansys/ansys-tools-repo-sync")
+
+    for pull_request in repo.get_pulls():
+        if pull_request.title == "Add folder content from assets/ansys/api/test/v0.":
+            time.sleep(50)
+            pull_request.edit(state="closed")
+            # Following assertion is required to be sure that the PR was created
+            # and deleted properly. Otherwise, there is no way to make sure that it
+            # worked properly as it is deleted automatically.
+            assert True
+            break
+
+    branch_name = "sync/sync_branch"
+    try:
+        ref = repo.get_git_ref(branch_name)
+        ref.delete()
+    except UnknownObjectException:
+        print("No such branch", branch_name)
+
     assert "Synchronization Succeeded..." in str(capture.content)
 
 
