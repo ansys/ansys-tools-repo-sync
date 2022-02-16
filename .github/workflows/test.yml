@@ -59,4 +59,5 @@ jobs:
           BOT_EMAIL: ${{ secrets.BOT_EMAIL }}
         run: |
           testenv/bin/activate
+          pip install pytest
           pytest -v
