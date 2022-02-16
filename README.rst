@@ -6,7 +6,7 @@ The ``ansys-tools-repo-sync`` library is intended to synchronize the content
 of two different repositories.
 
 What does this library do?
---------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For instance, because of intellectual properties concerns, it migth not be possible
 to expose publicly the entire content of a private
