@@ -21,11 +21,6 @@ jobs:
       matrix:
         python-version: [3.8]
 
-  pre-commit:
-    name: Pre-commit checks
-    runs-on: ubuntu-20.04
-
-
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
