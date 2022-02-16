@@ -21,12 +21,25 @@ jobs:
       matrix:
         python-version: [3.8]
 
+  pre-commit:
+    name: Pre-commit checks
+    runs-on: ubuntu-latest
+
+
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+
+      - name: Install development requirements
+        run: |
+          pip install .[pre-commit]
+
+      - name: Run pre-commit
+        run: |
+          pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
 
       - name: 'Create virtual env'
         run: |
