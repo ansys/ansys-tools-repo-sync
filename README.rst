@@ -17,8 +17,8 @@ Part of the content for this public repo would come from the private repository.
 from one repo to the other.
 In addition, it is possible to filter the type of file's extension to be copied.
 
-.. figure:: doc/images/repo_sync.png
-
+.. image:: doc/images/repo_sync.png
+    :align: center
 
 
 How to use it?
