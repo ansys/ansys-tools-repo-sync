@@ -87,7 +87,7 @@ def test_synchronization():
     except UnknownObjectException:
         print("No such branch", branch_name)
 
-    assert "Synchronization Succeeded..." in str(capture.content)
+    assert "Synchronization Succeeded2..." in str(capture.content)
 
 
 def test_dry_run():
@@ -122,4 +122,4 @@ def test_dry_run():
                 dry_run=True,
             )
 
-    assert "Dry-run synchronization output:" in str(capture.content)
+    assert "Dry-run synchronization output2:" in str(capture.content)
