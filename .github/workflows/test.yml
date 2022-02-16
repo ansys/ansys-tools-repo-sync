@@ -28,6 +28,14 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      # - name: Install development requirements
+      #   run: |
+      #     pip install .[pre-commit]
+
+      # - name: Run pre-commit
+      #   run: |
+      #     pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
+
       - name: 'Create virtual env'
         run: |
           python -m venv testenv
@@ -40,7 +48,6 @@ jobs:
         run: |
           testenv/bin/activate
           pip install . --use-feature=in-tree-build
-          pip install -r requirements_test.txt
           mkdir tmp
           cd tmp
           python -c "import ansys.tools.repo_sync; print('Imported ansys.tools.repo_sync')"
@@ -52,4 +59,5 @@ jobs:
           BOT_EMAIL: ${{ secrets.BOT_EMAIL }}
         run: |
           testenv/bin/activate
+          pip install pytest
           pytest -v
