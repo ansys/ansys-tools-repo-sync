@@ -8,17 +8,17 @@ of two different repositories.
 What does this library do?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For instance, because of intellectual properties concerns, it migth not be possible
-to expose publicly the entire content of a private
-repository. Its owner could decide to have a second repository, a public one.
+For instance, due to intellectual properties concerns, it migth not be possible
+to expose publicly the entire content of a private repository.
+Its owner could decide to have a second repository, a public one.
 Part of the content for this public repo would come from the private repository.
 
 ``ansys-tools-repo-sync`` allows you to do so by copying a folder and its content
 from one repo to the other.
-In addition, it is possible to filter the type of file's extension to be copied.
+In addition, it is possible to filter the type extension file authorized to be copied.
 
-.. figure:: doc/images/repo_sync.png
-
+.. image:: doc/images/repo_sync.png
+    :align: center
 
 
 How to use it?
@@ -31,20 +31,15 @@ Firstly, the tool must be installed.
     pip install ansys.tools.repo.synchronize
 
 
-Then use it can be used in the considered workflow with the appropriate argument.
+Then, it can be used in the considered workflow with the appropriate arguments.
 
-
-
-Installation
-------------
-Install with:
 
 .. code:: yaml
 
     pip install ansys-tools-repo-sync
 
 
-Run such as:
+Run it as follow:
 
 .. code:: yaml
 
@@ -59,8 +54,9 @@ Run such as:
 
 .. note::
     The parameter ``dry_run`` can be set to ``True`` while establishing
-    the entire workflow for the first. It helps preventing uncessary commit
-    of sensitive data.
+    the entire workflow for the first time. It helps preventing uncessary commits
+    of sensitive data. It will print the content expected to be commited in the
+    public repository.
 
 Issues
 ------
