@@ -23,7 +23,7 @@ jobs:
 
   pre-commit:
     name: Pre-commit checks
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
 
     steps:

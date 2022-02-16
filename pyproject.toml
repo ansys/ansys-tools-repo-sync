@@ -37,7 +37,7 @@ doc = [
 [project.urls]
 Source = "https://github.com/ansys/ansys-tools-repo-sync"
 
-[tool.flit.module]
+[tool.poetry]
 name = "ansys.tools.repo_sync"
 
 [tool.black]
