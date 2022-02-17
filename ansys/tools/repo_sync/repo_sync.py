@@ -15,8 +15,7 @@ def synchronize(
     protos_path: str = r"ansys\api\test\v0",
     dry_run: bool = True,
 ):
-    """
-    Synchronize the content of two different repositories.
+    """Synchronize the content of two different repositories.
     - clone the content of the reference repository
     - create a new branch
     - add/ remove some folders/files.

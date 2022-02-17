@@ -1,4 +1,5 @@
-"""Tool to copy the content of one repo toward an other.
+"""
+Tool to copy the content of one repo toward an other.
 Run with:
 
 python -m ansys.tools.repo_sync -o "Organization" -r "repository"
