@@ -21,5 +21,5 @@ repos:
   rev: 6.1.1
   hooks:
   - id: pydocstyle
+    files: ^ansys/
     additional_dependencies: [toml]
-    args: ["--match-dir='^(?!tests).*'"]
