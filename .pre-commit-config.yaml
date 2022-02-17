@@ -22,4 +22,4 @@ repos:
   hooks:
   - id: pydocstyle
     additional_dependencies: [toml]
-    args: ["--per-file-ignores=tests/*"]
+    eclude: tests/*"
