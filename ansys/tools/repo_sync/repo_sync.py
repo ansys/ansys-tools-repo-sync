@@ -6,8 +6,6 @@ import tempfile
 
 import github
 
-# import git  # To be investigated.
-
 
 def synchronize(
     manifest: str,
