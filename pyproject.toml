@@ -47,6 +47,7 @@ target-version = ['py37']
 
 [tool.pydocstyle]
 convention = "numpy"
+exclude = "tests/*"
 
 [tool.mypy]
 python_version = 3.7

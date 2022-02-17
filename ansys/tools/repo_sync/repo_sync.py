@@ -23,8 +23,8 @@ def synchronize(
     - add/ remove some folders/files.
     - push the modification into the destination repository
     - create a pull request to merge the modification into the main branch of the destination repository
-    """
 
+    """
     # use secret
     if not token:
         token = os.environ.get("TOKEN")
