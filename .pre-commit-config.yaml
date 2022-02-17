@@ -22,5 +22,4 @@ repos:
   hooks:
   - id: pydocstyle
     additional_dependencies: [toml]
-    args: ["--match-dir='^(?!migrations).*'"]
-    eclude: 
+    args: ["--match-dir='^(?!tests).*'"]
