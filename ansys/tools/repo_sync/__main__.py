@@ -4,7 +4,6 @@ Run with:
 python -m ansys.tools.repo_sync -o "Organization" -r "repository"
 
 """
-
 import argparse
 
 from .repo_sync import synchronize
