@@ -4,5 +4,5 @@ try:
 except PackageNotFoundError:
     import importlib_metadata
 
-__version__ = importlib_metadata.version(__name__.replace(".", "-"))
+__version__ = importlib_metadata.version(__package__ or __name__)
 from .repo_sync import synchronize
