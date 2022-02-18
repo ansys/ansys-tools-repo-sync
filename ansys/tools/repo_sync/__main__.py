@@ -1,10 +1,9 @@
-"""
+"""Tool to copy the content of one repo toward an other.
 Run with:
 
 python -m ansys.tools.repo_sync -o "Organization" -r "repository"
 
 """
-
 import argparse
 
 from .repo_sync import synchronize
