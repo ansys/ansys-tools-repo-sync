@@ -1,8 +1,8 @@
-import os
-import sys
 import io
+import os
 import shutil
 import subprocess
+import sys
 import tempfile
 import time
 

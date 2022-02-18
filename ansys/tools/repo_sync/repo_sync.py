@@ -6,8 +6,6 @@ import tempfile
 
 import github
 
-# import git  # To be investigated.
-
 
 def synchronize(
     manifest: str,
@@ -23,8 +21,8 @@ def synchronize(
     - add/ remove some folders/files.
     - push the modification into the destination repository
     - create a pull request to merge the modification into the main branch of the destination repository
-    """
 
+    """
     # use secret
     if not token:
         token = os.environ.get("TOKEN")
@@ -135,14 +133,14 @@ def synchronize(
         # Delete the git repository that was created.
         parent_folder = os.path.dirname(os.getcwd())
         os.chdir(parent_folder)
-        shutil.rmtree(os.path.join(parent_folder, repository), onerror=on_rm_error)
+        shutil.rmtree(os.path.join(parent_folder, repository), onerror=_on_rm_error)
         os.chdir(os.path.dirname(os.getcwd()))
 
     if not dry_run:
         print("Synchronization Succeeded...")
 
 
-def on_rm_error(func, path, exc_info):
+def _on_rm_error(func, path, exc_info):
     # path contains the path of the file that couldn't be removed
     # let's just assume that it's read-only and unlink it.
     os.chmod(path, stat.S_IWRITE)

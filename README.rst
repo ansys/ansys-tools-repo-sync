@@ -8,7 +8,7 @@ of two different repositories.
 What does this library do?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For instance, due to intellectual properties concerns, it migth not be possible
+For instance, due to intellectual properties concerns, it might not be possible
 to expose publicly the entire content of a private repository.
 Its owner could decide to have a second repository, a public one.
 Part of the content for this public repo would come from the private repository.
@@ -55,7 +55,7 @@ Run it as follow:
 .. note::
     The parameter ``dry_run`` can be set to ``True`` while establishing
     the entire workflow for the first time. It helps preventing uncessary commits
-    of sensitive data. It will print the content expected to be commited in the
+    of sensitive data. It will print the content expected to be committed in the
     public repository.
 
 Issues

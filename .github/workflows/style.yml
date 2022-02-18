@@ -15,19 +15,8 @@ jobs:
         with:
           python-version: 3.8
 
-      - name: Install style requirements
-        run: |
-          pip install -r requirements_style.txt --disable-pip-version-check
+      - name: Install pre-commit
+        run: pip install pre-commit
 
-      - name: black style
-        run: |
-          python -m black --check -l 120 .
-
-      - name: Codespell
-        run: |
-          codespell "./ansys" --skip="*.pyc,*.xml,*.txt,*.gif,*.png,*.jpg,*.js,*.html,*.doctree,*.ttf,*.woff,*.woff2,*.eot,*.mp4,*.inv,*.pickle,*.ipynb,flycheck*,./.git/*,./.hypothesis/*,*.yml,./docs/build/*,./docs/images/*,./dist/*,*~,.hypothesis*,./docs/source/examples/*,*cover,*.dat,*.mac" -I "ignore_words.txt"
-
-      - name: flake8
-        if: ${{ always() }}
-        run: |
-          python -m flake8
+      - name: Run pre-commit
+        run: pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
