@@ -28,6 +28,7 @@ A common usage for this tool consist to integrate it in one of your CI/CD pipeli
 Firstly, the tool must be installed.
 
 .. code:: yaml
+
     pip install ansys.tools.repo.synchronize
 
 
