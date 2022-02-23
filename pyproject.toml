@@ -26,7 +26,6 @@ pre-commit = "^2.15.0"
 pygithub = "1.55"
 click = "^8.0.4"
 
-[tool.poetry.dev-dependencies]
 Sphinx =  {version="^4.4", optional=true}
 numpydoc =  {version="^1.2", optional=true}
 pyansys_sphinx_theme =  {version="^0.2", optional=true}
