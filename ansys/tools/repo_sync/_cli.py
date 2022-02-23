@@ -4,7 +4,6 @@ Run with:
 repo-sync -o Organization -r repository -p path_to_protos_directory
 
 """
-
 import click
 
 from .repo_sync import synchronize as _synchronize
@@ -35,6 +34,7 @@ from .repo_sync import synchronize as _synchronize
     help="Simulate the behavior of the synchronization without performing it.",
 )
 def synchronize(manifest, repository, token, organization, protos, dry_run):
+    """CLI command to execute the repository synchronization."""
     _synchronize(
         manifest=manifest,
         repository=repository,
