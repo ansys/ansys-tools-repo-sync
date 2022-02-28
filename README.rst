@@ -27,7 +27,7 @@ How to use it?
 A common usage for this tool consist to integrate it in one of your CI/CD pipeline or workflow.
 Firstly, the tool must be installed.
 
-.. code:: yaml
+.. code:: bash
 
     pip install ansys.tools.repo.synchronize
 

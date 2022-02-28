@@ -29,6 +29,7 @@ def synchronize(
 
     user_name = os.environ.get("BOT_NAME")
     user_email = os.environ.get("BOT_EMAIL")
+
     branch_name = "sync/sync_branch"
     origin_directory = os.path.join(os.getcwd())
 
