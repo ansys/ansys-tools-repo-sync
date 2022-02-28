@@ -29,18 +29,12 @@ Firstly, the tool must be installed.
 
 .. code:: bash
 
-    pip install ansys.tools.repo.synchronize
+    pip install ansys-tools-repo-sync
 
 
 Then, it can be used in the considered workflow with the appropriate arguments.
 
-
-.. code:: yaml
-
-    pip install ansys-tools-repo-sync
-
-
-Run it as follow:
+Run it as follows:
 
 .. code:: yaml
 
