@@ -32,6 +32,8 @@ def synchronize(
     print("********************")
     print(user_email[0])
     print(user_name[0])
+    a=1
+    assert a==0
     branch_name = "sync/sync_branch"
     origin_directory = os.path.join(os.getcwd())
 
