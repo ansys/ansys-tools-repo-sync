@@ -56,6 +56,12 @@ def test_synchronization():
             os.path.join(os.getcwd(), "assets", "ansys", "api", "test", "v0"),
         )
 
+        user_name = os.environ.get("BOT_NAME")
+        user_email = os.environ.get("BOT_EMAIL")
+        print("********************")
+        print(user_email[0])
+        print(user_name[0])
+
         capture = CaptureStdOut()
         with capture:
             synchronize(
