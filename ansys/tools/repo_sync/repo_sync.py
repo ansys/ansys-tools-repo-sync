@@ -28,10 +28,10 @@ def synchronize(
         token = os.environ.get("TOKEN")
 
     user_name = os.environ.get("BOT_NAME")
+    user_email = os.environ.get("BOT_EMAIL")
     print("********************")
     print(user_email[0])
     print(user_name[0])
-    user_email = os.environ.get("BOT_EMAIL")
     branch_name = "sync/sync_branch"
     origin_directory = os.path.join(os.getcwd())
 
