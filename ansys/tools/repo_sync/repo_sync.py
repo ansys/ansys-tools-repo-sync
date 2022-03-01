@@ -37,7 +37,7 @@ def synchronize(
     with tempfile.TemporaryDirectory() as temp_dir:
         os.chdir(temp_dir)
         # Clone the repo.
-        subprocess.check_call(["git", "clone", f"https://{token}@github.com/{organization}/{repository}"], shell=True, cwd=temp_dir)
+        subprocess.check_call(["git", "clone", f"https://{token}@github.com/{organization}/{repository}"], cwd=temp_dir)
 
         repo_path = os.path.join(temp_dir, repository)
 
