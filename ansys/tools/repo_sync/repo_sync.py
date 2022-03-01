@@ -37,20 +37,20 @@ def synchronize(
     with tempfile.TemporaryDirectory() as temp_dir:
         os.chdir(temp_dir)
         # Clone the repo.
-        subprocess.check_call(["git", "clone", f"https://{token}@github.com/{organization}/{repository}"], cwd=temp_dir)
+        subprocess.check_call(["git", "clone", f"https://{token}@github.com/{organization}/{repository}"], shell=True, cwd=temp_dir)
 
         repo_path = os.path.join(temp_dir, repository)
 
         # Set credential
-        subprocess.check_call(["git", "config", "user.name", f"{user_name}"], cwd=repo_path)
+        subprocess.check_call(["git", "config", "user.name", f"{user_name}"], shell=True, cwd=repo_path)
 
-        subprocess.check_call(["git", "config", "user.email", f"{user_email}"], cwd=repo_path)
+        subprocess.check_call(["git", "config", "user.email", f"{user_email}"], shell=True, cwd=repo_path)
 
         # Create a new branch.
         try:
-            subprocess.check_call(["git", "checkout", "-b", branch_name], cwd=repo_path)
+            subprocess.check_call(["git", "checkout", "-b", branch_name], shell=True, cwd=repo_path)
         except:
-            subprocess.check_call(["git", "checkout", branch_name], cwd=repo_path)
+            subprocess.check_call(["git", "checkout", branch_name], shell=True, cwd=repo_path)
 
         # Read manifest
         with open(manifest, "r") as f:
@@ -64,7 +64,7 @@ def synchronize(
         )
 
         # unsafe, should add specific file or directory
-        subprocess.check_call(["git", "add", "--a"], cwd=repo_path)
+        subprocess.check_call(["git", "add", "--a"], shell=True, cwd=repo_path)
 
         if protos_path:
             message = f"""Add folder content from {protos_path}."""
@@ -76,9 +76,9 @@ def synchronize(
             print("Dry-run synchronization output:")
             print(output)
         else:
-            subprocess.check_call(["git", "commit", "-am", message], cwd=repo_path)
+            subprocess.check_call(["git", "commit", "-am", message], shell=True, cwd=repo_path)
 
-            subprocess.check_call(["git", "push", "-u", "origin", branch_name], cwd=repo_path)
+            subprocess.check_call(["git", "push", "-u", "origin", branch_name], shell=True, cwd=repo_path)
 
             # Create pull request.
             gh = github.Github(token)
