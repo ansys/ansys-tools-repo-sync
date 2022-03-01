@@ -58,7 +58,7 @@ def synchronize(
         # Add protos.
         shutil.copytree(
             os.path.join(origin_directory, protos_path),
-            os.path.join(os.getcwd(), protos_path),
+            os.path.join(temp_dir, protos_path),
             ignore=shutil.ignore_patterns(*prohibited_extensions),
         )
 
