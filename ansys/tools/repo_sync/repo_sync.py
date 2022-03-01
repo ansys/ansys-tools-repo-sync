@@ -35,48 +35,21 @@ def synchronize(
 
     # Create a temporary folder
     with tempfile.TemporaryDirectory() as temp_dir:
-        os.chdir(temp_dir)
-
         # Clone the repo.
-        process = subprocess.Popen(
-            ["git", "clone", f"https://{token}@github.com/{organization}/{repository}"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        stdout, stderr = process.communicate()
+        subprocess.check_call(["git", "clone", f"https://{token}@github.com/{organization}/{repository}"], cwd=temp_dir)
 
-        os.chdir(repository)
+        repo_path = os.path.join(temp_dir, repository)
 
         # Set credential
-        process = subprocess.Popen(
-            ["git", "config", "user.name", f"{user_name}"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        stdout, stderr = process.communicate()
+        subprocess.check_call(["git", "config", "user.name", f"{user_name}"], cwd=repo_path)
 
-        process = subprocess.Popen(
-            ["git", "config", "user.email", f"{user_email}"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        stdout, stderr = process.communicate()
+        subprocess.check_call(["git", "config", "user.email", f"{user_email}"], cwd=repo_path)
 
         # Create a new branch.
         try:
-            process = subprocess.Popen(
-                ["git", "checkout", "-b", branch_name],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            stdout, stderr = process.communicate()
+            subprocess.check_call(["git", "checkout", "-b", branch_name], cwd=repo_path)
         except:
-            process = subprocess.Popen(
-                ["git", "checkout", branch_name],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            stdout, stderr = process.communicate()
+            subprocess.check_call(["git", "checkout", branch_name], cwd=repo_path)
 
         # Read manifest
         with open(manifest, "r") as f:
@@ -90,12 +63,7 @@ def synchronize(
         )
 
         # unsafe, should add specific file or directory
-        process = subprocess.Popen(
-            ["git", "add", "--a"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        stdout, stderr = process.communicate()
+        subprocess.check_call(["git", "add", "--a"], cwd=repo_path)
 
         if protos_path:
             message = f"""Add folder content from {protos_path}."""
@@ -103,39 +71,18 @@ def synchronize(
             message = f"Copy all files located into the {repository} repository from branch {branch_name}."
 
         if dry_run:
-            process = subprocess.Popen(
-                ["git", "commit", "-am", message, "--dry-run"],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            stdout, stderr = process.communicate()
+            output = subprocess.check_output(["git", "commit", "-am", message, "--dry-run"], cwd=repo_path)
             print("Dry-run synchronization output:")
-            print(stdout)
+            print(output)
         else:
-            process = subprocess.Popen(
-                ["git", "commit", "-am", message],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            stdout, stderr = process.communicate()
+            subprocess.check_call(["git", "commit", "-am", message], cwd=repo_path)
 
-            process = subprocess.Popen(
-                ["git", "push", "-u", "origin", branch_name],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            stdout, stderr = process.communicate()
+            subprocess.check_call(["git", "push", "-u", "origin", branch_name], cwd=repo_path)
 
             # Create pull request.
             gh = github.Github(token)
             repo = gh.get_repo(f"{organization}/{repository}")
             pr = repo.create_pull(title=message, body=message, head=branch_name, base="main")
-
-        # Delete the git repository that was created.
-        parent_folder = os.path.dirname(os.getcwd())
-        os.chdir(parent_folder)
-        shutil.rmtree(os.path.join(parent_folder, repository), onerror=_on_rm_error)
-        os.chdir(os.path.dirname(os.getcwd()))
 
     if not dry_run:
         print("Synchronization Succeeded...")
