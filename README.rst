@@ -41,7 +41,7 @@ Run it as follows:
     repo-sync --manifest path_to_manifest_file --repository target-repository-name --token github_token --organization ansys --protos-path path_to_protos_directory --dry-run
 
 .. note::
-    The parameter ``--dry-run`` flag can be set while establishing the entire
+    The ``--dry-run`` flag can be set while establishing the entire
     workflow for the first time. It helps preventing unnecessary commits
     of sensitive data. It will print the content expected to be committed in the
     public repository.
