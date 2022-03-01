@@ -24,6 +24,7 @@ importlib-metadata = {version = "^4.0", python = "<3.8"}
 
 pre-commit = "^2.15.0"
 pygithub = "1.55"
+click = "^8.0.4"
 
 Sphinx =  {version="^4.4", optional=true}
 numpydoc =  {version="^1.2", optional=true}
@@ -58,3 +59,6 @@ ignore_missing_imports = true
 docs = ["Sphinx", "numpydoc", "pyansys_sphinx_theme", "sphinx-copybutton"]
 style = ["codespell", "flake8"]
 test = ["pytest", "pytest-cov"]
+
+[tool.poetry.scripts]
+repo-sync = "ansys.tools.repo_sync._cli:synchronize"
