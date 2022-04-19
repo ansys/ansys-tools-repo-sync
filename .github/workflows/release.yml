@@ -19,5 +19,5 @@ jobs:
         TWINE_PASSWORD: $(PYPI_TOKEN)
         TWINE_REPOSITORY_URL: "https://upload.pypi.org/legacy/"
       run: |
-        python setup.py sdist
+        python -m build
         twine upload --skip-existing dist/*
