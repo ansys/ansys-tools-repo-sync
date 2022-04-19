@@ -124,6 +124,7 @@ def test_dry_run():
 
     assert "Dry-run synchronization output:" in str(capture.content)
 
+
 def test_dry_run_without_manifest():
     """Test dry-run option wihtout manifest file. All files must be copied."""
 
