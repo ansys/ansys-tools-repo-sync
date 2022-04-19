@@ -123,3 +123,37 @@ def test_dry_run():
             )
 
     assert "Dry-run synchronization output:" in str(capture.content)
+
+
+def test_dry_run_without_manifest():
+    """Test dry-run option without manifest file. All files must be copied."""
+
+    # Create a temp directory that will be used as a fake public repo
+    with tempfile.TemporaryDirectory() as temp_dir:
+        os.chdir(temp_dir)
+
+        # Add control version to the temp directory
+        process = subprocess.Popen(
+            ["git", "init"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        stdout, stderr = process.communicate()
+
+        # copy proto file.
+        shutil.copytree(
+            os.path.join(ASSETS_DIRECTORY, "ansys", "api", "test", "v0"),
+            os.path.join(os.getcwd(), "assets", "ansys", "api", "test", "v0"),
+        )
+
+        capture = CaptureStdOut()
+        with capture:
+            synchronize(
+                token=TOKEN,
+                repository="ansys-tools-repo-sync",
+                organization="ansys",
+                protos_path=os.path.join("assets", "ansys", "api", "test", "v0"),
+                dry_run=True,
+            )
+
+    assert "Dry-run synchronization output:" in str(capture.content)
