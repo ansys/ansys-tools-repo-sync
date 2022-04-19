@@ -17,7 +17,7 @@ jobs:
     - name: Build and publish
       env:
         TWINE_USERNAME: __token__
-        TWINE_PASSWORD: $(PYPI_TOKEN)
+        TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
         TWINE_REPOSITORY_URL: "https://upload.pypi.org/legacy/"
       run: |
         python -m build
