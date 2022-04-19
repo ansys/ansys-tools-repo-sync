@@ -8,7 +8,7 @@ import github
 
 
 def synchronize(
-    manifest: str,
+    manifest: str = None,
     token: str = None,
     repository: str = "synchronization-demo-public",
     organization: str = "pyansys",
@@ -79,15 +79,23 @@ def synchronize(
             stdout, stderr = process.communicate()
 
         # Read manifest
-        with open(manifest, "r") as f:
-            prohibited_extensions = f.read().splitlines()
+        if manifest:
+            with open(manifest, "r") as f:
+                prohibited_extensions = f.read().splitlines()
 
-        # Add protos.
-        shutil.copytree(
-            os.path.join(origin_directory, protos_path),
-            os.path.join(os.getcwd(), protos_path),
-            ignore=shutil.ignore_patterns(*prohibited_extensions),
-        )
+                # Add protos.
+                shutil.copytree(
+                    os.path.join(origin_directory, protos_path),
+                    os.path.join(os.getcwd(), protos_path),
+                    ignore=shutil.ignore_patterns(*prohibited_extensions),
+                )
+
+        else:
+            # Add protos.
+            shutil.copytree(
+                os.path.join(origin_directory, protos_path),
+                os.path.join(os.getcwd(), protos_path),
+            )
 
         # unsafe, should add specific file or directory
         process = subprocess.Popen(
