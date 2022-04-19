@@ -126,7 +126,7 @@ def test_dry_run():
 
 
 def test_dry_run_without_manifest():
-    """Test dry-run option wihtout manifest file. All files must be copied."""
+    """Test dry-run option without manifest file. All files must be copied."""
 
     # Create a temp directory that will be used as a fake public repo
     with tempfile.TemporaryDirectory() as temp_dir:
