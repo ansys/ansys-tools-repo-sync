@@ -1,6 +1,6 @@
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
 
 [tool.poetry]
 name = "ansys-tools-repo-sync"
@@ -44,6 +44,9 @@ skip="*.pyc,*.xml,*.txt,*.gif,*.png,*.jpg,*.js,*.html,*.doctree,*.ttf,*.woff,*.w
 [tool.black]
 line-length = 120
 target-version = ['py37']
+
+[tool.flit.module]
+name = "ansys.tools.repo_sync"
 
 [tool.pydocstyle]
 convention = "numpy"
