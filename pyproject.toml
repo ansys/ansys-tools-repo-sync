@@ -1,16 +1,16 @@
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
 
-[tool.poetry]
-name = "ansys.tools.repo_sync"
-authors = ["ANSYS, Inc."]
-maintainers = ["PyAnsys developers <pyansys.support@ansys.com>"]
+[project]
+name = "ansys-tools-repo-sync"
+authors = [{name = "ANSYS, Inc."}]
+maintainers = [{name = "PyAnsys developers", "email" = "pyansys.support@ansys.com"}]
 readme = "README.rst"
 homepage = "https://github.com/ansys/ansys-tools-repo-sync"
-license = "MIT"
+license = {file = "LICENSE"}
 classifiers = ["License :: OSI Approved :: MIT License"]
-version = "0.1.dev0"
+dynamic = ["version", "description"]
 description = "Synchronize the content of two different repositories."
 
 
@@ -18,7 +18,7 @@ packages = [
     { include = "ansys"},
 ]
 
-[tool.poetry.dependencies]
+[project.optional-dependencies]
 python = ">=3.7"
 importlib-metadata = {version = "^4.0", python = "<3.8"}
 
@@ -44,6 +44,9 @@ skip="*.pyc,*.xml,*.txt,*.gif,*.png,*.jpg,*.js,*.html,*.doctree,*.ttf,*.woff,*.w
 [tool.black]
 line-length = 120
 target-version = ['py37']
+
+[tool.flit.module]
+name = "ansys.tools.repo_sync"
 
 [tool.pydocstyle]
 convention = "numpy"
