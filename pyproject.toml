@@ -18,7 +18,7 @@ packages = [
     { include = "ansys"},
 ]
 
-[tool.poetry.dependencies]
+[project.optional-dependencies]
 python = ">=3.7"
 importlib-metadata = {version = "^4.0", python = "<3.8"}
 
