@@ -4,8 +4,8 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "ansys-tools-repo-sync"
-authors = ["ANSYS, Inc."]
-maintainers = ["PyAnsys developers <pyansys.support@ansys.com>"]
+authors = [{name = "ANSYS, Inc."}]
+maintainers = [{name = "PyAnsys developers", "email" = "pyansys.support@ansys.com"}]
 readme = "README.rst"
 homepage = "https://github.com/ansys/ansys-tools-repo-sync"
 license = {file = "LICENSE"}
