@@ -45,5 +45,5 @@ def synchronize(manifest, repository, token, organization, protos, dry_run):
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     synchronize()
