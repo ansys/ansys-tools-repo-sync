@@ -43,3 +43,6 @@ def synchronize(manifest, repository, token, organization, protos, dry_run):
         protos_path=protos,
         dry_run=dry_run,
     )
+
+if __name__ == '__main__':
+    synchronize()
