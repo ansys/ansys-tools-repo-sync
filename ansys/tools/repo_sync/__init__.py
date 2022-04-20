@@ -4,5 +4,5 @@ try:
 except ModuleNotFoundError:
     import importlib_metadata
 
-__version__ = importlib_metadata.version(__package__ or __name__)
+__version__ = "0.1.dev0"
 from .repo_sync import synchronize
