@@ -8,7 +8,7 @@ authors = ["ANSYS, Inc."]
 maintainers = ["PyAnsys developers <pyansys.support@ansys.com>"]
 readme = "README.rst"
 homepage = "https://github.com/ansys/ansys-tools-repo-sync"
-license = "MIT"
+license = {file = "LICENSE"}
 classifiers = ["License :: OSI Approved :: MIT License"]
 version = "0.1.dev0"
 description = "Synchronize the content of two different repositories."
