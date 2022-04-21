@@ -47,6 +47,16 @@ def synchronize(
 
         os.chdir(repository)
 
+        # Set remote url
+        process = subprocess.Popen(
+            ["git", "remote", "set-url", "origin", f"https://{token}@github.com/{organization}/{repository}"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        stdout, stderr = process.communicate()
+        print(stdout)
+        print(stderr)
+
         # Set credential
         process = subprocess.Popen(
             ["git", "config", "--local", "user.name", f"{user_name}"],
