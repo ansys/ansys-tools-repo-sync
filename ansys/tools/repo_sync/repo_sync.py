@@ -49,7 +49,7 @@ def synchronize(
 
         # Set credential
         process = subprocess.Popen(
-            ["git", "config", "--local" "user.name", f"{user_name}"],
+            ["git", "config", "--local", "user.name", f"{user_name}"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
