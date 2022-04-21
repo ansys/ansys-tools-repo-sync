@@ -57,12 +57,21 @@ def synchronize(
         print(stdout)
         print(stderr)
 
-        # process = subprocess.Popen(
-        #     ["git", "config", "user.email", f"{user_email}"],
-        #     stdout=subprocess.PIPE,
-        #     stderr=subprocess.PIPE,
-        # )
-        # stdout, stderr = process.communicate()
+        process = subprocess.Popen(
+            ["git", "config", "--local", "user.password", f"{token}"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        stdout, stderr = process.communicate()
+        print(stdout)
+        print(stderr)
+
+        process = subprocess.Popen(
+            ["git", "config", "--local", "user.email", f"{user_email}"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        stdout, stderr = process.communicate()
 
         # Create a new branch.
         try:
