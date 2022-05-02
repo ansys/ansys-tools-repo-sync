@@ -145,6 +145,8 @@ def synchronize(
                 stderr=subprocess.PIPE,
             )
             stdout, stderr = process.communicate()
+            print(stdout)
+            print(stderr)
 
             # Create pull request.
             gh = github.Github(token)
