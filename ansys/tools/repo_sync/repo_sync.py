@@ -43,7 +43,7 @@ def synchronize(
         # Set remote url
         subprocess.check_call(
             ["git", "remote", "set-url", "origin", f"https://{token}@github.com/{organization}/{repository}"],
-            cwd=os.path.join(temp_dir, repository),
+            cwd=repo_path,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
@@ -51,18 +51,21 @@ def synchronize(
         # Set credential
         subprocess.check_call(
             ["git", "config", "--local", "user.name", f"{user_name}"],
+            cwd=repo_path,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
 
         subprocess.check_call(
             ["git", "config", "--local", "user.password", f"{token}"],
+            cwd=repo_path,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
 
         subprocess.check_call(
             ["git", "config", "--local", "user.email", f"{user_email}"],
+            cwd=repo_path,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
@@ -71,6 +74,7 @@ def synchronize(
         try:
             subprocess.check_call(
                 ["git", "checkout", "-b", branch_name],
+                cwd=repo_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
@@ -78,6 +82,7 @@ def synchronize(
         except:
             subprocess.check_call(
                 ["git", "checkout", branch_name],
+                cwd=repo_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
@@ -104,6 +109,7 @@ def synchronize(
         # unsafe, should add specific file or directory
         subprocess.check_call(
             ["git", "add", "--a"],
+            cwd=os.path.join(temp_dir, repository),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
@@ -120,12 +126,14 @@ def synchronize(
         else:
             subprocess.check_call(
                 ["git", "commit", "-am", message],
+                cwd=repo_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
 
             subprocess.check_call(
                 ["git", "push", "-u", "origin", branch_name, "-v"],
+                cwd=repo_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
