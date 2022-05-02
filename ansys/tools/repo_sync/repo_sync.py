@@ -120,14 +120,14 @@ def synchronize(
             message = f"Copy all files located into the {repository} repository from branch {branch_name}."
 
         if dry_run:
-            subprocess.check_call(
+            process = subprocess.Popen(
                 ["git", "commit", "-am", message, "--dry-run"],
-                cwd=repo_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
+            stdout, stderr = process.communicate()
             print("Dry-run synchronization output:")
-            print(output)
+            print(stdout)
         else:
             subprocess.check_call(
                 ["git", "commit", "-am", message],
