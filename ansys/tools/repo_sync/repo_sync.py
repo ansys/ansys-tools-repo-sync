@@ -109,7 +109,7 @@ def synchronize(
         # unsafe, should add specific file or directory
         subprocess.check_call(
             ["git", "add", "--a"],
-            cwd=os.path.join(temp_dir, repository),
+            cwd=os.path.join(repo_path),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
@@ -122,6 +122,7 @@ def synchronize(
         if dry_run:
             process = subprocess.Popen(
                 ["git", "commit", "-am", message, "--dry-run"],
+                cwd=os.path.join(repo_path),
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
@@ -131,11 +132,12 @@ def synchronize(
         else:
             process = subprocess.Popen(
                 ["git", "commit", "-am", message],
+                cwd=os.path.join(repo_path),
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
 
-            subprocess.check_call(
+            process = subprocess.Popen(
                 ["git", "push", "-u", "origin", branch_name, "-v"],
                 cwd=repo_path,
                 stdout=subprocess.PIPE,
