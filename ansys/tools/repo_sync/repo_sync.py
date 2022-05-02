@@ -43,6 +43,7 @@ def synchronize(
         # Set remote url
         subprocess.check_call(
             ["git", "remote", "set-url", "origin", f"https://{token}@github.com/{organization}/{repository}"],
+            cwd=temp_dir,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
