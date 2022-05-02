@@ -129,9 +129,8 @@ def synchronize(
             print("Dry-run synchronization output:")
             print(stdout)
         else:
-            subprocess.check_call(
+            process = subprocess.Popen(
                 ["git", "commit", "-am", message],
-                cwd=repo_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
