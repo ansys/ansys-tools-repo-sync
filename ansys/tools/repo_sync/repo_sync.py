@@ -123,8 +123,6 @@ def synchronize(
             output = subprocess.check_output(
                 ["git", "commit", "-am", message, "--dry-run"],
                 cwd=repo_path,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
             )
             print("Dry-run synchronization output:")
             print(output)
