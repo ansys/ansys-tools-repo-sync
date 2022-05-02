@@ -122,7 +122,7 @@ def synchronize(
         if dry_run:
             process = subprocess.Popen(
                 ["git", "commit", "-am", message, "--dry-run"],
-                cwd=os.path.join(repo_path),
+                cwd=repo_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
@@ -132,11 +132,11 @@ def synchronize(
         else:
             process = subprocess.run(
                 ["git", "commit", "-am", message],
-                cwd=os.path.join(repo_path),
+                cwd=repo_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                check=True,
             )
+            stdout, stderr = process.communicate()
 
             subprocess.run(
                 ["git", "push", "-u", "origin", branch_name, "-v"],
