@@ -137,7 +137,7 @@ def synchronize(
                 stderr=subprocess.PIPE,
             )
 
-            process = subprocess.Popen(
+            subprocess.check_call(
                 ["git", "push", "-u", "origin", branch_name, "-v"],
                 cwd=repo_path,
                 stdout=subprocess.PIPE,
