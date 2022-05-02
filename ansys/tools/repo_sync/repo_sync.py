@@ -138,13 +138,13 @@ def synchronize(
             )
             stdout, stderr = process.communicate()
 
-            subprocess.run(
+            subprocess.Popen(
                 ["git", "push", "-u", "origin", branch_name, "-v"],
                 cwd=repo_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                check=True,
-            ).stdout
+            )
+            stdout, stderr = process.communicate()
 
             # Create pull request.
             gh = github.Github(token)
