@@ -109,7 +109,7 @@ def synchronize(
         # unsafe, should add specific file or directory
         subprocess.check_call(
             ["git", "add", "--a"],
-            cwd=os.path.join(repo_path),
+            cwd=repo_path,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
@@ -120,7 +120,7 @@ def synchronize(
             message = f"Copy all files located into the {repository} repository from branch {branch_name}."
 
         if dry_run:
-            process = subprocess.Popen(
+            process = subprocess.run(
                 ["git", "commit", "-am", message, "--dry-run"],
                 cwd=os.path.join(repo_path),
                 stdout=subprocess.PIPE,
@@ -130,18 +130,19 @@ def synchronize(
             print("Dry-run synchronization output:")
             print(stdout)
         else:
-            process = subprocess.Popen(
+            process = subprocess.run(
                 ["git", "commit", "-am", message],
                 cwd=os.path.join(repo_path),
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
 
-            subprocess.check_call(
+            subprocess.run(
                 ["git", "push", "-u", "origin", branch_name, "-v"],
                 cwd=repo_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
+                check=True,
             )
 
             # Create pull request.
