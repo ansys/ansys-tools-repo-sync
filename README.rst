@@ -36,20 +36,13 @@ Then, it can be used in the considered workflow with the appropriate arguments.
 
 Run it as follows:
 
-.. code:: yaml
+.. code:: bash
 
-    python -c "from ansys.tools.repo_sync import synchronize"; synchronize(
-    manifest=os.path.join(ASSETS_DIRECTORY, "manifest.txt"),
-    token=TOKEN,
-    repository="ansys-tools-repo-sync",
-    organization="ansys",
-    protos_path=os.path.join("assets", "ansys", "api", "test", "v0"),
-    dry_run=True,
-    )"
+    repo-sync --manifest path_to_manifest_file --repository target-repository-name --token github_token --organization ansys --protos-path path_to_protos_directory --dry-run
 
 .. note::
-    The parameter ``dry_run`` can be set to ``True`` while establishing
-    the entire workflow for the first time. It helps preventing uncessary commits
+    The ``--dry-run`` flag can be set while establishing the entire
+    workflow for the first time. It helps preventing unnecessary commits
     of sensitive data. It will print the content expected to be committed in the
     public repository.
 

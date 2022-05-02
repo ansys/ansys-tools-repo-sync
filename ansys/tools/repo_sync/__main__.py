@@ -1,27 +1,49 @@
 """Tool to copy the content of one repo toward an other.
 Run with:
 
-python -m ansys.tools.repo_sync -o "Organization" -r "repository"
+repo-sync -o Organization -r repository -p path_to_protos_directory
 
 """
-import argparse
+import click
 
-from .repo_sync import synchronize
+from .repo_sync import synchronize as _synchronize
+
+
+@click.command(short_help="Copy the content of a repository into an other repository.")
+@click.option(
+    "--manifest",
+    "-m",
+    type=click.Path(dir_okay=False, exists=True),
+    help="Manifest to mention prohibited extension files.",
+)
+@click.option("--repository", "-r", type=str, help="Name of the repository.", required=True)
+@click.option("--token", "-t", type=str, help="Personal access token.")
+@click.option("--organization", "-o", type=str, help="Name of the organization.", default="pyansys")
+@click.option(
+    "--protos",
+    "-p",
+    type=click.Path(file_okay=False, exists=True),
+    help="Path to the folder containing the *.protos file to copy.",
+    required=True,
+)
+@click.option(
+    "--dry-run",
+    "-d",
+    is_flag=True,
+    default=False,
+    help="Simulate the behavior of the synchronization without performing it.",
+)
+def synchronize(manifest, token, repository, organization, protos, dry_run):
+    """CLI command to execute the repository synchronization."""
+    _synchronize(
+        manifest=manifest,
+        token=token,
+        repository=repository,
+        organization=organization,
+        protos_path=protos,
+        dry_run=dry_run,
+    )
+
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Copy the content of a repository into an other repository.")
-    parser.add_argument("-o", "--organization", help="Name of the organization. Default value is ``pyansys``.")
-    parser.add_argument("-r", "--repository", help="Name of the repository.")
-    parser.add_argument("-t", "--token", help="Personal access token.")
-    parser.add_argument("-p", "--protos", help="Path to the folder containing the *.protos file to copy")
-    parser.add_argument("-m", "--manifest", help="Manifest to mention prohibited extension files.")
-    parser.add_argument("-d", "--dry-run", help="Simulate the behavior of the synchronization without performing it.")
-
-    args = parser.parse_args()
-    synchronize(
-        manifest=args.manifest,
-        repository=args.repository,
-        organization=args.organization,
-        protos_path=args.protos,
-        dry_run=args.dry_run,
-    )
+    synchronize()

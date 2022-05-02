@@ -8,7 +8,7 @@ import github
 
 
 def synchronize(
-    manifest: str,
+    manifest: str = None,
     token: str = None,
     repository: str = "synchronization-demo-public",
     organization: str = "pyansys",
@@ -40,30 +40,72 @@ def synchronize(
 
         repo_path = os.path.join(temp_dir, repository)
 
-        # Set credential
-        subprocess.check_call(["git", "config", "user.name", f"{user_name}"], cwd=repo_path)
+        # Set remote url
+        subprocess.check_call(
+            ["git", "remote", "set-url", "origin", f"https://{token}@github.com/{organization}/{repository}"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
 
-        subprocess.check_call(["git", "config", "user.email", f"{user_email}"], cwd=repo_path)
+        # Set credential
+        subprocess.check_call(
+            ["git", "config", "--local", "user.name", f"{user_name}"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+
+        subprocess.check_call(
+            ["git", "config", "--local", "user.password", f"{token}"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+
+        subprocess.check_call(
+            ["git", "config", "--local", "user.email", f"{user_email}"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
 
         # Create a new branch.
         try:
-            subprocess.check_call(["git", "checkout", "-b", branch_name], cwd=repo_path)
+            subprocess.check_call(
+                ["git", "checkout", "-b", branch_name],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+
         except:
-            subprocess.check_call(["git", "checkout", branch_name], cwd=repo_path)
+            subprocess.check_call(
+                ["git", "checkout", branch_name],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
 
         # Read manifest
-        with open(manifest, "r") as f:
-            prohibited_extensions = f.read().splitlines()
+        if manifest:
+            with open(manifest, "r") as f:
+                prohibited_extensions = f.read().splitlines()
 
-        # Add protos.
-        shutil.copytree(
-            os.path.join(origin_directory, protos_path),
-            os.path.join(temp_dir, protos_path),
-            ignore=shutil.ignore_patterns(*prohibited_extensions),
-        )
+                # Add protos.
+                shutil.copytree(
+                    os.path.join(origin_directory, protos_path),
+                    os.path.join(os.getcwd(), protos_path),
+                    ignore=shutil.ignore_patterns(*prohibited_extensions),
+                )
+
+        else:
+            # Add protos.
+            shutil.copytree(
+                os.path.join(origin_directory, protos_path),
+                os.path.join(temp, protos_path),
+            )
 
         # unsafe, should add specific file or directory
-        subprocess.check_call(["git", "add", "--a"], cwd=repo_path)
+        subprocess.check_call(
+            ["git", "add", "--a"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
 
         if protos_path:
             message = f"""Add folder content from {protos_path}."""
@@ -75,9 +117,17 @@ def synchronize(
             print("Dry-run synchronization output:")
             print(output)
         else:
-            subprocess.check_call(["git", "commit", "-am", message], cwd=repo_path)
+            subprocess.check_call(
+                ["git", "commit", "-am", message],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
 
-            subprocess.check_call(["git", "push", "-u", "origin", branch_name], cwd=repo_path)
+            subprocess.check_call(
+                ["git", "push", "-u", "origin", branch_name, "-v"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
 
             # Create pull request.
             gh = github.Github(token)
