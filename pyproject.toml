@@ -29,7 +29,7 @@ click = "^8.0.4"
 Sphinx =  {version="^4.4", optional=true}
 numpydoc =  {version="^1.2", optional=true}
 pyansys_sphinx_theme =  {version="^0.2", optional=true}
-sphinx-copybutton =  {version="^0.4", optional=true}
+sphinx-copybutton =  {version=">=0.4,<0.6", optional=true}
 
 codespell = {version="^2.1", optional=true}
 flake8 = {version="^3.9", optional=true}
