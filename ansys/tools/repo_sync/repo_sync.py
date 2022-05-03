@@ -35,73 +35,57 @@ def synchronize(
 
     # Create a temporary folder
     with tempfile.TemporaryDirectory() as temp_dir:
-        os.chdir(temp_dir)
-
         # Clone the repo.
-        process = subprocess.Popen(
-            ["git", "clone", f"https://{token}@github.com/{organization}/{repository}"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        stdout, stderr = process.communicate()
+        subprocess.check_call(["git", "clone", f"https://{token}@github.com/{organization}/{repository}"], cwd=temp_dir)
 
-        os.chdir(repository)
+        repo_path = os.path.join(temp_dir, repository)
 
         # Set remote url
-        process = subprocess.Popen(
+        subprocess.check_call(
             ["git", "remote", "set-url", "origin", f"https://{token}@github.com/{organization}/{repository}"],
+            cwd=repo_path,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
-        stdout, stderr = process.communicate()
-        print(stdout)
-        print(stderr)
 
         # Set credential
-        process = subprocess.Popen(
+        subprocess.check_call(
             ["git", "config", "--local", "user.name", f"{user_name}"],
+            cwd=repo_path,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
-        stdout, stderr = process.communicate()
-        print(stdout)
-        print(stderr)
 
-        process = subprocess.Popen(
+        subprocess.check_call(
             ["git", "config", "--local", "user.password", f"{token}"],
+            cwd=repo_path,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
-        stdout, stderr = process.communicate()
-        print(stdout)
-        print(stderr)
 
-        process = subprocess.Popen(
+        subprocess.check_call(
             ["git", "config", "--local", "user.email", f"{user_email}"],
+            cwd=repo_path,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
-        stdout, stderr = process.communicate()
 
         # Create a new branch.
         try:
-            process = subprocess.Popen(
+            subprocess.check_call(
                 ["git", "checkout", "-b", branch_name],
+                cwd=repo_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
-            stdout, stderr = process.communicate()
-            print(stdout)
-            print(stderr)
+
         except:
-            process = subprocess.Popen(
+            subprocess.check_call(
                 ["git", "checkout", branch_name],
+                cwd=repo_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
-            stdout, stderr = process.communicate()
-            print(stdout)
-            print(stderr)
 
         # Read manifest
         if manifest:
@@ -111,7 +95,7 @@ def synchronize(
                 # Add protos.
                 shutil.copytree(
                     os.path.join(origin_directory, protos_path),
-                    os.path.join(os.getcwd(), protos_path),
+                    os.path.join(temp_dir, protos_path),
                     ignore=shutil.ignore_patterns(*prohibited_extensions),
                 )
 
@@ -119,18 +103,16 @@ def synchronize(
             # Add protos.
             shutil.copytree(
                 os.path.join(origin_directory, protos_path),
-                os.path.join(os.getcwd(), protos_path),
+                os.path.join(temp_dir, protos_path),
             )
 
         # unsafe, should add specific file or directory
-        process = subprocess.Popen(
+        subprocess.check_call(
             ["git", "add", "--a"],
+            cwd=repo_path,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
-        stdout, stderr = process.communicate()
-        print(stdout)
-        print(stderr)
 
         if protos_path:
             message = f"""Add folder content from {protos_path}."""
@@ -140,6 +122,7 @@ def synchronize(
         if dry_run:
             process = subprocess.Popen(
                 ["git", "commit", "-am", message, "--dry-run"],
+                cwd=repo_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
@@ -149,15 +132,15 @@ def synchronize(
         else:
             process = subprocess.Popen(
                 ["git", "commit", "-am", message],
+                cwd=repo_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
             stdout, stderr = process.communicate()
-            print(stdout)
-            print(stderr)
 
-            process = subprocess.Popen(
+            subprocess.Popen(
                 ["git", "push", "-u", "origin", branch_name, "-v"],
+                cwd=repo_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
@@ -169,12 +152,6 @@ def synchronize(
             gh = github.Github(token)
             repo = gh.get_repo(f"{organization}/{repository}")
             pr = repo.create_pull(title=message, body=message, head=branch_name, base="main")
-
-        # Delete the git repository that was created.
-        parent_folder = os.path.dirname(os.getcwd())
-        os.chdir(parent_folder)
-        shutil.rmtree(os.path.join(parent_folder, repository), onerror=_on_rm_error)
-        os.chdir(os.path.dirname(os.getcwd()))
 
     if not dry_run:
         print("Synchronization Succeeded...")
