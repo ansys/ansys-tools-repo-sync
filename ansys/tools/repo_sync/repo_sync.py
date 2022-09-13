@@ -12,6 +12,7 @@ def synchronize(
     token: str = None,
     repository: str = "synchronization-demo-public",
     organization: str = "pyansys",
+    branch_checked_out: str = "main",
     protos_path: str = r"ansys\api\test\v0",
     dry_run: bool = True,
 ):
@@ -83,7 +84,17 @@ def synchronize(
         )
         stdout, stderr = process.communicate()
 
-        # Create a new branch.
+        # Checkout a branch -default is main-.
+        process = subprocess.Popen(
+            ["git", "checkout", branch_checked_out],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        stdout, stderr = process.communicate()
+        print(stdout)
+        print(stderr)
+
+        # Create a new branch from the branch previously checked out above.
         try:
             process = subprocess.Popen(
                 ["git", "checkout", "-b", branch_name],
