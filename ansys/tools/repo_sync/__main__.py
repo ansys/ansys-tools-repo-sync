@@ -1,7 +1,7 @@
 """Tool to copy the content of one repo toward an other.
 Run with:
 
-repo-sync -o Organization -r repository -p path_to_protos_directory -b branch_name
+repo-sync -o Organization -r repository -b branch_name -p path_to_protos_directory
 
 """
 import click
