@@ -19,6 +19,7 @@ from .repo_sync import synchronize as _synchronize
 @click.option("--repository", "-r", type=str, help="Name of the repository.", required=True)
 @click.option("--token", "-t", type=str, help="Personal access token.")
 @click.option("--organization", "-o", type=str, help="Name of the organization.", default="pyansys")
+@click.option("--branch_checked_out", "-b", type=str, help="Branch to check out.", default="main")
 @click.option(
     "--protos",
     "-p",
