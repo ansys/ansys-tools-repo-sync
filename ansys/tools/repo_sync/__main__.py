@@ -34,13 +34,14 @@ from .repo_sync import synchronize as _synchronize
     default=False,
     help="Simulate the behavior of the synchronization without performing it.",
 )
-def synchronize(manifest, token, repository, organization, protos, dry_run):
+def synchronize(manifest, token, repository, organization, branch_checked_out, protos, dry_run):
     """CLI command to execute the repository synchronization."""
     _synchronize(
         manifest=manifest,
         token=token,
         repository=repository,
         organization=organization,
+        branch_checked_out=branch_checked_out,
         protos_path=protos,
         dry_run=dry_run,
     )
