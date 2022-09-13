@@ -142,11 +142,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 wrapt = ">=1.10,<2"
 
 [package.extras]
-<<<<<<< HEAD
-dev = ["PyTest (<5)", "PyTest-Cov (<2.6)", "bump2version (<1)", "configparser (<5)", "importlib-metadata (<3)", "importlib-resources (<4)", "pytest", "pytest-cov", "sphinx (<2)", "sphinxcontrib-websupport (<2)", "tox", "zipp (<2)"]
-=======
 dev = ["PyTest", "PyTest (<5)", "PyTest-Cov", "PyTest-Cov (<2.6)", "bump2version (<1)", "configparser (<5)", "importlib-metadata (<3)", "importlib-resources (<4)", "sphinx (<2)", "sphinxcontrib-websupport (<2)", "tox", "zipp (<2)"]
->>>>>>> main
 
 [[package]]
 name = "distlib"
