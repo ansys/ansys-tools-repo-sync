@@ -28,13 +28,19 @@ from .repo_sync import synchronize as _synchronize
     required=True,
 )
 @click.option(
+    "--output_path",
+    type=click.Path(file_okay=False, exists=True),
+    help="Path of the folder that will contain the files.",
+    required=False,
+)
+@click.option(
     "--dry-run",
     "-d",
     is_flag=True,
     default=False,
     help="Simulate the behavior of the synchronization without performing it.",
 )
-def synchronize(manifest, token, repository, organization, branch_checked_out, protos, dry_run):
+def synchronize(manifest, token, repository, organization, branch_checked_out, protos, output, dry_run):
     """CLI command to execute the repository synchronization."""
     _synchronize(
         manifest=manifest,
@@ -43,6 +49,7 @@ def synchronize(manifest, token, repository, organization, branch_checked_out, p
         organization=organization,
         branch_checked_out=branch_checked_out,
         protos_path=protos,
+        output_path=output,
         dry_run=dry_run,
     )
 
