@@ -133,8 +133,7 @@ def synchronize(
         else:
             # Add protos.
             shutil.copytree(
-                os.path.join(origin_directory, protos_path),
-                os.path.join(os.getcwd(), output_path),
+                os.path.join(origin_directory, protos_path), os.path.join(os.getcwd(), output_path), dirs_exist_ok=True
             )
 
         # unsafe, should add specific file or directory
