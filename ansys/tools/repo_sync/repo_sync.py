@@ -14,6 +14,7 @@ def synchronize(
     organization: str = "pyansys",
     branch_checked_out: str = "main",
     protos_path: str = r"ansys\api\test\v0",
+    output_path: str = None,
     dry_run: bool = True,
 ):
     """Synchronize the content of two different repositories.
@@ -33,6 +34,9 @@ def synchronize(
 
     branch_name = "sync/sync_branch"
     origin_directory = os.path.join(os.getcwd())
+
+    if output_path is None:
+        output_path = protos_path
 
     # Create a temporary folder
     with tempfile.TemporaryDirectory() as temp_dir:
@@ -122,7 +126,7 @@ def synchronize(
                 # Add protos.
                 shutil.copytree(
                     os.path.join(origin_directory, protos_path),
-                    os.path.join(os.getcwd(), protos_path),
+                    os.path.join(os.getcwd(), output_path),
                     ignore=shutil.ignore_patterns(*prohibited_extensions),
                 )
 
@@ -130,7 +134,7 @@ def synchronize(
             # Add protos.
             shutil.copytree(
                 os.path.join(origin_directory, protos_path),
-                os.path.join(os.getcwd(), protos_path),
+                os.path.join(os.getcwd(), output_path),
             )
 
         # unsafe, should add specific file or directory
