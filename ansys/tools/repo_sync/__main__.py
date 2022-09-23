@@ -28,7 +28,7 @@ from .repo_sync import synchronize as _synchronize
     required=True,
 )
 @click.option(
-    "--output_path",
+    "--output",
     type=click.Path(file_okay=False),
     help="Path of the folder that will contain the files.",
     required=False,
