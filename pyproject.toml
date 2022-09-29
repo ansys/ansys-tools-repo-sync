@@ -35,7 +35,7 @@ codespell = {version="^2.1", optional=true}
 flake8 = {version="^3.9", optional=true}
 
 pytest = {version="^7.0", optional=true}
-pytest-cov = {version="^3.0", optional=true}
+pytest-cov = {version=">=3,<5", optional=true}
 
 [tool.codespell]
 skip="*.pyc,*.xml,*.txt,*.gif,*.png,*.jpg,*.js,*.html,*.doctree,*.ttf,*.woff,*.woff2,*.eot,*.mp4,*.inv,*.pickle,*.ipynb,flycheck*,./.git/*,./.hypothesis/*,*.yml,./docs/build/*,./docs/images/*,./dist/*,*~,.hypothesis*,./docs/source/examples/*,*cover,*.dat,*.mac"
