@@ -60,4 +60,4 @@ style = ["codespell", "flake8"]
 test = ["pytest", "pytest-cov"]
 
 [tool.poetry.scripts]
-repo-sync = "ansys.tools.repo_sync._cli:synchronize"
+repo-sync = "ansys.tools.repo_sync.__main__:synchronize"
