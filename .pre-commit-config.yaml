@@ -1,10 +1,10 @@
 repos:
 - repo: https://github.com/psf/black
-  rev: 22.10.0
+  rev: 22.12.0
   hooks:
   - id: black
 - repo: https://github.com/asottile/reorder_python_imports
-  rev: v3.8.3
+  rev: v3.9.0
   hooks:
   - id: reorder-python-imports
     args: ["--py37-plus"]
@@ -13,12 +13,12 @@ repos:
   hooks:
   - id: flake8
 - repo: https://github.com/codespell-project/codespell
-  rev: v2.2.1
+  rev: v2.2.2
   hooks:
   - id: codespell
     args: ["--ignore-words=ignore_words.txt"]
 - repo: https://github.com/pycqa/pydocstyle
-  rev: 6.1.1
+  rev: 6.2.3
   hooks:
   - id: pydocstyle
     files: ^ansys/
