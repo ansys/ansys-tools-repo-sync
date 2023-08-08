@@ -54,7 +54,13 @@ def synchronize(
 
         # Set remote url
         process = subprocess.Popen(
-            ["git", "remote", "set-url", "origin", f"https://{token}@github.com/{organization}/{repository}"],
+            [
+                "git",
+                "remote",
+                "set-url",
+                "origin",
+                f"https://{token}@github.com/{organization}/{repository}",
+            ],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
@@ -134,7 +140,9 @@ def synchronize(
         else:
             # Add protos.
             shutil.copytree(
-                os.path.join(origin_directory, protos_path), os.path.join(os.getcwd(), output_path), dirs_exist_ok=True
+                os.path.join(origin_directory, protos_path),
+                os.path.join(os.getcwd(), output_path),
+                dirs_exist_ok=True,
             )
 
         # unsafe, should add specific file or directory

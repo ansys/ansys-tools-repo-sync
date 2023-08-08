@@ -40,7 +40,9 @@ from .repo_sync import synchronize as _synchronize
     default=False,
     help="Simulate the behavior of the synchronization without performing it.",
 )
-def synchronize(manifest, token, repository, organization, branch_checked_out, protos, output, dry_run):
+def synchronize(
+    manifest, token, repository, organization, branch_checked_out, protos, output, dry_run
+):
     """CLI command to execute the repository synchronization."""
     _synchronize(
         manifest=manifest,
