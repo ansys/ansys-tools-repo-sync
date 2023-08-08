@@ -80,3 +80,5 @@ dmypy.json
 
 # VSCode settings
 .vscode
+
+doc/_build

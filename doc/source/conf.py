@@ -1,6 +1,7 @@
 """Sphinx documentation configuration file."""
 from datetime import datetime
 import os
+import shutil
 
 from ansys_sphinx_theme import get_version_match
 from ansys_sphinx_theme import pyansys_logo_black as logo
@@ -105,3 +106,6 @@ autoapi_options = [
 autoapi_template_dir = "_autoapi_templates"
 autoapi_python_use_implicit_namespaces = True
 exclude_patterns = ["_autoapi_templates/index.rst"]
+
+# Copying README images
+shutil.copytree("../../images", "images", dirs_exist_ok=True)
