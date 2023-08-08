@@ -11,7 +11,6 @@ from github.GithubException import UnknownObjectException
 
 from ansys.tools.repo_sync import synchronize
 
-
 THIS_PATH = os.path.dirname(os.path.abspath(__file__))
 ASSETS_DIRECTORY = os.path.join(THIS_PATH, "assets")
 TOKEN = os.environ["TOKEN"]
