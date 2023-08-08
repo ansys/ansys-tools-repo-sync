@@ -1,7 +1,7 @@
 """Tool to copy the content of one repo toward an other.
 Run with:
 
-repo-sync -o Organization -r repository -p path_to_protos_directory
+repo-sync -o Organization -r repository -b branch_name -p path_to_protos_directory
 
 """
 import click
@@ -19,6 +19,7 @@ from .repo_sync import synchronize as _synchronize
 @click.option("--repository", "-r", type=str, help="Name of the repository.", required=True)
 @click.option("--token", "-t", type=str, help="Personal access token.")
 @click.option("--organization", "-o", type=str, help="Name of the organization.", default="pyansys")
+@click.option("--branch_checked_out", "-b", type=str, help="Branch to check out.", default="main")
 @click.option(
     "--protos",
     "-p",
@@ -27,20 +28,28 @@ from .repo_sync import synchronize as _synchronize
     required=True,
 )
 @click.option(
+    "--output",
+    type=click.Path(file_okay=False),
+    help="Path of the folder that will contain the files.",
+    required=False,
+)
+@click.option(
     "--dry-run",
     "-d",
     is_flag=True,
     default=False,
     help="Simulate the behavior of the synchronization without performing it.",
 )
-def synchronize(manifest, token, repository, organization, protos, dry_run):
+def synchronize(manifest, token, repository, organization, branch_checked_out, protos, output, dry_run):
     """CLI command to execute the repository synchronization."""
     _synchronize(
         manifest=manifest,
         token=token,
         repository=repository,
         organization=organization,
+        branch_checked_out=branch_checked_out,
         protos_path=protos,
+        output_path=output,
         dry_run=dry_run,
     )
 

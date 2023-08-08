@@ -48,7 +48,7 @@ jobs:
       - name: 'Install ansys-tools-repo-sync'
         run: |
           testenv/bin/activate
-          pip install . --use-feature=in-tree-build
+          pip install .
           mkdir tmp
           cd tmp
           python -c "import ansys.tools.repo_sync; print('Imported ansys.tools.repo_sync')"

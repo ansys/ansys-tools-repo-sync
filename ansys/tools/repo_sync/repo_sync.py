@@ -12,7 +12,9 @@ def synchronize(
     token: str = None,
     repository: str = "synchronization-demo-public",
     organization: str = "pyansys",
+    branch_checked_out: str = "main",
     protos_path: str = r"ansys\api\test\v0",
+    output_path: str = None,
     dry_run: bool = True,
 ):
     """Synchronize the content of two different repositories.
@@ -32,6 +34,9 @@ def synchronize(
 
     branch_name = "sync/sync_branch"
     origin_directory = os.path.join(os.getcwd())
+
+    if output_path is None:
+        output_path = protos_path
 
     # Create a temporary folder
     with tempfile.TemporaryDirectory() as temp_dir:
@@ -70,7 +75,17 @@ def synchronize(
             stderr=subprocess.PIPE,
         )
 
-        # Create a new branch.
+        # Checkout a branch -default is main-.
+        process = subprocess.Popen(
+            ["git", "checkout", branch_checked_out],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        stdout, stderr = process.communicate()
+        print(stdout)
+        print(stderr)
+
+        # Create a new branch from the branch previously checked out above.
         try:
             subprocess.check_call(
                 ["git", "checkout", "-b", branch_name],
@@ -95,15 +110,16 @@ def synchronize(
                 # Add protos.
                 shutil.copytree(
                     os.path.join(origin_directory, protos_path),
-                    os.path.join(temp_dir, protos_path),
+                    os.path.join(temp_dir, output_path),
+
                     ignore=shutil.ignore_patterns(*prohibited_extensions),
+                    dirs_exist_ok=True,
                 )
 
         else:
             # Add protos.
             shutil.copytree(
-                os.path.join(origin_directory, protos_path),
-                os.path.join(temp_dir, protos_path),
+                os.path.join(origin_directory, protos_path), os.path.join(temp_dir, output_path), dirs_exist_ok=True
             )
 
         # unsafe, should add specific file or directory

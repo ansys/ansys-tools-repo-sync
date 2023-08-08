@@ -19,23 +19,23 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.7"
-importlib-metadata = {version = "^4.0", python = "<3.8"}
+python = "^3.7"
+importlib-metadata = {version = ">=4,<6"}
 
 pre-commit = "^2.15.0"
-pygithub = "1.55"
+pygithub = "1.58"
 click = "^8.0.4"
 
-Sphinx =  {version="^4.4", optional=true}
+Sphinx =  {version=">=4.4,<6.0", optional=true}
 numpydoc =  {version="^1.2", optional=true}
 pyansys_sphinx_theme =  {version="^0.2", optional=true}
-sphinx-copybutton =  {version="^0.4", optional=true}
+sphinx-copybutton =  {version=">=0.4,<0.6", optional=true}
 
 codespell = {version="^2.1", optional=true}
 flake8 = {version="^3.9", optional=true}
 
 pytest = {version="^7.0", optional=true}
-pytest-cov = {version="^3.0", optional=true}
+pytest-cov = {version=">=3,<5", optional=true}
 
 [tool.codespell]
 skip="*.pyc,*.xml,*.txt,*.gif,*.png,*.jpg,*.js,*.html,*.doctree,*.ttf,*.woff,*.woff2,*.eot,*.mp4,*.inv,*.pickle,*.ipynb,flycheck*,./.git/*,./.hypothesis/*,*.yml,./docs/build/*,./docs/images/*,./dist/*,*~,.hypothesis*,./docs/source/examples/*,*cover,*.dat,*.mac"
@@ -49,7 +49,6 @@ target-version = ['py37']
 convention = "numpy"
 
 [tool.mypy]
-python_version = 3.7
 strict = true
 
 ignore_missing_imports = true
@@ -61,4 +60,4 @@ style = ["codespell", "flake8"]
 test = ["pytest", "pytest-cov"]
 
 [tool.poetry.scripts]
-repo-sync = "ansys.tools.repo_sync._cli:synchronize"
+repo-sync = "ansys.tools.repo_sync.__main__:synchronize"
