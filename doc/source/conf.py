@@ -95,7 +95,7 @@ master_doc = "index"
 
 # Configuration for Sphinx autoapi
 autoapi_type = "python"
-autoapi_dirs = ["../../src/"]
+autoapi_dirs = ["../../src/ansys/"]
 autoapi_options = [
     "members",
     "undoc-members",
