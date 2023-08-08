@@ -111,7 +111,6 @@ def synchronize(
                 shutil.copytree(
                     os.path.join(origin_directory, protos_path),
                     os.path.join(temp_dir, output_path),
-
                     ignore=shutil.ignore_patterns(*prohibited_extensions),
                     dirs_exist_ok=True,
                 )
