@@ -23,7 +23,7 @@ need to follow these steps:
 1. Start by cloning this repository:
 
    ```bash
-   git clone https://github.com/ansys/pre-commit-hooks
+   git clone https://github.com/ansys/ansys-tools-repo-sync
    ```
 
 2. Create a fresh-clean Python environment and activate it:
