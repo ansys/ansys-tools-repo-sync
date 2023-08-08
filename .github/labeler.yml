@@ -1,0 +1,7 @@
+documentation:
+- doc/source/**/*
+maintenance:
+- .github/**/*
+- pyproject.toml
+dependencies:
+- pyproject.toml
