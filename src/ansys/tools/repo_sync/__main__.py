@@ -6,7 +6,7 @@ repo-sync -o Organization -r repository -b branch_name -p path_to_protos_directo
 """
 import click
 
-from .repo_sync import synchronize as _synchronize
+# from .repo_sync import synchronize as _synchronize
 from .repo_sync_v2 import synchronize_v2 as _synchronize_v2
 
 
@@ -40,9 +40,7 @@ from .repo_sync_v2 import synchronize_v2 as _synchronize_v2
     default=False,
     help="Simulate the behavior of the synchronization without performing it.",
 )
-def synchronize(
-    owner, repository, token, from_dir, to_dir, branch_checked_out, manifest, dry_run
-):
+def synchronize(owner, repository, token, from_dir, to_dir, branch_checked_out, manifest, dry_run):
     """CLI command to execute the repository synchronization."""
     _synchronize_v2(
         owner=owner,
