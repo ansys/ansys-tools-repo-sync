@@ -14,3 +14,4 @@ __version__ = importlib_metadata.version("ansys-tools-repo-sync")
 # ------------------------------------------------------------------------------
 
 from .repo_sync import synchronize
+from .repo_sync_v2 import synchronize_v2

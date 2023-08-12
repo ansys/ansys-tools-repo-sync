@@ -7,31 +7,31 @@ repo-sync -o Organization -r repository -b branch_name -p path_to_protos_directo
 import click
 
 from .repo_sync import synchronize as _synchronize
+from .repo_sync_v2 import synchronize_v2 as _synchronize_v2
 
 
 @click.command(short_help="Copy the content of a repository into an other repository.")
+@click.option("--owner", "-o", type=str, help="Name of the owner or organization.", required=True)
+@click.option("--repository", "-r", type=str, help="Name of the repository.", required=True)
+@click.option("--token", "-t", type=str, help="Personal access token.", required=True)
+@click.option(
+    "--from",
+    type=click.Path(file_okay=False, exists=True),
+    help="Path to the folder containing the files to copy.",
+    required=True,
+)
+@click.option(
+    "--to",
+    type=click.Path(file_okay=False),
+    help="Path of the folder that will contain the files (w.r.t. the root of the repository).",
+    required=True,
+)
+@click.option("--branch_checked_out", "-b", type=str, help="Branch to check out.", default="main")
 @click.option(
     "--manifest",
     "-m",
     type=click.Path(dir_okay=False, exists=True),
     help="Manifest to mention prohibited extension files.",
-)
-@click.option("--repository", "-r", type=str, help="Name of the repository.", required=True)
-@click.option("--token", "-t", type=str, help="Personal access token.")
-@click.option("--organization", "-o", type=str, help="Name of the organization.", default="pyansys")
-@click.option("--branch_checked_out", "-b", type=str, help="Branch to check out.", default="main")
-@click.option(
-    "--protos",
-    "-p",
-    type=click.Path(file_okay=False, exists=True),
-    help="Path to the folder containing the *.protos file to copy.",
-    required=True,
-)
-@click.option(
-    "--output",
-    type=click.Path(file_okay=False),
-    help="Path of the folder that will contain the files.",
-    required=False,
 )
 @click.option(
     "--dry-run",
@@ -41,17 +41,17 @@ from .repo_sync import synchronize as _synchronize
     help="Simulate the behavior of the synchronization without performing it.",
 )
 def synchronize(
-    manifest, token, repository, organization, branch_checked_out, protos, output, dry_run
+    owner, repository, token, from_dir, to_dir, branch_checked_out, manifest, dry_run
 ):
     """CLI command to execute the repository synchronization."""
-    _synchronize(
-        manifest=manifest,
-        token=token,
+    _synchronize_v2(
+        owner=owner,
         repository=repository,
-        organization=organization,
+        token=token,
+        from_dir=from_dir,
+        to_dir=to_dir,
         branch_checked_out=branch_checked_out,
-        protos_path=protos,
-        output_path=output,
+        manifest=manifest,
         dry_run=dry_run,
     )
 
