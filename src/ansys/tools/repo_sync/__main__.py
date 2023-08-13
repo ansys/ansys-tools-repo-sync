@@ -1,13 +1,12 @@
 """Tool to copy the content of one repo toward an other.
 Run with:
 
-repo-sync -o Organization -r repository -b branch_name -p path_to_protos_directory
+repo-sync -o Organization -r repository --from-dir ... --to-dir ... --token ... [-b branch_name -m manifest_file -d]
 
 """
 import click
 
-# from .repo_sync import synchronize as _synchronize
-from .repo_sync_v2 import synchronize_v2 as _synchronize_v2
+from .repo_sync import synchronize as _synchronize
 
 
 @click.command(short_help="Copy the content of a repository into an other repository.")
@@ -42,7 +41,7 @@ from .repo_sync_v2 import synchronize_v2 as _synchronize_v2
 )
 def synchronize(owner, repository, token, from_dir, to_dir, branch_checked_out, manifest, dry_run):
     """CLI command to execute the repository synchronization."""
-    _synchronize_v2(
+    _synchronize(
         owner=owner,
         repository=repository,
         token=token,

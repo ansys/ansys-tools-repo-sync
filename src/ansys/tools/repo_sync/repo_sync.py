@@ -1,214 +1,139 @@
 import os
 import shutil
-import stat
-import subprocess
 import tempfile
+from typing import Optional
 
-import github
+from git import Repo
+from github import Auth, Github, GithubException
 
 
 def synchronize(
-    manifest: str = None,
-    token: str = None,
-    repository: str = "synchronization-demo-public",
-    organization: str = "pyansys",
+    owner: str,
+    repository: str,
+    token: str,
+    from_dir: str,
+    to_dir: str,
     branch_checked_out: str = "main",
-    protos_path: str = r"ansys\api\test\v0",
-    output_path: str = None,
-    dry_run: bool = True,
+    manifest: Optional[str] = None,
+    dry_run: bool = False,
 ):
-    """Synchronize the content of two different repositories.
-    - clone the content of the reference repository
-    - create a new branch
-    - add/ remove some folders/files.
-    - push the modification into the destination repository
-    - create a pull request to merge the modification into the main branch of the destination repository
+    """Synchronize a folder to a remote repository.
+
+    Parameters
+    ----------
+    owner : str
+        Repository owner (user or organization).
+    repository : str
+        Repository name.
+    token : str
+        GitHub access token.
+    from_dir : str
+        Directory from which files want to be synced.
+    to_dir : str
+        Directory to which files want to be synced (w.r.t. the root of the repository).
+    branch_checked_out : str, optional
+        Branch to check out, by default "main".
+    manifest : Optional[str], optional
+        Path to manifest which mention prohibited extension files, by default ``None``.
+    dry_run : bool, optional
+        Simulate the behavior of the synchronization without performing it, by default ``False``.
 
     """
-    # use secret
-    if not token:
-        token = os.environ.get("TOKEN")
+    # New branch name and PR title
+    new_branch_name = "sync/file-sync"
+    pr_title = "sync: file sync performed by ansys-tools-repo-sync"
 
-    user_name = os.environ.get("BOT_NAME")
-    user_email = os.environ.get("BOT_EMAIL")
+    # Authenticate with GitHub
+    g = Github(auth=Auth.Token(token))
 
-    branch_name = "sync/sync_branch"
-    origin_directory = os.path.join(os.getcwd())
+    # Get the repository
+    print(f">>> Accessing repository '{owner}/{repository}'...")
+    pygithub_repo = g.get_repo(f"{owner}/{repository}")
 
-    if output_path is None:
-        output_path = protos_path
+    # Create a temporary directory for the clone
+    #
+    # tempfile.TemporaryDirectory will clean itself up once it has run out
+    # out of scope. No need to actively remove.
+    temp_dir = tempfile.TemporaryDirectory(prefix="repo_clone_", ignore_cleanup_errors=True)
 
-    # Create a temporary folder
-    with tempfile.TemporaryDirectory() as temp_dir:
-        os.chdir(temp_dir)
+    # Check if manifest was provided
+    prohibited_extensions = []
+    if manifest:
+        print(f">>> Considering manifest file at {manifest} ...")
+        with open(manifest, "r") as f:
+            prohibited_extensions = f.read().splitlines()
 
-        # Clone the repo.
-        process = subprocess.Popen(
-            ["git", "clone", f"https://{token}@github.com/{organization}/{repository}"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        stdout, stderr = process.communicate()
+    # Clone the repository
+    print(f">>> Cloning repository '{owner}/{repository}'...")
+    repo_path = os.path.join(temp_dir.name, repository)
+    Repo.clone_from(pygithub_repo.html_url, repo_path)
 
-        os.chdir(repository)
+    # Copy local folder contents to the cloned repository
+    destination_path = os.path.join(repo_path, to_dir)
+    print(f">>> Moving desired files from {from_dir} to {destination_path} ...")
+    os.makedirs(destination_path, exist_ok=True)
+    shutil.copytree(
+        from_dir,
+        os.path.join(destination_path),
+        ignore=shutil.ignore_patterns(*prohibited_extensions),
+        dirs_exist_ok=True,
+    )
 
-        # Set remote url
-        process = subprocess.Popen(
-            [
-                "git",
-                "remote",
-                "set-url",
-                "origin",
-                f"https://{token}@github.com/{organization}/{repository}",
-            ],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        stdout, stderr = process.communicate()
-        print(stdout)
-        print(stderr)
+    # Commit changes to a new branch
+    print(f">>> Checking out new branch '{new_branch_name}' from '{branch_checked_out}'...")
+    repo = Repo(repo_path)
+    repo.git.checkout(branch_checked_out)
+    repo.git.checkout("-b", new_branch_name)
+    print(f">>> Committing changes to branch '{new_branch_name}'...")
+    repo.git.add("--all")
+    repo.index.commit("sync: add changes from local folder")
 
-        # Set credential
-        process = subprocess.Popen(
-            ["git", "config", "--local", "user.name", f"{user_name}"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        stdout, stderr = process.communicate()
-        print(stdout)
-        print(stderr)
-
-        process = subprocess.Popen(
-            ["git", "config", "--local", "user.password", f"{token}"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        stdout, stderr = process.communicate()
-        print(stdout)
-        print(stderr)
-
-        process = subprocess.Popen(
-            ["git", "config", "--local", "user.email", f"{user_email}"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        stdout, stderr = process.communicate()
-
-        # Checkout a branch -default is main-.
-        process = subprocess.Popen(
-            ["git", "checkout", branch_checked_out],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        stdout, stderr = process.communicate()
-        print(stdout)
-        print(stderr)
-
-        # Create a new branch from the branch previously checked out above.
-        try:
-            process = subprocess.Popen(
-                ["git", "checkout", "-b", branch_name],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            stdout, stderr = process.communicate()
-            print(stdout)
-            print(stderr)
-        except:
-            process = subprocess.Popen(
-                ["git", "checkout", branch_name],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            stdout, stderr = process.communicate()
-            print(stdout)
-            print(stderr)
-
-        # Read manifest
-        if manifest:
-            with open(manifest, "r") as f:
-                prohibited_extensions = f.read().splitlines()
-
-                # Add protos.
-                shutil.copytree(
-                    os.path.join(origin_directory, protos_path),
-                    os.path.join(os.getcwd(), output_path),
-                    ignore=shutil.ignore_patterns(*prohibited_extensions),
-                    dirs_exist_ok=True,
-                )
-
-        else:
-            # Add protos.
-            shutil.copytree(
-                os.path.join(origin_directory, protos_path),
-                os.path.join(os.getcwd(), output_path),
-                dirs_exist_ok=True,
-            )
-
-        # unsafe, should add specific file or directory
-        process = subprocess.Popen(
-            ["git", "add", "--a"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        stdout, stderr = process.communicate()
-        print(stdout)
-        print(stderr)
-
-        if protos_path:
-            message = f"""Add folder content from {protos_path}."""
-        else:
-            message = f"Copy all files located into the {repository} repository from branch {branch_name}."
-
-        if dry_run:
-            process = subprocess.Popen(
-                ["git", "commit", "-am", message, "--dry-run"],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            stdout, stderr = process.communicate()
-            print("Dry-run synchronization output:")
-            print(stdout)
-        else:
-            process = subprocess.Popen(
-                ["git", "commit", "-am", message],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            stdout, stderr = process.communicate()
-            print(stdout)
-            print(stderr)
-
-            process = subprocess.Popen(
-                ["git", "push", "-u", "origin", branch_name, "-v"],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            stdout, stderr = process.communicate()
-            print(stdout)
-            print(stderr)
-
-            # Create pull request.
-            gh = github.Github(token)
-            repo = gh.get_repo(f"{organization}/{repository}")
-            pr = repo.create_pull(title=message, body=message, head=branch_name, base="main")
-
-        # Delete the git repository that was created.
-        parent_folder = os.path.dirname(os.getcwd())
-        os.chdir(parent_folder)
-        shutil.rmtree(os.path.join(parent_folder, repository), onerror=_on_rm_error)
-        os.chdir(os.path.dirname(os.getcwd()))
-
+    pull_request = None
     if not dry_run:
-        print("Synchronization Succeeded...")
+        # Push changes to remote repositories
+        print(f">>> Force-pushing branch '{new_branch_name}' remotely...")
+        repo.git.push("--force", "origin", new_branch_name)
 
+        # Create a pull request
+        try:
+            print(f">>> Creating pull request from '{new_branch_name}'...")
+            pull_request = pygithub_repo.create_pull(
+                title=pr_title,
+                body="Please review and merge these changes.",
+                base=branch_checked_out,
+                head=new_branch_name,
+            )
+        except GithubException as err:
+            if err.args[0] == 422 or err.data["message"] == "Validation Failed":
+                print(f">>> Branch and pull request already existed, searching for it...")
 
-def _on_rm_error(func, path, exc_info):
-    # path contains the path of the file that couldn't be removed
-    # let's just assume that it's read-only and unlink it.
-    os.chmod(path, stat.S_IWRITE)
-    os.unlink(path)
+                # Pull request already exists
+                prs = pygithub_repo.get_pulls()
 
+                # Find the associated PR (must be open...)
+                associated_pull_request = None
+                for pr in prs:
+                    if pr.head.ref == new_branch_name:
+                        associated_pull_request = pr
+                        break
 
-if __name__ == "__main__":
-    synchronize()
+                # Return the associated PR
+                if associated_pull_request:
+                    pull_request = associated_pull_request
+                else:
+                    # Don't know what could have happened...
+                    raise err
+            else:
+                raise err
+
+        # Close local repo for proper file deletion
+        repo.close()
+
+        print(f">>> Pull request created: {pull_request.html_url}")
+        return pull_request.html_url
+    else:
+        # Close local repo for proper file deletion
+        repo.close()
+
+        print(f">>> Dry run successful.")
+        return None

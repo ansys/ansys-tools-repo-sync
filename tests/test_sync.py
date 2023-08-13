@@ -5,7 +5,7 @@ import tempfile
 
 import pytest
 
-from ansys.tools.repo_sync.repo_sync_v2 import synchronize_v2
+from ansys.tools.repo_sync.repo_sync import synchronize
 
 from .conftest import (
     ASSETS_DIRECTORY,
@@ -30,7 +30,7 @@ def test_synchronize():
     # Call the function
     result = None
     try:
-        result = synchronize_v2(
+        result = synchronize(
             owner=owner,
             repository=repository,
             token=TOKEN,
@@ -65,7 +65,7 @@ def test_synchronize_with_manifest():
     # Call the function
     result = None
     try:
-        result = synchronize_v2(
+        result = synchronize(
             owner=owner,
             repository=repository,
             token=TOKEN,
