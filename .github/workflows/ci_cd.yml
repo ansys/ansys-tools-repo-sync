@@ -13,6 +13,7 @@ env:
   MAIN_PYTHON_VERSION: '3.10'
   DOCUMENTATION_CNAME: 'ansys.github.io/ansys-tools-repo-sync'
   LIBRARY_NAME: 'ansys-tools-repo-sync'
+  ON_WORKFLOW: true
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

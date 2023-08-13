@@ -1,7 +1,21 @@
 import os
+import shutil
+import subprocess
+import tempfile
+
+import pytest
 
 from ansys.tools.repo_sync.repo_sync_v2 import synchronize_v2
-from tests.conftest import ASSETS_DIRECTORY, TOKEN, check_files_in_pr, cleanup_remote_repo
+
+from .conftest import (
+    ASSETS_DIRECTORY,
+    ROOT_PATH,
+    SKIP_LOCALLY,
+    TOKEN,
+    check_files_in_pr,
+    cleanup_remote_repo,
+    get_pr_from_cli,
+)
 
 
 def test_synchronize():
@@ -72,3 +86,125 @@ def test_synchronize_with_manifest():
     finally:
         if result:
             cleanup_remote_repo(owner, repository, result)
+
+
+@pytest.mark.skipif(SKIP_LOCALLY, reason="Only runs on workflow")
+def test_synchronize_from_cli():
+    """Test synchronization tool (without manifest) from CLI."""
+
+    # Define a temp directory and copy assets in it
+    temp_dir = tempfile.TemporaryDirectory(prefix="repo_clone_cli_")
+    shutil.copytree(
+        ASSETS_DIRECTORY,
+        temp_dir.name,
+        dirs_exist_ok=True,
+    )
+
+    # Requires installing project
+    subprocess.run(
+        [
+            "pip",
+            "install",
+            ".",
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        cwd=ROOT_PATH,
+    )
+
+    # Call CLI tool
+    completed_process = subprocess.run(
+        [
+            "repo-sync",
+            "--token",
+            TOKEN,
+            "--owner",
+            "ansys",
+            "--repository",
+            "ansys-tools-repo-sync",
+            "--from-dir",
+            "ansys",
+            "--to-dir",
+            "src/ansys",
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        cwd=temp_dir.name,
+    )
+
+    # Check output info
+    print(completed_process.returncode)
+    print(completed_process.stdout)
+    print(completed_process.stderr)
+
+    # Get the PR associated to the CLI
+    pr_url = get_pr_from_cli("ansys", "ansys-tools-repo-sync")
+
+    # Check that the proper modified files have been added
+    list_of_files = ["src/ansys/api/test/v0/hello_world.py", "src/ansys/api/test/v0/test.proto"]
+    assert check_files_in_pr("ansys", "ansys-tools-repo-sync", pr_url, list_of_files)
+
+    # Clean up remote repo
+    cleanup_remote_repo("ansys", "ansys-tools-repo-sync", pr_url)
+
+
+@pytest.mark.skipif(SKIP_LOCALLY, reason="Only runs on workflow")
+def test_synchronize_with_manifest_from_cli():
+    """Test synchronization tool (with manifest) from CLI."""
+
+    # Define a temp directory and copy assets in it
+    temp_dir = tempfile.TemporaryDirectory(prefix="repo_clone_cli_")
+    shutil.copytree(
+        ASSETS_DIRECTORY,
+        temp_dir.name,
+        dirs_exist_ok=True,
+    )
+
+    # Requires installing project
+    subprocess.run(
+        [
+            "pip",
+            "install",
+            ".",
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        cwd=ROOT_PATH,
+    )
+
+    # Call CLI tool
+    completed_process = subprocess.run(
+        [
+            "repo-sync",
+            "--token",
+            TOKEN,
+            "--owner",
+            "ansys",
+            "--repository",
+            "ansys-tools-repo-sync",
+            "--from-dir",
+            "ansys",
+            "--to-dir",
+            "src/ansys",
+            "--manifest",
+            "manifest.txt",
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        cwd=temp_dir.name,
+    )
+
+    # Check output info
+    print(completed_process.returncode)
+    print(completed_process.stdout)
+    print(completed_process.stderr)
+
+    # Get the PR associated to the CLI
+    pr_url = get_pr_from_cli("ansys", "ansys-tools-repo-sync")
+
+    # Check that the proper modified files have been added
+    list_of_files = ["src/ansys/api/test/v0/test.proto"]
+    assert check_files_in_pr("ansys", "ansys-tools-repo-sync", pr_url, list_of_files)
+
+    # Clean up remote repo
+    cleanup_remote_repo("ansys", "ansys-tools-repo-sync", pr_url)

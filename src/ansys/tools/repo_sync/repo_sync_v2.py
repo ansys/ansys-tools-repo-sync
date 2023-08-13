@@ -4,7 +4,7 @@ import tempfile
 from typing import Optional
 
 from git import Repo
-from github import Github, GithubException
+from github import Auth, Github, GithubException
 
 
 def synchronize_v2(
@@ -44,7 +44,7 @@ def synchronize_v2(
     pr_title = "sync: file sync performed by ansys-tools-repo-sync"
 
     # Authenticate with GitHub
-    g = Github(token)
+    g = Github(auth=Auth.Token(token))
 
     # Get the repository
     print(f">>> Accessing repository '{owner}/{repository}'...")
