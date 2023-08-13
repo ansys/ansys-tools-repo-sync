@@ -17,26 +17,26 @@ def synchronize_v2(
     manifest: Optional[str] = None,
     dry_run: bool = False,
 ):
-    """_summary_.
+    """Synchronize a folder to a remote repository.
 
     Parameters
     ----------
     owner : str
-        _description_.
+        Repository owner (user or organization).
     repository : str
-        _description_.
+        Repository name.
     token : str
-        _description_.
+        GitHub access token.
     from_dir : str
-        _description_.
+        Directory from which files want to be synced.
     to_dir : str
-        _description_
+        Directory to which files want to be synced (w.r.t. the root of the repository).
     branch_checked_out : str, optional
-        _description_, by default "main".
+        Branch to check out, by default "main".
     manifest : Optional[str], optional
-        _description_, by default ``None``.
+        Path to manifest which mention prohibited extension files, by default ``None``.
     dry_run : bool, optional
-        _description_, by default ``False``.
+        Simulate the behavior of the synchronization without performing it, by default ``False``.
 
     """
     # New branch name and PR title
@@ -83,7 +83,7 @@ def synchronize_v2(
     repo.index.commit("sync: add changes from local folder")
 
     if not dry_run:
-        # Push changes to remote repositorys
+        # Push changes to remote repositories
         repo.git.push("--force", "origin", new_branch_name)
 
         # Create a pull request
