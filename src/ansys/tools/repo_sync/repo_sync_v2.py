@@ -98,14 +98,14 @@ def synchronize_v2(
             if err.args[0] == 422 or err.data["message"] == "Validation Failed":
                 # Pull request already exists
                 prs = pygithub_repo.get_pulls()
-                
+
                 # Find the associated PR (must be open...)
                 associated_pull_request = None
                 for pr in prs:
                     if pr.head.ref == new_branch_name:
                         associated_pull_request = pr
                         break
-                
+
                 # Return the associated PR
                 if associated_pull_request:
                     pull_request = associated_pull_request
@@ -114,7 +114,6 @@ def synchronize_v2(
                     raise err
             else:
                 raise err
-                
 
         print(f"Pull Request created: {pull_request.html_url}")
         return pull_request.html_url

@@ -1,7 +1,7 @@
 import os
-import pytest
 
 from github import Github
+import pytest
 
 THIS_PATH = os.path.dirname(os.path.abspath(__file__))
 ASSETS_DIRECTORY = os.path.join(THIS_PATH, "assets")
@@ -11,6 +11,7 @@ TOKEN = os.environ["TOKEN"]
 @pytest.fixture
 def temp_folder(tmpdir):
     return tmpdir.mkdir("temp_folder")
+
 
 def cleanup_remote_repo(owner, repository, pull_request_url):
     # Authenticate with GitHub
@@ -33,6 +34,7 @@ def cleanup_remote_repo(owner, repository, pull_request_url):
     branch_name = pull_request.head.ref
     repo.get_git_ref(f"heads/{branch_name}").delete()
 
+
 def check_files_in_pr(owner, repository, pull_request_url, list_of_files):
     # Authenticate with GitHub
     g = Github(TOKEN)
@@ -49,6 +51,8 @@ def check_files_in_pr(owner, repository, pull_request_url, list_of_files):
 
     # Get the list of files changed in the Pull Request
     files_changed = [file.filename for file in pull_request.get_files()]
-    
+
     # Check that the lists are the same
-    return all(item in list_of_files for item in files_changed) and all(item in files_changed for item in list_of_files)
+    return all(item in list_of_files for item in files_changed) and all(
+        item in files_changed for item in list_of_files
+    )
