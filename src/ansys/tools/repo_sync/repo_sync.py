@@ -66,7 +66,8 @@ def synchronize(
     # Clone the repository
     print(f">>> Cloning repository '{owner}/{repository}'...")
     repo_path = os.path.join(temp_dir.name, repository)
-    Repo.clone_from(pygithub_repo.html_url, repo_path)
+    authenticated_url = f"https://{token}@{pygithub_repo.html_url.split('https://')[-1]}"
+    Repo.clone_from(authenticated_url, repo_path)
 
     # Copy local folder contents to the cloned repository
     destination_path = os.path.join(repo_path, to_dir)
