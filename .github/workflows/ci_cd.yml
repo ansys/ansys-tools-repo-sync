@@ -1,6 +1,8 @@
 name: CI
 on:
   pull_request:
+    branches-ignore:
+      - sync/file-sync # Testing purposes
   push:
     tags:
       - "*"
