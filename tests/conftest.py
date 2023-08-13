@@ -1,19 +1,14 @@
 import os
 
 from github import Github
-import pytest
 
 THIS_PATH = os.path.dirname(os.path.abspath(__file__))
 ASSETS_DIRECTORY = os.path.join(THIS_PATH, "assets")
 TOKEN = os.environ["TOKEN"]
 
 
-@pytest.fixture
-def temp_folder(tmpdir):
-    return tmpdir.mkdir("temp_folder")
-
-
 def cleanup_remote_repo(owner, repository, pull_request_url):
+    """Auxiliary function to clean-up remote repository after test execution."""
     # Authenticate with GitHub
     g = Github(TOKEN)
 
@@ -36,6 +31,7 @@ def cleanup_remote_repo(owner, repository, pull_request_url):
 
 
 def check_files_in_pr(owner, repository, pull_request_url, list_of_files):
+    """Auxiliary function to verify modified files in PR."""
     # Authenticate with GitHub
     g = Github(TOKEN)
 

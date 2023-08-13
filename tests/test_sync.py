@@ -4,8 +4,8 @@ from ansys.tools.repo_sync.repo_sync_v2 import synchronize_v2
 from tests.conftest import ASSETS_DIRECTORY, TOKEN, check_files_in_pr, cleanup_remote_repo
 
 
-def test_synchronize(temp_folder):
-    """Test syncronization tool (without manifest)."""
+def test_synchronize():
+    """Test synchronization tool (without manifest)."""
 
     # Define your test data here
     owner = "ansys"
@@ -27,7 +27,7 @@ def test_synchronize(temp_folder):
         # Assertions or validations
         assert f"https://github.com/ansys/ansys-tools-repo-sync/pull/" in result
 
-        # Check that the proper modifed files have been added
+        # Check that the proper modified files have been added
         list_of_files = ["src/ansys/api/test/v0/hello_world.py", "src/ansys/api/test/v0/test.proto"]
         assert check_files_in_pr(owner, repository, result, list_of_files)
 
@@ -38,8 +38,8 @@ def test_synchronize(temp_folder):
             cleanup_remote_repo(owner, repository, result)
 
 
-def test_synchronize_with_manifest(temp_folder):
-    """Test syncronization tool (with manifest)."""
+def test_synchronize_with_manifest():
+    """Test synchronization tool (with manifest)."""
 
     # Define your test data here
     owner = "ansys"
@@ -63,7 +63,7 @@ def test_synchronize_with_manifest(temp_folder):
         # Assertions or validations
         assert f"https://github.com/ansys/ansys-tools-repo-sync/pull/" in result
 
-        # Check that the proper modifed files have been added
+        # Check that the proper modified files have been added
         list_of_files = ["src/ansys/api/test/v0/test.proto"]
         assert check_files_in_pr(owner, repository, result, list_of_files)
 
