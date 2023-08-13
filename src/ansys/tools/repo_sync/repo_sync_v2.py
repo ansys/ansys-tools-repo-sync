@@ -47,26 +47,30 @@ def synchronize_v2(
     g = Github(token)
 
     # Get the repository
+    print(f">>> Accessing repository '{owner}/{repository}'...")
     pygithub_repo = g.get_repo(f"{owner}/{repository}")
 
     # Create a temporary directory for the clone
     #
     # tempfile.TemporaryDirectory will clean itself up once it has run out
     # out of scope. No need to actively remove.
-    temp_dir = tempfile.TemporaryDirectory(prefix="repo_clone_")
+    temp_dir = tempfile.TemporaryDirectory(prefix="repo_clone_", ignore_cleanup_errors=True)
 
     # Check if manifest was provided
     prohibited_extensions = []
     if manifest:
+        print(f">>> Considering manifest file at {manifest} ...")
         with open(manifest, "r") as f:
             prohibited_extensions = f.read().splitlines()
 
     # Clone the repository
+    print(f">>> Cloning repository '{owner}/{repository}'...")
     repo_path = os.path.join(temp_dir.name, repository)
     Repo.clone_from(pygithub_repo.html_url, repo_path)
 
     # Copy local folder contents to the cloned repository
     destination_path = os.path.join(repo_path, to_dir)
+    print(f">>> Moving desired files from {from_dir} to {destination_path} ...")
     os.makedirs(destination_path, exist_ok=True)
     shutil.copytree(
         from_dir,
@@ -76,18 +80,23 @@ def synchronize_v2(
     )
 
     # Commit changes to a new branch
+    print(f">>> Checking out new branch '{new_branch_name}' from '{branch_checked_out}'...")
     repo = Repo(repo_path)
     repo.git.checkout(branch_checked_out)
     repo.git.checkout("-b", new_branch_name)
+    print(f">>> Committing changes to branch '{new_branch_name}'...")
     repo.git.add("--all")
     repo.index.commit("sync: add changes from local folder")
 
+    pull_request = None
     if not dry_run:
         # Push changes to remote repositories
+        print(f">>> Force-pushing branch '{new_branch_name}' remotely...")
         repo.git.push("--force", "origin", new_branch_name)
 
         # Create a pull request
         try:
+            print(f">>> Creating pull request from '{new_branch_name}'...")
             pull_request = pygithub_repo.create_pull(
                 title=pr_title,
                 body="Please review and merge these changes.",
@@ -96,6 +105,8 @@ def synchronize_v2(
             )
         except GithubException as err:
             if err.args[0] == 422 or err.data["message"] == "Validation Failed":
+                print(f">>> Branch and pull request already existed, searching for it...")
+
                 # Pull request already exists
                 prs = pygithub_repo.get_pulls()
 
@@ -115,7 +126,14 @@ def synchronize_v2(
             else:
                 raise err
 
-        print(f"Pull Request created: {pull_request.html_url}")
+        # Close local repo for proper file deletion
+        repo.close()
+
+        print(f">>> Pull request created: {pull_request.html_url}")
         return pull_request.html_url
     else:
+        # Close local repo for proper file deletion
+        repo.close()
+
+        print(f">>> Dry run successful.")
         return None

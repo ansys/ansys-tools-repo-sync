@@ -15,13 +15,13 @@ from .repo_sync_v2 import synchronize_v2 as _synchronize_v2
 @click.option("--repository", "-r", type=str, help="Name of the repository.", required=True)
 @click.option("--token", "-t", type=str, help="Personal access token.", required=True)
 @click.option(
-    "--from",
+    "--from-dir",
     type=click.Path(file_okay=False, exists=True),
     help="Path to the folder containing the files to copy.",
     required=True,
 )
 @click.option(
-    "--to",
+    "--to-dir",
     type=click.Path(file_okay=False),
     help="Path of the folder that will contain the files (w.r.t. the root of the repository).",
     required=True,

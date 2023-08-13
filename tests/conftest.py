@@ -2,8 +2,8 @@ import os
 
 from github import Github
 
-THIS_PATH = os.path.dirname(os.path.abspath(__file__))
-ASSETS_DIRECTORY = os.path.join(THIS_PATH, "assets")
+TEST_PATH = os.path.dirname(os.path.abspath(__file__))
+ASSETS_DIRECTORY = os.path.join(TEST_PATH, "assets")
 TOKEN = os.environ["TOKEN"]
 
 
@@ -52,3 +52,27 @@ def check_files_in_pr(owner, repository, pull_request_url, list_of_files):
     return all(item in list_of_files for item in files_changed) and all(
         item in files_changed for item in list_of_files
     )
+
+
+def get_pr_from_cli(owner, repository):
+    """Auxiliary method to get the PR generated when using CLI tool."""
+    # Authenticate with GitHub
+    g = Github(TOKEN)
+
+    # Get the repository
+    repo = g.get_repo(f"{owner}/{repository}")
+
+    # Pull request already exists
+    prs = repo.get_pulls()
+
+    # Find the associated PR (must be open...)
+    associated_pull_request = None
+    for pr in prs:
+        if pr.head.ref == "sync/file-sync":
+            associated_pull_request = pr
+            break
+
+    if not associated_pull_request:
+        raise RuntimeError("Something went wrong in CLI execution...")
+    else:
+        return associated_pull_request.html_url

@@ -38,7 +38,7 @@ Run it as follows:
 
 .. code:: bash
 
-    repo-sync --manifest path_to_manifest_file --repository target-repository-name --token github_token --organization ansys --protos-path path_to_protos_directory --dry-run
+    repo-sync --token <token> --owner <organization-name> --repository <repository-name> --from-dir <path-to-dir-of-files-to-sync> --to-dir <target-dir-for-sync> --manifest <path-to-manifest>
 
 .. note::
     The ``--dry-run`` flag can be set while establishing the entire
