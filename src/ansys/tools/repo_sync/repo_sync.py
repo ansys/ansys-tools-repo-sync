@@ -83,58 +83,57 @@ def synchronize(
     # Commit changes to a new branch
     print(f">>> Checking out new branch '{new_branch_name}' from '{branch_checked_out}'...")
     repo = Repo(repo_path)
-    repo.git.checkout(branch_checked_out)
-    repo.git.checkout("-b", new_branch_name)
-    print(f">>> Committing changes to branch '{new_branch_name}'...")
-    repo.git.add("--all")
-    repo.index.commit("sync: add changes from local folder")
+    try:
+        repo.git.checkout(branch_checked_out)
+        repo.git.checkout("-b", new_branch_name)
+        print(f">>> Committing changes to branch '{new_branch_name}'...")
+        repo.git.add("--all")
+        repo.index.commit("sync: add changes from local folder")
 
-    pull_request = None
-    if not dry_run:
-        # Push changes to remote repositories
-        print(f">>> Force-pushing branch '{new_branch_name}' remotely...")
-        repo.git.push("--force", "origin", new_branch_name)
+        pull_request = None
+        if not dry_run:
+            # Push changes to remote repositories
+            print(f">>> Force-pushing branch '{new_branch_name}' remotely...")
+            repo.git.push("--force", "origin", new_branch_name)
 
-        # Create a pull request
-        try:
-            print(f">>> Creating pull request from '{new_branch_name}'...")
-            pull_request = pygithub_repo.create_pull(
-                title=pr_title,
-                body="Please review and merge these changes.",
-                base=branch_checked_out,
-                head=new_branch_name,
-            )
-        except GithubException as err:
-            if err.args[0] == 422 or err.data["message"] == "Validation Failed":
-                print(f">>> Branch and pull request already existed, searching for it...")
+            # Create a pull request
+            try:
+                print(f">>> Creating pull request from '{new_branch_name}'...")
+                pull_request = pygithub_repo.create_pull(
+                    title=pr_title,
+                    body="Please review and merge these changes.",
+                    base=branch_checked_out,
+                    head=new_branch_name,
+                )
+            except GithubException as err:
+                if err.args[0] == 422 or err.data["message"] == "Validation Failed":
+                    print(f">>> Branch and pull request already existed, searching for it...")
 
-                # Pull request already exists
-                prs = pygithub_repo.get_pulls()
+                    # Pull request already exists
+                    prs = pygithub_repo.get_pulls()
 
-                # Find the associated PR (must be open...)
-                associated_pull_request = None
-                for pr in prs:
-                    if pr.head.ref == new_branch_name:
-                        associated_pull_request = pr
-                        break
+                    # Find the associated PR (must be open...)
+                    associated_pull_request = None
+                    for pr in prs:
+                        if pr.head.ref == new_branch_name:
+                            associated_pull_request = pr
+                            break
 
-                # Return the associated PR
-                if associated_pull_request:
-                    pull_request = associated_pull_request
+                    # Return the associated PR
+                    if associated_pull_request:
+                        pull_request = associated_pull_request
+                    else:
+                        # Don't know what could have happened...
+                        raise err
                 else:
-                    # Don't know what could have happened...
+                    # Unidentified error.. raise it.
                     raise err
-            else:
-                raise err
 
+            print(f">>> Pull request created: {pull_request.html_url}")
+            return pull_request.html_url
+        else:
+            print(f">>> Dry run successful.")
+            return None
+    finally:
         # Close local repo for proper file deletion
         repo.close()
-
-        print(f">>> Pull request created: {pull_request.html_url}")
-        return pull_request.html_url
-    else:
-        # Close local repo for proper file deletion
-        repo.close()
-
-        print(f">>> Dry run successful.")
-        return None
