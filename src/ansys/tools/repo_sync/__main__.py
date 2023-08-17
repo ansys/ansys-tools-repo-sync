@@ -1,7 +1,7 @@
 """Tool to copy the content of one repo toward an other.
 Run with:
 
-repo-sync -o Organization -r repository --from-dir ... --to-dir ... --token ... [-b branch_name -m manifest_file -d]
+repo-sync -o organization -r repository --from-dir ... --to-dir ... --token ... [-b branch_name -m manifest_file -d]
 
 """
 import click

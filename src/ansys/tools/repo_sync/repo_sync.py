@@ -53,7 +53,8 @@ def synchronize(
     # Create a temporary directory for the clone
     #
     # tempfile.TemporaryDirectory will clean itself up once it has run out
-    # out of scope. No need to actively remove.
+    # of scope. No need to actively remove.
+
     temp_dir = tempfile.TemporaryDirectory(prefix="repo_clone_", ignore_cleanup_errors=True)
 
     # Check if manifest was provided
@@ -112,7 +113,8 @@ def synchronize(
                     # Pull request already exists
                     prs = pygithub_repo.get_pulls()
 
-                    # Find the associated PR (must be open...)
+                    # Find the associated PR (must be opened...)
+
                     associated_pull_request = None
                     for pr in prs:
                         if pr.head.ref == new_branch_name:
