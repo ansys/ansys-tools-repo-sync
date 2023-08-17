@@ -11,7 +11,6 @@ SKIP_LOCALLY = False if os.environ.get("ON_WORKFLOW") else True
 
 def cleanup_remote_repo(owner, repository, pull_request_url):
     """Auxiliary function to clean-up remote repository after tests execution."""
-
     # Authenticate with GitHub
     g = Github(auth=Auth.Token(TOKEN))
 
