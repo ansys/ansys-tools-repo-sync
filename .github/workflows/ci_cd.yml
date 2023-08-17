@@ -10,7 +10,7 @@ on:
       - main
 
 env:
-  MAIN_PYTHON_VERSION: '3.10'
+  MAIN_PYTHON_VERSION: '3.11'
   DOCUMENTATION_CNAME: 'ansys.github.io/ansys-tools-repo-sync'
   LIBRARY_NAME: 'ansys-tools-repo-sync'
   ON_WORKFLOW: true
@@ -59,7 +59,21 @@ jobs:
         env:
           TOKEN: ${{ secrets.TEST_TOKEN }}
         with:
-          pytest-extra-args: "--cov=ansys.tools.repo_sync --cov-report=term --cov-report=html:.cov/html"
+          pytest-extra-args: "--cov=ansys.tools.repo_sync --cov-report=term --cov-report=html:.cov/html --cov-report=xml:.cov/coverage.xml"
+
+      - name: Upload coverage results (HTML)
+        uses: actions/upload-artifact@v3
+        if: (matrix.python-version == env.MAIN_PYTHON_VERSION) && (runner.os == 'Linux')
+        with:
+          name: coverage-html
+          path: .cov/html
+          retention-days: 7
+
+      - name: Upload coverage results (Codecov)
+        uses: codecov/codecov-action@v3
+        if: (matrix.python-version == env.MAIN_PYTHON_VERSION) && (runner.os == 'Linux')
+        with:
+          files: .cov/coverage.xml
 
   doc-build:
     name: "Build documentation"
