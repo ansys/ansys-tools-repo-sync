@@ -39,7 +39,15 @@ from .repo_sync import synchronize as _synchronize
     default=False,
     help="Simulate the behavior of the synchronization without performing it.",
 )
-def synchronize(owner, repository, token, from_dir, to_dir, branch_checked_out, manifest, dry_run):
+@click.option(
+    "--skip-ci",
+    is_flag=True,
+    default=False,
+    help="Adds a ``[skip ci]`` prefix to the commit message or not.",
+)
+def synchronize(
+    owner, repository, token, from_dir, to_dir, branch_checked_out, manifest, dry_run, skip_ci
+):
     """CLI command to execute the repository synchronization."""
     _synchronize(
         owner=owner,
@@ -50,6 +58,7 @@ def synchronize(owner, repository, token, from_dir, to_dir, branch_checked_out, 
         branch_checked_out=branch_checked_out,
         manifest=manifest,
         dry_run=dry_run,
+        skip_ci=skip_ci,
     )
 
 

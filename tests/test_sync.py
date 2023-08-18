@@ -36,6 +36,7 @@ def test_synchronize():
             token=TOKEN,
             from_dir=from_dir,
             to_dir=to_dir,
+            skip_ci=True,
         )
 
         # Assertions or validations
@@ -72,6 +73,7 @@ def test_synchronize_with_manifest():
             from_dir=from_dir,
             to_dir=to_dir,
             manifest=manifest,
+            skip_ci=True,
         )
 
         # Assertions or validations
@@ -126,6 +128,7 @@ def test_synchronize_from_cli():
             "ansys",
             "--to-dir",
             "src/ansys",
+            "--skip-ci",
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -188,6 +191,7 @@ def test_synchronize_with_manifest_from_cli():
             "src/ansys",
             "--manifest",
             "manifest.txt",
+            "--skip-ci",
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
