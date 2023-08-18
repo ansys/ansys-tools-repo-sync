@@ -2,14 +2,13 @@ name: CI
 on:
   pull_request:
     branches-ignore:
-      - sync/file-sync # Testing purposes
+      - 'sync/file-sync' # Testing purposes
   push:
     tags:
       - "*"
     branches:
       - main
-    branches-ignore:
-      - sync/file-sync # Testing purposes
+
 env:
   MAIN_PYTHON_VERSION: '3.11'
   DOCUMENTATION_CNAME: 'ansys.github.io/ansys-tools-repo-sync'
