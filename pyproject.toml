@@ -29,6 +29,7 @@ dependencies = [
     "importlib-metadata >=4,<6; python_version<='3.8'",
     "click>=8.0.4",
     "PyGithub>=1.58",
+    "gitpython>=3.1",
 ]
 
 [project.optional-dependencies]
@@ -37,6 +38,7 @@ tests = [
     "pytest-cov==4.1.0",
     "click==8.1.6",
     "PyGithub==1.59.1",
+    "gitpython==3.1.32",
 ]
 doc = [
     "ansys-sphinx-theme==0.10.2",
