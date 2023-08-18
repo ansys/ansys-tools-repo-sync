@@ -81,15 +81,20 @@ def synchronize(
         dirs_exist_ok=True,
     )
 
-    # Commit changes to a new branch
     print(f">>> Checking out new branch '{new_branch_name}' from '{branch_checked_out}'...")
     repo = Repo(repo_path)
     try:
+        # Commit changes to a new branch
         repo.git.checkout(branch_checked_out)
         repo.git.checkout("-b", new_branch_name)
         print(f">>> Committing changes to branch '{new_branch_name}'...")
         repo.git.add("--all")
         repo.index.commit("sync: add changes from local folder")
+
+        # Get a list of the files modified
+        output = repo.git.diff("--compact-summary", f"{branch_checked_out}", f"{new_branch_name}")
+        print(">>> Summary of modified files...")
+        print(output)
 
         pull_request = None
         if not dry_run:
