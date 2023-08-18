@@ -16,6 +16,7 @@ def synchronize(
     branch_checked_out: str = "main",
     manifest: Optional[str] = None,
     dry_run: bool = False,
+    skip_ci: bool = False,
 ):
     """Synchronize a folder to a remote repository.
 
@@ -37,6 +38,8 @@ def synchronize(
         Path to manifest which mention prohibited extension files, by default ``None``.
     dry_run : bool, optional
         Simulate the behavior of the synchronization without performing it, by default ``False``.
+    skip_ci : bool, optional
+        Whether to add a ``[skip ci]`` prefix to the commit message or not. By default ``False``.
 
     """
     # New branch name and PR title
@@ -89,7 +92,7 @@ def synchronize(
         repo.git.checkout("-b", new_branch_name)
         print(f">>> Committing changes to branch '{new_branch_name}'...")
         repo.git.add("--all")
-        repo.index.commit("sync: add changes from local folder")
+        repo.index.commit(f"{'[skip ci] ' if skip_ci else ''}sync: add changes from local folder")
 
         # Get a list of the files modified
         output = repo.git.diff("--compact-summary", f"{branch_checked_out}", f"{new_branch_name}")
