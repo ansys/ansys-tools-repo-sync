@@ -46,6 +46,9 @@ jobs:
     name: "Tests"
     runs-on: ${{ matrix.os }}
     needs: [smoke-tests]
+    permissions:
+      contents: write
+      pull-requests: write
     strategy:
       max-parallel: 1 # Changes are performed to the repo on execution
       matrix:
@@ -55,7 +58,7 @@ jobs:
     steps:
       - uses: ansys/actions/tests-pytest@v4
         env:
-          TOKEN: ${{ secrets.TEST_TOKEN }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           pytest-extra-args: "--cov=ansys.tools.repo_sync --cov-report=term --cov-report=html:.cov/html --cov-report=xml:.cov/coverage.xml"
 
