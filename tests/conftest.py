@@ -56,7 +56,7 @@ def check_files_in_pr(owner, repository, pull_request_url, list_of_files):
     )
 
 
-def get_pr_from_cli(owner, repository):
+def get_pr_from_cli(owner, repository, branch_name, stdout):
     """Auxiliary method to get the PR generated when using CLI tool."""
     # Authenticate with GitHub
     g = Github(auth=Auth.Token(TOKEN))
@@ -67,10 +67,18 @@ def get_pr_from_cli(owner, repository):
     # Pull request already exists
     prs = repo.get_pulls()
 
+    # Find the branch name
+    branch_name = "sync/file-sync"
+    elems = stdout.decode("utf-8").split(" ")
+    for elem in elems:
+        if "sync/file-sync-" in elem:
+            branch_name = elem.strip("'")
+            break
+
     # Find the associated PR (must be open...)
     associated_pull_request = None
     for pr in prs:
-        if pr.head.ref == "sync/file-sync":
+        if pr.head.ref == branch_name:
             associated_pull_request = pr
             break
 

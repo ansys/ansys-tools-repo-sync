@@ -45,8 +45,23 @@ from .repo_sync import synchronize as _synchronize
     default=False,
     help="Adds a ``[skip ci]`` prefix to the commit message or not.",
 )
+@click.option(
+    "--random-branch-name",
+    is_flag=True,
+    default=False,
+    help="For testing purposes ONLY - generates a random branch name instead of the typical ``sync/file-sync``.",
+)
 def synchronize(
-    owner, repository, token, from_dir, to_dir, branch_checked_out, manifest, dry_run, skip_ci
+    owner,
+    repository,
+    token,
+    from_dir,
+    to_dir,
+    branch_checked_out,
+    manifest,
+    dry_run,
+    skip_ci,
+    random_branch_name,
 ):
     """CLI command to execute the repository synchronization."""
     _synchronize(
@@ -59,6 +74,7 @@ def synchronize(
         manifest=manifest,
         dry_run=dry_run,
         skip_ci=skip_ci,
+        random_branch_name=random_branch_name,
     )
 
 

@@ -37,6 +37,7 @@ def test_synchronize():
             from_dir=from_dir,
             to_dir=to_dir,
             skip_ci=True,
+            random_branch_name=True,
         )
 
         # Assertions or validations
@@ -74,6 +75,7 @@ def test_synchronize_with_manifest():
             to_dir=to_dir,
             manifest=manifest,
             skip_ci=True,
+            random_branch_name=True,
         )
 
         # Assertions or validations
@@ -129,6 +131,7 @@ def test_synchronize_from_cli():
             "--to-dir",
             "src/ansys",
             "--skip-ci",
+            "--random-branch-name",
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -141,7 +144,7 @@ def test_synchronize_from_cli():
     print(completed_process.stderr)
 
     # Get the PR associated to the CLI
-    pr_url = get_pr_from_cli("ansys", "ansys-tools-repo-sync")
+    pr_url = get_pr_from_cli("ansys", "ansys-tools-repo-sync", completed_process.stdout)
 
     # Check that the proper modified files have been added
     list_of_files = ["src/ansys/api/test/v0/hello_world.py", "src/ansys/api/test/v0/test.proto"]
@@ -192,6 +195,7 @@ def test_synchronize_with_manifest_from_cli():
             "--manifest",
             "manifest.txt",
             "--skip-ci",
+            "--random-branch-name",
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -204,7 +208,7 @@ def test_synchronize_with_manifest_from_cli():
     print(completed_process.stderr)
 
     # Get the PR associated to the CLI
-    pr_url = get_pr_from_cli("ansys", "ansys-tools-repo-sync")
+    pr_url = get_pr_from_cli("ansys", "ansys-tools-repo-sync", completed_process.stdout)
 
     # Check that the proper modified files have been added
     list_of_files = ["src/ansys/api/test/v0/test.proto"]
