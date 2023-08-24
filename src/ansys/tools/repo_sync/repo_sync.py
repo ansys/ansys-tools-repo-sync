@@ -17,6 +17,7 @@ def synchronize(
     manifest: Optional[str] = None,
     dry_run: bool = False,
     skip_ci: bool = False,
+    random_branch_name: bool = False,
 ):
     """Synchronize a folder to a remote repository.
 
@@ -40,11 +41,19 @@ def synchronize(
         Simulate the behavior of the synchronization without performing it, by default ``False``.
     skip_ci : bool, optional
         Whether to add a ``[skip ci]`` prefix to the commit message or not. By default ``False``.
+    random_branch_name : bool, optional
+        For testing purposes - generates a random suffix for the branch name ``sync/file-sync``.
 
     """
     # New branch name and PR title
     new_branch_name = "sync/file-sync"
     pr_title = "sync: file sync performed by ansys-tools-repo-sync"
+
+    # If requested, add random suffix
+    if random_branch_name:
+        from secrets import token_urlsafe
+
+        new_branch_name = f"{new_branch_name}-{token_urlsafe(16)}"
 
     # Authenticate with GitHub
     g = Github(auth=Auth.Token(token))
