@@ -56,7 +56,7 @@ def check_files_in_pr(owner, repository, pull_request_url, list_of_files):
     )
 
 
-def get_pr_from_cli(owner, repository, branch_name, stdout):
+def get_pr_from_cli(owner, repository, stdout):
     """Auxiliary method to get the PR generated when using CLI tool."""
     # Authenticate with GitHub
     g = Github(auth=Auth.Token(TOKEN))
