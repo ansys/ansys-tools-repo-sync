@@ -5,3 +5,6 @@
 # the repo. Unless a later match takes precedence,
 # they will be requested for review when someone opens a pull request.
 *       @ansys/pyansys-core
+
+# Test folder should be ignored
+/src/ansys/api/test
