@@ -8,6 +8,10 @@ updates:
     labels:
       - "maintenance"
       - "dependencies"
+    groups:
+       pip-deps:
+          patterns:
+            - "*"
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -15,3 +19,7 @@ updates:
       interval: "weekly"
     labels:
       - "maintenance"
+    groups:
+       action-deps:
+          patterns:
+            - "*"
