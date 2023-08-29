@@ -13,7 +13,8 @@ def include_patterns(*patterns):
     Factory function that can be used with ``copytree()`` ignore parameter.
 
     Arguments define a sequence of glob-style patterns
-    that are used to specify what files to NOT ignore.
+    that are used to specify which files to NOT ignore.
+
     Creates and returns a function that determines this for each directory
     in the file hierarchy rooted at the source directory when used with
     shutil.copytree().
