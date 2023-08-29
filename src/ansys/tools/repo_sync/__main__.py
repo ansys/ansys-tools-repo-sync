@@ -25,13 +25,14 @@ from .repo_sync import synchronize as _synchronize
     help="Path of the folder that will contain the files (w.r.t. the root of the repository).",
     required=True,
 )
-@click.option("--branch_checked_out", "-b", type=str, help="Branch to check out.", default="main")
 @click.option(
-    "--manifest",
+    "--include-manifest",
     "-m",
     type=click.Path(dir_okay=False, exists=True),
-    help="Manifest to mention prohibited extension files.",
+    help="Manifest to mention accepted extension files.",
+    required=True,
 )
+@click.option("--branch_checked_out", "-b", type=str, help="Branch to check out.", default="main")
 @click.option(
     "--dry-run",
     "-d",
@@ -57,8 +58,8 @@ def synchronize(
     token,
     from_dir,
     to_dir,
+    include_manifest,
     branch_checked_out,
-    manifest,
     dry_run,
     skip_ci,
     random_branch_name,
@@ -70,8 +71,8 @@ def synchronize(
         token=token,
         from_dir=from_dir,
         to_dir=to_dir,
+        include_manifest=include_manifest,
         branch_checked_out=branch_checked_out,
-        manifest=manifest,
         dry_run=dry_run,
         skip_ci=skip_ci,
         random_branch_name=random_branch_name,

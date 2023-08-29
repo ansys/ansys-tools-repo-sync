@@ -26,6 +26,7 @@ def test_synchronize():
     repository = "ansys-tools-repo-sync"
     from_dir = os.path.join(ASSETS_DIRECTORY, "ansys")
     to_dir = "src/ansys"
+    manifest = os.path.join(ASSETS_DIRECTORY, "manifest.txt")
 
     # Call the function
     result = None
@@ -36,6 +37,7 @@ def test_synchronize():
             token=TOKEN,
             from_dir=from_dir,
             to_dir=to_dir,
+            include_manifest=manifest,
             skip_ci=True,
             random_branch_name=True,
         )
@@ -54,7 +56,7 @@ def test_synchronize():
             cleanup_remote_repo(owner, repository, result)
 
 
-def test_synchronize_with_manifest():
+def test_synchronize_with_only_proto_manifest():
     """Test synchronization tool (with manifest)."""
 
     # Define your test data here
@@ -62,7 +64,7 @@ def test_synchronize_with_manifest():
     repository = "ansys-tools-repo-sync"
     from_dir = os.path.join(ASSETS_DIRECTORY, "ansys")
     to_dir = "src/ansys"
-    manifest = os.path.join(ASSETS_DIRECTORY, "manifest.txt")
+    manifest = os.path.join(ASSETS_DIRECTORY, "manifest_only_proto.txt")
 
     # Call the function
     result = None
@@ -73,7 +75,7 @@ def test_synchronize_with_manifest():
             token=TOKEN,
             from_dir=from_dir,
             to_dir=to_dir,
-            manifest=manifest,
+            include_manifest=manifest,
             skip_ci=True,
             random_branch_name=True,
         )
@@ -130,6 +132,8 @@ def test_synchronize_from_cli():
             "ansys",
             "--to-dir",
             "src/ansys",
+            "--include-manifest",
+            "manifest.txt",
             "--skip-ci",
             "--random-branch-name",
         ],
@@ -155,7 +159,7 @@ def test_synchronize_from_cli():
 
 
 @pytest.mark.skipif(SKIP_LOCALLY, reason="Only runs on workflow")
-def test_synchronize_with_manifest_from_cli():
+def test_synchronize_with_only_proto_manifest_from_cli():
     """Test synchronization tool (with manifest) from CLI."""
 
     # Define a temp directory and copy assets in it
@@ -192,8 +196,8 @@ def test_synchronize_with_manifest_from_cli():
             "ansys",
             "--to-dir",
             "src/ansys",
-            "--manifest",
-            "manifest.txt",
+            "--include-manifest",
+            "manifest_only_proto.txt",
             "--skip-ci",
             "--random-branch-name",
         ],
