@@ -133,7 +133,7 @@ def test_synchronize_from_cli():
             "--to-dir",
             "src/ansys",
             "--include-manifest",
-            "manifest.txt"
+            "manifest.txt",
             "--skip-ci",
             "--random-branch-name",
         ],

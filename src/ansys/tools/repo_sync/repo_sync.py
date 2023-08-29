@@ -1,3 +1,4 @@
+from fnmatch import filter
 import os
 import shutil
 import tempfile
@@ -5,11 +6,11 @@ import tempfile
 from git import Repo
 from github import Auth, Github, GithubException
 
-from fnmatch import filter
-from os.path import isdir, join
 
 def include_patterns(*patterns):
-    """Factory function that can be used with copytree() ignore parameter.
+    """Include listed patterns in ``copytree()``.
+
+    Factory function that can be used with ``copytree()`` ignore parameter.
 
     Arguments define a sequence of glob-style patterns
     that are used to specify what files to NOT ignore.
@@ -17,12 +18,16 @@ def include_patterns(*patterns):
     in the file hierarchy rooted at the source directory when used with
     shutil.copytree().
     """
+
     def _ignore_patterns(path, names):
-        keep = set(name for pattern in patterns
-                            for name in filter(names, pattern))
-        ignore = set(name for name in names
-                        if name not in keep and not isdir(join(path, name)))
+        keep = set(name for pattern in patterns for name in filter(names, pattern))
+        ignore = set(
+            name
+            for name in names
+            if name not in keep and not os.path.isdir(os.path.join(path, name))
+        )
         return ignore
+
     return _ignore_patterns
 
 
