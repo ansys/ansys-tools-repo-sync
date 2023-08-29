@@ -1,10 +1,29 @@
 import os
 import shutil
 import tempfile
-from typing import Optional
 
 from git import Repo
 from github import Auth, Github, GithubException
+
+from fnmatch import filter
+from os.path import isdir, join
+
+def include_patterns(*patterns):
+    """Factory function that can be used with copytree() ignore parameter.
+
+    Arguments define a sequence of glob-style patterns
+    that are used to specify what files to NOT ignore.
+    Creates and returns a function that determines this for each directory
+    in the file hierarchy rooted at the source directory when used with
+    shutil.copytree().
+    """
+    def _ignore_patterns(path, names):
+        keep = set(name for pattern in patterns
+                            for name in filter(names, pattern))
+        ignore = set(name for name in names
+                        if name not in keep and not isdir(join(path, name)))
+        return ignore
+    return _ignore_patterns
 
 
 def synchronize(
@@ -13,8 +32,8 @@ def synchronize(
     token: str,
     from_dir: str,
     to_dir: str,
+    include_manifest: str,
     branch_checked_out: str = "main",
-    manifest: Optional[str] = None,
     dry_run: bool = False,
     skip_ci: bool = False,
     random_branch_name: bool = False,
@@ -33,10 +52,10 @@ def synchronize(
         Directory from which files want to be synced.
     to_dir : str
         Directory to which files want to be synced (w.r.t. the root of the repository).
+    include_manifest : str
+        Path to manifest which mentions accepted extension files.
     branch_checked_out : str, optional
         Branch to check out, by default "main".
-    manifest : Optional[str], optional
-        Path to manifest which mention prohibited extension files, by default ``None``.
     dry_run : bool, optional
         Simulate the behavior of the synchronization without performing it, by default ``False``.
     skip_ci : bool, optional
@@ -69,12 +88,11 @@ def synchronize(
 
     temp_dir = tempfile.TemporaryDirectory(prefix="repo_clone_", ignore_cleanup_errors=True)
 
-    # Check if manifest was provided
-    prohibited_extensions = []
-    if manifest:
-        print(f">>> Considering manifest file at {manifest} ...")
-        with open(manifest, "r") as f:
-            prohibited_extensions = f.read().splitlines()
+    # Retrieve accepted extensions from manifest
+    accepted_extensions = []
+    print(f">>> Considering manifest file at {include_manifest} ...")
+    with open(include_manifest, "r") as f:
+        accepted_extensions = f.read().splitlines()
 
     # Clone the repository
     print(f">>> Cloning repository '{owner}/{repository}'...")
@@ -89,7 +107,7 @@ def synchronize(
     shutil.copytree(
         from_dir,
         os.path.join(destination_path),
-        ignore=shutil.ignore_patterns(*prohibited_extensions),
+        ignore=include_patterns(*accepted_extensions),
         dirs_exist_ok=True,
     )
 
