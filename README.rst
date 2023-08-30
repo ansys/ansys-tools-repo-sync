@@ -92,7 +92,7 @@ Run it as follows:
       --include-manifest <path-to-manifest>
 
 The options above are **compulsory** in order to run the tool. If an option is missing,
-the operation will fail. For more information on all the available flags for this tool,
+the operation will fail. For more information on all the available options for this tool,
 users can run
 
 .. code:: bash
