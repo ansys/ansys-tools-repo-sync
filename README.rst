@@ -50,7 +50,17 @@ Part of the content for this public repo would come from the private repository.
 
 ``ansys-tools-repo-sync`` allows you to do so by copying a folder and its content
 from one repo to the other.
-In addition, it is possible to filter the type extension file authorized to be copied.
+
+By default, nothing is synced to the secondary repository (in order to avoid undesired
+content). For that purpose, users have to provide a ``manifest`` file (in ASCII format)
+that contains regular expressions for the files accepted.
+
+For example, if we wanted to sync all ``*.py`` files, one should generate a
+``manifest`` file as follows:
+
+.. code:: bash
+
+   *.py
 
 .. image:: images/repo_sync.png
     :align: center
@@ -73,7 +83,21 @@ Run it as follows:
 
 .. code:: bash
 
-    repo-sync --token <token> --owner <organization-name> --repository <repository-name> --from-dir <path-to-dir-containing-files-to-sync> --to-dir <target-dir-for-sync> --include-manifest <path-to-manifest>
+    repo-sync \
+      --token <token> \
+      --owner <organization-name> \
+      --repository <repository-name> \
+      --from-dir <path-to-dir-containing-files-to-sync> \
+      --to-dir <target-dir-for-sync> \
+      --include-manifest <path-to-manifest>
+
+The options above are **compulsory** in order to run the tool. If an option is missing,
+the operation will fail. For more information on all the available options for this tool,
+users can run:
+
+.. code:: bash
+
+   repo-sync --help
 
 .. note::
     The ``--dry-run`` flag can be set while establishing the entire
@@ -85,8 +109,6 @@ Issues
 ------
 To post issues, questions, and code, go to `ansys-tools-repo-sync Issues
 <https://github.com/ansys/ansys-tools-repo-sync/issues>`_.
-
-
 
 License
 -------

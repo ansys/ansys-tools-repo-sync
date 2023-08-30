@@ -1,7 +1,16 @@
 """Tool to copy the content of one repo toward an other.
+
 Run with:
 
-repo-sync -o organization -r repository --from-dir ... --to-dir ... --token ... [-b branch_name -m manifest_file -d]
+.. code::
+
+    repo-sync \
+      --token <token> \
+      --owner <organization-name> \
+      --repository <repository-name> \
+      --from-dir <path-to-dir-containing-files-to-sync> \
+      --to-dir <target-dir-for-sync> \
+      --include-manifest <path-to-manifest>
 
 """
 import click
@@ -50,7 +59,7 @@ from .repo_sync import synchronize as _synchronize
     "--random-branch-name",
     is_flag=True,
     default=False,
-    help="For testing purposes ONLY - generates a random branch name instead of the typical ``sync/file-sync``.",
+    help="Generates a random branch name instead of the typical ``sync/file-sync``. Used for testing purposes mainly.",
 )
 def synchronize(
     owner,
