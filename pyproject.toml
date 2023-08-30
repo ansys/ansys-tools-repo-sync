@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "ansys-tools-repo-sync"
-version = "0.2.dev0"
+version = "1.1.dev0"
 description = "Synchronize the content of two different repositories."
 readme = "README.rst"
 requires-python = ">=3.8,<4"
