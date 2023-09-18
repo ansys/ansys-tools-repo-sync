@@ -2,14 +2,10 @@ version: 2
 updates:
   - package-ecosystem: "pip" # See documentation for possible values
     directory: "/" # Location of package manifests
-    insecure-external-code-execution: allow
     schedule:
       interval: "weekly"
-    labels:
-      - "maintenance"
-      - "dependencies"
     groups:
-       pip-deps:
+       dev-dependencies:
           patterns:
             - "*"
 
@@ -17,8 +13,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    labels:
-      - "maintenance"
     groups:
        action-deps:
           patterns:
