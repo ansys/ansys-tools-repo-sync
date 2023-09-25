@@ -76,7 +76,6 @@ def test_synchronize_to_existing_pr():
             to_dir=to_dir,
             include_manifest=manifest,
             skip_ci=True,
-            random_branch_name=True,
         )
 
         # Assertions or validations
@@ -91,7 +90,6 @@ def test_synchronize_to_existing_pr():
             to_dir=to_dir,
             include_manifest=manifest,
             skip_ci=True,
-            random_branch_name=True,
         )
 
         # Verify the PR is the same
