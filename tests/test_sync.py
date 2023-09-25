@@ -94,6 +94,40 @@ def test_synchronize_with_only_proto_manifest():
             cleanup_remote_repo(owner, repository, result)
 
 
+def test_synchronize_no_sync_needed():
+    """Test synchronization tool (with manifest referring to non-existing files)."""
+
+    # Define your test data here
+    owner = "ansys"
+    repository = "ansys-tools-repo-sync"
+    from_dir = os.path.join(ASSETS_DIRECTORY, "ansys")
+    to_dir = "src/ansys"
+    manifest = os.path.join(ASSETS_DIRECTORY, "manifest_no_files.txt")
+
+    # Call the function
+    result = None
+    try:
+        result = synchronize(
+            owner=owner,
+            repository=repository,
+            token=TOKEN,
+            from_dir=from_dir,
+            to_dir=to_dir,
+            include_manifest=manifest,
+            skip_ci=True,
+            random_branch_name=True,
+        )
+
+        # Assertions or validations
+        assert result is None
+
+    except Exception as err:
+        raise err
+    finally:
+        if result:
+            cleanup_remote_repo(owner, repository, result)
+
+
 def test_synchronize_with_cleanup_and_dry_run(capsys):
     """
     Test synchronization tool (with --clean-to-dir flag).
@@ -338,3 +372,63 @@ def test_synchronize_with_cleanup_cli():
     assert "src/ansys/tools/repo_sync/__init__.py" in captured
     assert "src/ansys/tools/repo_sync/__main__.py" in captured
     assert "src/ansys/tools/repo_sync/repo_sync.py" in captured
+
+
+@pytest.mark.skipif(SKIP_LOCALLY, reason="Only runs on workflow")
+def test_synchronize_with_no_sync_cli():
+    """Test synchronization tool (with no files needed to be synced) from CLI."""
+
+    # Define a temp directory and copy assets in it
+    temp_dir = tempfile.TemporaryDirectory(prefix="repo_clone_cli_")
+    shutil.copytree(
+        ASSETS_DIRECTORY,
+        temp_dir.name,
+        dirs_exist_ok=True,
+    )
+
+    # Requires installing project
+    subprocess.run(
+        [
+            "pip",
+            "install",
+            ".",
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        cwd=ROOT_PATH,
+    )
+
+    # Call CLI tool
+    completed_process = subprocess.run(
+        [
+            "repo-sync",
+            "--token",
+            TOKEN,
+            "--owner",
+            "ansys",
+            "--repository",
+            "ansys-tools-repo-sync",
+            "--from-dir",
+            "ansys",
+            "--to-dir",
+            "src/ansys",
+            "--include-manifest",
+            "manifest_no_files.txt",
+            "--skip-ci",
+            "--random-branch-name",
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        cwd=temp_dir.name,
+    )
+
+    # Check output info
+    print(completed_process.returncode)
+    print(completed_process.stdout)
+    print(completed_process.stderr)
+
+    # Check stdout
+    captured = completed_process.stdout.decode()
+
+    # Search for the modified files
+    assert ">>> No files to sync... Ignoring PR request." in captured

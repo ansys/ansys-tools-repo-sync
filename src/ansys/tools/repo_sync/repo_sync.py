@@ -110,7 +110,7 @@ def synchronize(
     Returns
     -------
     Union[str, None]
-        Pull request URL. In case of dry-run, ``None`` is returned.
+        Pull request URL. In case of dry-run or no files modified, ``None`` is returned.
 
     """
     # New branch name and PR title
@@ -178,8 +178,14 @@ def synchronize(
 
         # Get a list of the files modified
         output = repo.git.diff("--compact-summary", f"{branch_checked_out}", f"{new_branch_name}")
-        print(">>> Summary of modified files...")
-        print(output)
+
+        # If output is empty, avoid creating PR
+        if not output:
+            print(">>> No files to sync... Ignoring PR request.")
+            return None
+        else:
+            print(">>> Summary of modified files...")
+            print(output)
 
         pull_request = None
         if not dry_run:
