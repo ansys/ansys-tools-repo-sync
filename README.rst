@@ -16,7 +16,7 @@ ansys-tools-repo-sync
    :target: https://pypi.org/project/ansys-tools-repo-sync
    :alt: PyPI
 
-.. |codecov| image:: https://codecov.io/gh/ansys/ansys-tools-repo-sync/branch/main/graph/badge.svg
+.. |codecov| image:: https://codecov.io/gh/ansys/ansys-tools-repo-sync/graph/badge.svg?token=Z7jkQo0Mh7
    :target: https://codecov.io/gh/ansys/ansys-tools-repo-sync
    :alt: Codecov
 

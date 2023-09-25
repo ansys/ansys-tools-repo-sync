@@ -70,6 +70,8 @@ jobs:
       - name: Upload coverage results (Codecov)
         uses: codecov/codecov-action@v3
         if: (matrix.python-version == env.MAIN_PYTHON_VERSION) && (runner.os == 'Linux')
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
           files: .cov/coverage.xml
 
