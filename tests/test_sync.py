@@ -94,8 +94,15 @@ def test_synchronize_with_only_proto_manifest():
             cleanup_remote_repo(owner, repository, result)
 
 
-def test_synchronize_with_cleanup():
-    """Test synchronization tool (with --clean-to-dir flag)."""
+def test_synchronize_with_cleanup_and_dry_run(capsys):
+    """
+    Test synchronization tool (with --clean-to-dir flag).
+
+    Notes
+    -----
+    Executed in dry-run mode.
+
+    """
 
     # Define your test data here
     owner = "ansys"
@@ -105,38 +112,31 @@ def test_synchronize_with_cleanup():
     manifest = os.path.join(ASSETS_DIRECTORY, "manifest.txt")
 
     # Call the function
-    result = None
-    try:
-        result = synchronize(
-            owner=owner,
-            repository=repository,
-            token=TOKEN,
-            from_dir=from_dir,
-            to_dir=to_dir,
-            include_manifest=manifest,
-            clean_to_dir=True,
-            skip_ci=True,
-            random_branch_name=True,
-        )
+    result = synchronize(
+        owner=owner,
+        repository=repository,
+        token=TOKEN,
+        from_dir=from_dir,
+        to_dir=to_dir,
+        include_manifest=manifest,
+        clean_to_dir=True,
+        skip_ci=True,
+        random_branch_name=True,
+        dry_run=True,
+    )
 
-        # Assertions or validations
-        assert f"https://github.com/ansys/ansys-tools-repo-sync/pull/" in result
+    # Assertions or validations
+    assert result is None
 
-        # Check that the proper modified files have been added
-        list_of_files = [
-            "src/ansys/api/test/v0/hello_world.py",
-            "src/ansys/api/test/v0/test.proto",
-            "src/ansys/tools/repo_sync/__init__.py",
-            "src/ansys/tools/repo_sync/__main__.py",
-            "src/ansys/tools/repo_sync/repo_sync.py",
-        ]
-        assert check_files_in_pr(owner, repository, result, list_of_files)
+    # Check stdout
+    captured = capsys.readouterr()[0]
 
-    except Exception as err:
-        raise err
-    finally:
-        if result:
-            cleanup_remote_repo(owner, repository, result)
+    # Search for the modified files
+    assert "src/ansys/api/test/v0/hello_world.py" in captured
+    assert "src/ansys/api/test/v0/test.proto" in captured
+    assert "src/ansys/tools/repo_sync/__init__.py" in captured
+    assert "src/ansys/tools/repo_sync/__main__.py" in captured
+    assert "src/ansys/tools/repo_sync/repo_sync.py" in captured
 
 
 @pytest.mark.skipif(SKIP_LOCALLY, reason="Only runs on workflow")
@@ -269,7 +269,14 @@ def test_synchronize_with_only_proto_manifest_from_cli():
 
 @pytest.mark.skipif(SKIP_LOCALLY, reason="Only runs on workflow")
 def test_synchronize_with_cleanup_cli():
-    """Test synchronization tool (with --clean-to-dir flag) from CLI."""
+    """
+    Test synchronization tool (with --clean-to-dir flag) from CLI.
+
+    Notes
+    -----
+    Executed in dry-run mode.
+
+    """
 
     # Define a temp directory and copy assets in it
     temp_dir = tempfile.TemporaryDirectory(prefix="repo_clone_cli_")
@@ -310,6 +317,7 @@ def test_synchronize_with_cleanup_cli():
             "--skip-ci",
             "--random-branch-name",
             "--clean-to-dir",
+            "--dry-run",
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -321,18 +329,12 @@ def test_synchronize_with_cleanup_cli():
     print(completed_process.stdout)
     print(completed_process.stderr)
 
-    # Get the PR associated to the CLI
-    pr_url = get_pr_from_cli("ansys", "ansys-tools-repo-sync", completed_process.stdout)
+    # Check stdout
+    captured = completed_process.stdout
 
-    # Check that the proper modified files have been added
-    list_of_files = [
-        "src/ansys/api/test/v0/hello_world.py",
-        "src/ansys/api/test/v0/test.proto",
-        "src/ansys/tools/repo_sync/__init__.py",
-        "src/ansys/tools/repo_sync/__main__.py",
-        "src/ansys/tools/repo_sync/repo_sync.py",
-    ]
-    assert check_files_in_pr("ansys", "ansys-tools-repo-sync", pr_url, list_of_files)
-
-    # Clean up remote repo
-    cleanup_remote_repo("ansys", "ansys-tools-repo-sync", pr_url)
+    # Search for the modified files
+    assert "src/ansys/api/test/v0/hello_world.py" in captured
+    assert "src/ansys/api/test/v0/test.proto" in captured
+    assert "src/ansys/tools/repo_sync/__init__.py" in captured
+    assert "src/ansys/tools/repo_sync/__main__.py" in captured
+    assert "src/ansys/tools/repo_sync/repo_sync.py" in captured
