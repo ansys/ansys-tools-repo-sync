@@ -422,14 +422,13 @@ def test_synchronize_with_cleanup_cli(tmpdir):
 
 
 @pytest.mark.skipif(SKIP_LOCALLY, reason="Only runs on workflow")
-def test_synchronize_with_no_sync_cli():
+def test_synchronize_with_no_sync_cli(tmpdir):
     """Test synchronization tool (with no files needed to be synced) from CLI."""
 
     # Define a temp directory and copy assets in it
-    temp_dir = tempfile.TemporaryDirectory(prefix="repo_clone_cli_")
     shutil.copytree(
         ASSETS_DIRECTORY,
-        temp_dir.name,
+        tmpdir,
         dirs_exist_ok=True,
     )
 
@@ -466,7 +465,7 @@ def test_synchronize_with_no_sync_cli():
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        cwd=temp_dir.name,
+        cwd=tmpdir,
     )
 
     # Check output info
