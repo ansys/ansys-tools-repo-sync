@@ -43,6 +43,12 @@ from .repo_sync import synchronize as _synchronize
 )
 @click.option("--branch_checked_out", "-b", type=str, help="Branch to check out.", default="main")
 @click.option(
+    "--clean-to-dir",
+    is_flag=True,
+    default=False,
+    help="Clean the folder defined in --to-dir before synchronizing.",
+)
+@click.option(
     "--dry-run",
     "-d",
     is_flag=True,
@@ -69,6 +75,7 @@ def synchronize(
     to_dir,
     include_manifest,
     branch_checked_out,
+    clean_to_dir,
     dry_run,
     skip_ci,
     random_branch_name,
@@ -80,6 +87,7 @@ def synchronize(
         token=token,
         from_dir=from_dir,
         to_dir=to_dir,
+        clean_to_dir=clean_to_dir,
         include_manifest=include_manifest,
         branch_checked_out=branch_checked_out,
         dry_run=dry_run,
