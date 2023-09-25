@@ -330,7 +330,7 @@ def test_synchronize_with_cleanup_cli():
     print(completed_process.stderr)
 
     # Check stdout
-    captured = completed_process.stdout
+    captured = completed_process.stdout.decode()
 
     # Search for the modified files
     assert "src/ansys/api/test/v0/hello_world.py" in captured
