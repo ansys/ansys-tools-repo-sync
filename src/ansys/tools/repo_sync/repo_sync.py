@@ -44,6 +44,9 @@ def delete_folder_contents(folder_path):
     """
     # Check if the folder exists
     if not os.path.exists(folder_path):
+        print(
+            f"Directory '{folder_path}' does not exist and will not be cleaned - process will continue."
+        )
         return
 
     try:
@@ -147,6 +150,7 @@ def synchronize(
 
     # Define the destination path for the files to be synced
     destination_path = os.path.join(repo_path, to_dir)
+    os.makedirs(destination_path, exist_ok=True)
 
     # If requested, clean the destination path
     if clean_to_dir:
@@ -155,7 +159,6 @@ def synchronize(
 
     # Copy local folder contents to the cloned repository
     print(f">>> Moving desired files from {from_dir} to {destination_path} ...")
-    os.makedirs(destination_path, exist_ok=True)
     shutil.copytree(
         from_dir,
         os.path.join(destination_path),
