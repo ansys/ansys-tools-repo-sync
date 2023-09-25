@@ -104,7 +104,7 @@ def test_synchronize_to_existing_pr():
     finally:
         if result:
             cleanup_remote_repo(owner, repository, result)
-        if result_pr_already_exists:
+        if result_pr_already_exists and result != result_pr_already_exists:
             cleanup_remote_repo(owner, result_pr_already_exists, result)
 
 
