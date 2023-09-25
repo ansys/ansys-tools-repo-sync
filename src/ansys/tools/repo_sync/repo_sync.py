@@ -63,7 +63,7 @@ def delete_folder_contents(folder_path):
                 # After the contents are deleted, remove the empty directory
                 os.rmdir(item_path)
 
-    except Exception as e:  # pragma: no cover
+    except (FileNotFoundError, PermissionError, OSError) as e:  # pragma: no cover
         print(f"An error occurred: {str(e)} - process will continue.")
 
 
