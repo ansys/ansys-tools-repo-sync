@@ -233,7 +233,7 @@ def test_synchronize_from_cli(tmpdir):
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        cwd=temp_dir.name,
+        cwd=tmpdir,
     )
 
     # Check output info
@@ -296,7 +296,7 @@ def test_synchronize_with_only_proto_manifest_from_cli(tmpdir):
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        cwd=temp_dir.name,
+        cwd=tmpdir,
     )
 
     # Check output info
@@ -368,7 +368,7 @@ def test_synchronize_with_cleanup_cli(tmpdir):
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        cwd=temp_dir.name,
+        cwd=tmpdir,
     )
 
     # Check output info
