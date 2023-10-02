@@ -225,6 +225,53 @@ def test_synchronize_with_cleanup_and_dry_run(capsys):
     assert "src/ansys/tools/repo_sync/repo_sync.py" in captured
 
 
+def test_synchronize_with_cleanup_based_on_manifest_and_dry_run(capsys):
+    """
+    Test synchronization tool (with --clean-to-dir and
+    --clean-to-dir-based-on-manifest flags).
+
+    Notes
+    -----
+    Executed in dry-run mode.
+
+    """
+
+    # Define your test data here
+    owner = "ansys"
+    repository = "ansys-tools-repo-sync"
+    from_dir = os.path.join(ASSETS_DIRECTORY, "ansys")
+    to_dir = "src/ansys"
+    manifest = os.path.join(ASSETS_DIRECTORY, "manifest_proto_and_init.txt")
+
+    # Call the function
+    result = synchronize(
+        owner=owner,
+        repository=repository,
+        token=TOKEN,
+        from_dir=from_dir,
+        to_dir=to_dir,
+        include_manifest=manifest,
+        clean_to_dir=True,
+        clean_to_dir_based_on_manifest=True,
+        skip_ci=True,
+        random_branch_name=True,
+        dry_run=True,
+    )
+
+    # Assertions or validations
+    assert result is None
+
+    # Check stdout
+    captured = capsys.readouterr()[0]
+
+    # Search for the modified files
+    assert "src/ansys/api/test/v0/hello_world.py" not in captured
+    assert "src/ansys/api/test/v0/test.proto" in captured
+    assert "src/ansys/tools/repo_sync/__init__.py" in captured
+    assert "src/ansys/tools/repo_sync/__main__.py" not in captured
+    assert "src/ansys/tools/repo_sync/repo_sync.py" not in captured
+
+
 @pytest.mark.skipif(SKIP_LOCALLY, reason="Only runs on workflow")
 def test_synchronize_from_cli(tmpdir):
     """Test synchronization tool (without manifest) from CLI."""

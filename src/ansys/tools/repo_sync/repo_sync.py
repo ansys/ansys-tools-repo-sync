@@ -1,8 +1,9 @@
 from fnmatch import filter
 import os
+import re
 import shutil
 import tempfile
-from typing import Union
+from typing import List, Union
 
 from git import Repo
 from github import Auth, Github, GithubException
@@ -33,13 +34,44 @@ def include_patterns(*patterns):
     return _ignore_patterns
 
 
-def delete_folder_contents(folder_path):
+def adapt_regex_from_manifest(accepted_extensions: List[str]) -> List[str]:
+    """Adapt regex expressions from manifest read.
+
+    Parameters
+    ----------
+    accepted_extensions : List[str]
+        List of accepted extensions coming from manifest file.
+
+    Returns
+    -------
+    List[str]
+        List of accepted extensions coming from manifest file (adapted).
+
+    """
+    acc_regex = []
+    for entry in accepted_extensions:
+        # Adapt to a proper regex... Especially based on format
+        if entry.startswith("*."):
+            entry = entry.replace("*.", ".*.", 1)
+        acc_regex.append(entry)
+
+    return acc_regex
+
+
+def delete_folder_contents(
+    folder_path: str, accepted_extensions: List[str], clean_to_dir_based_on_manifest: bool
+):
     """Delete the content inside a folder without deleting the folder itself.
 
     Parameters
     ----------
     folder_path : str
         Path to the folder whose content is requested to be deleted.
+    accepted_extensions : List[str]
+        List of accepted extensions coming from manifest file.
+    clean_to_dir_based_on_manifest : bool
+        Whether to perform the cleanup of files that match the regex
+        in the manifest.
 
     """
     # Check if the folder exists
@@ -55,13 +87,27 @@ def delete_folder_contents(folder_path):
             item_path = os.path.join(folder_path, item)
 
             if os.path.isfile(item_path):
-                # If it's a file, delete it
-                os.remove(item_path)
+                if clean_to_dir_based_on_manifest and any(
+                    [re.match(entry, item) is not None for entry in accepted_extensions]
+                ):
+                    # If it's a file, delete it
+                    os.remove(item_path)
+                elif not clean_to_dir_based_on_manifest:
+                    # No manifest-based deletion... just delete it.
+                    os.remove(item_path)
+
             elif os.path.isdir(item_path):
                 # If it's a directory, use recursive call to delete its contents
-                delete_folder_contents(item_path)
-                # After the contents are deleted, remove the empty directory
-                os.rmdir(item_path)
+                delete_folder_contents(
+                    item_path, accepted_extensions, clean_to_dir_based_on_manifest
+                )
+                # After the contents are deleted
+                if clean_to_dir_based_on_manifest and len(os.listdir(item_path)) == 0:
+                    # With manifest-based deletion, only remove the directory in case it is empty
+                    os.rmdir(item_path)
+                elif not clean_to_dir_based_on_manifest:
+                    # Just remove the directory
+                    os.rmdir(item_path)
 
     except (FileNotFoundError, PermissionError, OSError) as e:  # pragma: no cover
         print(f"An error occurred: {str(e)} - process will continue.")
@@ -76,6 +122,7 @@ def synchronize(
     include_manifest: str,
     branch_checked_out: str = "main",
     clean_to_dir: bool = False,
+    clean_to_dir_based_on_manifest: bool = False,
     dry_run: bool = False,
     skip_ci: bool = False,
     random_branch_name: bool = False,
@@ -100,6 +147,10 @@ def synchronize(
         Branch to check out, by default "main".
     clean_to_dir : bool, optional
         Delete the content inside the directory where the files will be synced, by default ``False``.
+    clean_to_dir_based_on_manifest : bool, optional
+        In case ``clean_to_dir`` is requested, perform the cleanup of files that match the regex
+        in the manifest. By default, ``False``. If ``clean_to_dir`` is ``False``, this option will
+        not have an effect.
     dry_run : bool, optional
         Simulate the behavior of the synchronization without performing it, by default ``False``.
     skip_ci : bool, optional
@@ -155,7 +206,8 @@ def synchronize(
     # If requested, clean the destination path
     if clean_to_dir:
         print(f">>> Cleaning content inside '{to_dir}'...")
-        delete_folder_contents(destination_path)
+        acc_regex = adapt_regex_from_manifest(accepted_extensions)
+        delete_folder_contents(destination_path, acc_regex, clean_to_dir_based_on_manifest)
 
     # Copy local folder contents to the cloned repository
     print(f">>> Moving desired files from {from_dir} to {destination_path} ...")
