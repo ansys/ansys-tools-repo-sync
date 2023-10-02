@@ -49,6 +49,16 @@ from .repo_sync import synchronize as _synchronize
     help="Clean the folder defined in --to-dir before synchronizing.",
 )
 @click.option(
+    "--clean-to-dir-based-on-manifest",
+    is_flag=True,
+    default=False,
+    help=(
+        "Deletion of target directory is performed based on manifest file"
+        " (i.e. only those files matching the extensions on it are deleted)."
+        " Only has an effect if --clean-to-dir is passed."
+    ),
+)
+@click.option(
     "--dry-run",
     "-d",
     is_flag=True,
@@ -76,6 +86,7 @@ def synchronize(
     include_manifest,
     branch_checked_out,
     clean_to_dir,
+    clean_to_dir_based_on_manifest,
     dry_run,
     skip_ci,
     random_branch_name,
@@ -88,6 +99,7 @@ def synchronize(
         from_dir=from_dir,
         to_dir=to_dir,
         clean_to_dir=clean_to_dir,
+        clean_to_dir_based_on_manifest=clean_to_dir_based_on_manifest,
         include_manifest=include_manifest,
         branch_checked_out=branch_checked_out,
         dry_run=dry_run,
