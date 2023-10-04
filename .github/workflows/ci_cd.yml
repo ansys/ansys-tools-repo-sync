@@ -8,7 +8,7 @@ on:
       - main
 
 env:
-  MAIN_PYTHON_VERSION: '3.11'
+  MAIN_PYTHON_VERSION: '3.12'
   DOCUMENTATION_CNAME: 'ansys.github.io/ansys-tools-repo-sync'
   LIBRARY_NAME: 'ansys-tools-repo-sync'
   ON_WORKFLOW: true
@@ -34,7 +34,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python-version: ['3.8', '3.9', '3.10', '3.11']
+        python-version: ['3.9', '3.10', '3.11', '3.12']
     steps:
       - uses: ansys/actions/build-wheelhouse@v4
         with:
@@ -50,7 +50,7 @@ jobs:
       max-parallel: 1
       matrix:
        os: [ubuntu-latest, windows-latest]
-       python-version: ['3.8', '3.11']
+       python-version: ['3.9', '3.12']
       fail-fast: false
     steps:
       - uses: ansys/actions/tests-pytest@v4
