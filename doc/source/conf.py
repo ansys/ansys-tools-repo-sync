@@ -109,3 +109,6 @@ exclude_patterns = ["_autoapi_templates/index.rst"]
 
 # Copying README images
 shutil.copytree("../../images", "images", dirs_exist_ok=True)
+
+# Ignore anchors
+linkcheck_anchors = False
