@@ -1,7 +1,10 @@
 documentation:
-- doc/source/**/*
+- changed-files:
+  - any-glob-to-any-file: ['doc/source/**/*']
 maintenance:
-- .github/**/*
-- pyproject.toml
+- changed-files:
+  - any-glob-to-any-file: ['.github/**/*', 'pyproject.toml']
 dependencies:
-- pyproject.toml
+- changed-files:
+  - any-glob-to-any-file: ['pyproject.toml']
+
