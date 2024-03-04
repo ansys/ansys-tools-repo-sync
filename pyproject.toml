@@ -33,7 +33,7 @@ dependencies = [
 
 [project.optional-dependencies]
 tests = [
-    "pytest==8.0.2",
+    "pytest==8.1.0",
     "pytest-cov==4.1.0",
     "click==8.1.7",
     "PyGithub==2.2.0",
