@@ -5,7 +5,6 @@ import os
 import shutil
 
 from ansys_sphinx_theme import get_version_match
-from ansys_sphinx_theme import pyansys_logo_black as logo
 
 from ansys.tools.repo_sync import __version__
 
@@ -16,13 +15,13 @@ author = "ANSYS, Inc."
 release = version = __version__
 cname = os.getenv("DOCUMENTATION_CNAME", "ansys.github.io/ansys-tools-repo-sync")
 
-# Select desired logo, theme, and declare the html title
-html_logo = logo
+# Select desired theme, and declare the html title
 html_theme = "ansys_sphinx_theme"
 html_short_title = html_title = "ansys-tools-repo-sync"
 
 # specify the location of your github repo
 html_theme_options = {
+    "logo": "pyansys",
     "github_url": "https://github.com/ansys/ansys-tools-repo-sync",
     "show_prev_next": False,
     "show_breadcrumbs": True,
