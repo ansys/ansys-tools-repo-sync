@@ -33,7 +33,7 @@ dependencies = [
 
 [project.optional-dependencies]
 tests = [
-    "pytest==8.3.2",
+    "pytest==8.3.3",
     "pytest-cov==5.0.0",
     "click==8.1.7",
     "PyGithub==2.4.0",
@@ -44,7 +44,7 @@ doc = [
     "numpydoc==1.8.0",
     "sphinx==8.0.2",
     "sphinx-autoapi==3.3.1",
-    "sphinx-autodoc-typehints==2.4.0",
+    "sphinx-autodoc-typehints==2.4.1",
     "sphinx-copybutton==0.5.2",
 ]
 
