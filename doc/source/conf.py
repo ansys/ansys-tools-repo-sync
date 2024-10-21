@@ -112,3 +112,8 @@ shutil.copytree("../../images", "images", dirs_exist_ok=True)
 
 # Ignore anchors
 linkcheck_anchors = False
+
+# Ignore links
+linkcheck_ignore = [
+    "https://opensource.org/licenses/MIT",
+]
