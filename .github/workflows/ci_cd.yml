@@ -76,7 +76,7 @@ jobs:
     steps:
       - uses: ansys/actions/tests-pytest@v8
         env:
-          TOKEN: ${{ secrets.TEST_TOKEN }}
+          TOKEN: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
         with:
           pytest-extra-args: "--cov=ansys.tools.repo_sync --cov-report=term --cov-report=html:.cov/html --cov-report=xml:.cov/coverage.xml"
 
