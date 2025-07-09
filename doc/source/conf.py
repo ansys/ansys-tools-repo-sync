@@ -33,17 +33,20 @@ html_theme_options = {
         "version_match": get_version_match(__version__),
     },
     "check_switcher": False,
+    "ansys_sphinx_theme_autoapi": {
+        "project": project,
+    },
 }
 
 # Sphinx extensions
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
-    "autoapi.extension",
     "sphinx_autodoc_typehints",
     "numpydoc",
     "sphinx.ext.intersphinx",
     "sphinx_copybutton",
+    "ansys_sphinx_theme.extension.autoapi",
 ]
 
 # Intersphinx mapping
