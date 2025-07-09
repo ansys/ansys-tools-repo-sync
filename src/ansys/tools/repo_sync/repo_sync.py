@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+"""Module containing the sync tool implementation."""
+
 from fnmatch import filter
 import os
 import re
@@ -29,6 +31,8 @@ from typing import List, Union
 
 from git import Repo
 from github import Auth, Github, GithubException
+
+from .constants import DEFAULT_BRANCH_NAME, DEFAULT_PULL_REQUEST_TITLE
 
 
 def include_patterns(*patterns):
@@ -148,8 +152,8 @@ def synchronize(
     dry_run: bool = False,
     skip_ci: bool = False,
     random_branch_name: bool = False,
-    target_branch_name: str = "sync/file-sync",
-    pull_request_title: str = "sync: file sync performed by ansys-tools-repo-sync",
+    target_branch_name: str = DEFAULT_BRANCH_NAME,
+    pull_request_title: str = DEFAULT_PULL_REQUEST_TITLE,
 ) -> Union[str, None]:
     """Synchronize a folder to a remote repository.
 
@@ -254,7 +258,9 @@ def synchronize(
         repo.index.commit(f"{'[skip ci] ' if skip_ci else ''}sync: add changes from local folder")
 
         # Get a list of the files modified
-        output = repo.git.diff("--compact-summary", f"{branch_checked_out}", f"{target_branch_name}")
+        output = repo.git.diff(
+            "--compact-summary", f"{branch_checked_out}", f"{target_branch_name}"
+        )
 
         # If output is empty, avoid creating PR
         if not output:

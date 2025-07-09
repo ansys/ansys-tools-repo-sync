@@ -27,16 +27,17 @@ Run with:
 .. code::
 
     repo-sync \
-      --token <token> \
-      --owner <organization-name> \
-      --repository <repository-name> \
-      --from-dir <path-to-dir-containing-files-to-sync> \
-      --to-dir <target-dir-for-sync> \
-      --include-manifest <path-to-manifest>
+--token <token> \
+--owner <organization-name> \
+--repository <repository-name> \
+--from-dir <path-to-dir-containing-files-to-sync> \
+--to-dir <target-dir-for-sync> \
+--include-manifest <path-to-manifest>
 
 """
 import click
 
+from .constants import DEFAULT_BRANCH_NAME, DEFAULT_PULL_REQUEST_TITLE
 from .repo_sync import synchronize as _synchronize
 
 
@@ -102,14 +103,14 @@ from .repo_sync import synchronize as _synchronize
 @click.option(
     "--target-branch-name",
     type=str,
-    default="sync/file-sync",
-    help="Name of the branch to create for the synchronization, by default it is 'sync/file-sync'.",
+    default=DEFAULT_BRANCH_NAME,
+    help=f"Name of the branch to create for the synchronization, by default it is '{DEFAULT_BRANCH_NAME}'.",
 )
 @click.option(
     "--pull-request-title",
     type=str,
-    default="sync: file sync performed by ansys-tools-repo-sync",
-    help="Title of the pull request created after synchronization.",
+    default=DEFAULT_PULL_REQUEST_TITLE,
+    help=f"Title of the pull request created after synchronization, by default it is {DEFAULT_PULL_REQUEST_TITLE}",
 )
 def synchronize(
     owner,

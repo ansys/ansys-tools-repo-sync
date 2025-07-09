@@ -20,22 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Tool to synchronize the content of different repositories."""
+"""Module containing constants for the repo sync tool."""
 
-# Version
-# ------------------------------------------------------------------------------
-import importlib.metadata as importlib_metadata
+DEFAULT_BRANCH_NAME = "sync/file-sync"
+"""Default branch name for the synchronization process."""
 
-__version__ = importlib_metadata.version("ansys-tools-repo-sync")
-
-# Ease import statements
-# ------------------------------------------------------------------------------
-
-from .constants import DEFAULT_BRANCH_NAME, DEFAULT_PULL_REQUEST_TITLE
-from .repo_sync import synchronize
-
-__all__ = [
-    "synchronize",
-    "DEFAULT_BRANCH_NAME",
-    "DEFAULT_PULL_REQUEST_TITLE",
-]
+DEFAULT_PULL_REQUEST_TITLE = "sync: file sync performed by ansys-tools-repo-sync"
+"""Default title for the pull request created during synchronization."""
