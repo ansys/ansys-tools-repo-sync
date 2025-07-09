@@ -27,16 +27,17 @@ Run with:
 .. code::
 
     repo-sync \
-      --token <token> \
-      --owner <organization-name> \
-      --repository <repository-name> \
-      --from-dir <path-to-dir-containing-files-to-sync> \
-      --to-dir <target-dir-for-sync> \
-      --include-manifest <path-to-manifest>
+--token <token> \
+--owner <organization-name> \
+--repository <repository-name> \
+--from-dir <path-to-dir-containing-files-to-sync> \
+--to-dir <target-dir-for-sync> \
+--include-manifest <path-to-manifest>
 
 """
 import click
 
+from .constants import DEFAULT_BRANCH_NAME, DEFAULT_PULL_REQUEST_TITLE
 from .repo_sync import synchronize as _synchronize
 
 
@@ -99,6 +100,18 @@ from .repo_sync import synchronize as _synchronize
     default=False,
     help="Generates a random branch name instead of the typical ``sync/file-sync``. Used for testing purposes mainly.",
 )
+@click.option(
+    "--target-branch-name",
+    type=str,
+    default=DEFAULT_BRANCH_NAME,
+    help=f"Name of the branch to create for the synchronization, by default it is '{DEFAULT_BRANCH_NAME}'.",
+)
+@click.option(
+    "--pull-request-title",
+    type=str,
+    default=DEFAULT_PULL_REQUEST_TITLE,
+    help=f"Title of the pull request created after synchronization, by default it is {DEFAULT_PULL_REQUEST_TITLE}",
+)
 def synchronize(
     owner,
     repository,
@@ -112,6 +125,8 @@ def synchronize(
     dry_run,
     skip_ci,
     random_branch_name,
+    target_branch_name,
+    pull_request_title,
 ):
     """CLI command to execute the repository synchronization."""
     _synchronize(
@@ -127,6 +142,8 @@ def synchronize(
         dry_run=dry_run,
         skip_ci=skip_ci,
         random_branch_name=random_branch_name,
+        target_branch_name=target_branch_name,
+        pull_request_title=pull_request_title,
     )
 
 

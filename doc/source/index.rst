@@ -9,4 +9,4 @@
    :hidden:
    :maxdepth: 3
 
-   autoapi/index
+   api/index

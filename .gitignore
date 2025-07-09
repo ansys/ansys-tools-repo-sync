@@ -82,3 +82,4 @@ dmypy.json
 .vscode
 
 doc/_build
+doc/source/api

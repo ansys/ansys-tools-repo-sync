@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+"""Module containing the sync tool implementation."""
+
 from fnmatch import filter
 import os
 import re
@@ -29,6 +31,8 @@ from typing import List, Union
 
 from git import Repo
 from github import Auth, Github, GithubException
+
+from .constants import DEFAULT_BRANCH_NAME, DEFAULT_PULL_REQUEST_TITLE
 
 
 def include_patterns(*patterns):
@@ -148,6 +152,8 @@ def synchronize(
     dry_run: bool = False,
     skip_ci: bool = False,
     random_branch_name: bool = False,
+    target_branch_name: str = DEFAULT_BRANCH_NAME,
+    pull_request_title: str = DEFAULT_PULL_REQUEST_TITLE,
 ) -> Union[str, None]:
     """Synchronize a folder to a remote repository.
 
@@ -178,7 +184,12 @@ def synchronize(
     skip_ci : bool, optional
         Whether to add a ``[skip ci]`` prefix to the commit message or not. By default ``False``.
     random_branch_name : bool, optional
-        For testing purposes - generates a random suffix for the branch name ``sync/file-sync``.
+        For testing purposes - generates a random suffix for the branch name.
+    target_branch_name : str, optional
+        Name of the branch to create for the synchronization, by default it is 'sync/file-sync'.
+    pull_request_title : str, optional
+        Title of the pull request created after synchronization, by default it is
+        'sync: file sync performed by ansys-tools-repo-sync'.
 
     Returns
     -------
@@ -186,15 +197,11 @@ def synchronize(
         Pull request URL. In case of dry-run or no files modified, ``None`` is returned.
 
     """
-    # New branch name and PR title
-    new_branch_name = "sync/file-sync"
-    pr_title = "sync: file sync performed by ansys-tools-repo-sync"
-
     # If requested, add random suffix
     if random_branch_name:
         from secrets import token_urlsafe
 
-        new_branch_name = f"{new_branch_name}-{token_urlsafe(16)}"
+        target_branch_name = f"{target_branch_name}-{token_urlsafe(16)}"
 
     # Authenticate with GitHub
     g = Github(auth=Auth.Token(token))
@@ -240,18 +247,20 @@ def synchronize(
         dirs_exist_ok=True,
     )
 
-    print(f">>> Checking out new branch '{new_branch_name}' from '{branch_checked_out}'...")
+    print(f">>> Checking out new branch '{target_branch_name}' from '{branch_checked_out}'...")
     repo = Repo(repo_path)
     try:
         # Commit changes to a new branch
         repo.git.checkout(branch_checked_out)
-        repo.git.checkout("-b", new_branch_name)
-        print(f">>> Committing changes to branch '{new_branch_name}'...")
+        repo.git.checkout("-b", target_branch_name)
+        print(f">>> Committing changes to branch '{target_branch_name}'...")
         repo.git.add("--all")
         repo.index.commit(f"{'[skip ci] ' if skip_ci else ''}sync: add changes from local folder")
 
         # Get a list of the files modified
-        output = repo.git.diff("--compact-summary", f"{branch_checked_out}", f"{new_branch_name}")
+        output = repo.git.diff(
+            "--compact-summary", f"{branch_checked_out}", f"{target_branch_name}"
+        )
 
         # If output is empty, avoid creating PR
         if not output:
@@ -264,17 +273,17 @@ def synchronize(
         pull_request = None
         if not dry_run:
             # Push changes to remote repositories
-            print(f">>> Force-pushing branch '{new_branch_name}' remotely...")
-            repo.git.push("--force", "origin", new_branch_name)
+            print(f">>> Force-pushing branch '{target_branch_name}' remotely...")
+            repo.git.push("--force", "origin", target_branch_name)
 
             # Create a pull request
             try:
-                print(f">>> Creating pull request from '{new_branch_name}'...")
+                print(f">>> Creating pull request from '{target_branch_name}'...")
                 pull_request = pygithub_repo.create_pull(
-                    title=pr_title,
+                    title=pull_request_title,
                     body="Please review and merge these changes.",
                     base=branch_checked_out,
-                    head=new_branch_name,
+                    head=target_branch_name,
                 )
             except GithubException as err:
                 if err.args[0] == 422 or err.data["message"] == "Validation Failed":
@@ -286,7 +295,7 @@ def synchronize(
                     # Find the associated PR (must be opened...)
                     associated_pull_request = None
                     for pr in prs:
-                        if pr.head.ref == new_branch_name:
+                        if pr.head.ref == target_branch_name:
                             associated_pull_request = pr
                             break
 
