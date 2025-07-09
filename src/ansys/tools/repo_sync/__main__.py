@@ -99,6 +99,18 @@ from .repo_sync import synchronize as _synchronize
     default=False,
     help="Generates a random branch name instead of the typical ``sync/file-sync``. Used for testing purposes mainly.",
 )
+@click.option(
+    "--target-branch-name",
+    type=str,
+    default="sync/file-sync",
+    help="Name of the branch to create for the synchronization, by default it is 'sync/file-sync'.",
+)
+@click.option(
+    "--pull-request-title",
+    type=str,
+    default="sync: file sync performed by ansys-tools-repo-sync",
+    help="Title of the pull request created after synchronization.",
+)
 def synchronize(
     owner,
     repository,
@@ -112,6 +124,8 @@ def synchronize(
     dry_run,
     skip_ci,
     random_branch_name,
+    target_branch_name,
+    pull_request_title,
 ):
     """CLI command to execute the repository synchronization."""
     _synchronize(
@@ -127,6 +141,8 @@ def synchronize(
         dry_run=dry_run,
         skip_ci=skip_ci,
         random_branch_name=random_branch_name,
+        target_branch_name=target_branch_name,
+        pull_request_title=pull_request_title,
     )
 
 
