@@ -36,7 +36,7 @@ tests = [
     "pytest==8.4.1",
     "pytest-cov==6.2.1",
     "click==8.2.1",
-    "PyGithub==2.6.1",
+    "PyGithub==2.7.0",
     "gitpython==3.1.45",
 ]
 doc = [
