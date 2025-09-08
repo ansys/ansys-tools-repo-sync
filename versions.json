@@ -1,0 +1,27 @@
+[
+  {
+    "name": "dev",
+    "version": "dev",
+    "url": "https://ansys.github.io/ansys-tools-repo-sync/version/dev/"
+  },
+  {
+    "name": "1.4 (stable)",
+    "version": "1.4",
+    "url": "https://ansys.github.io/ansys-tools-repo-sync/version/stable/"
+  },
+  {
+    "name": "1.3",
+    "version": "1.3",
+    "url": "https://ansys.github.io/ansys-tools-repo-sync/version/1.3/"
+  },
+  {
+    "name": "1.2",
+    "version": "1.2",
+    "url": "https://ansys.github.io/ansys-tools-repo-sync/version/1.2/"
+  },
+  {
+    "name": "Older versions",
+    "version": "N/A",
+    "url": "https://ansys.github.io/ansys-tools-repo-sync/version/"
+  }
+]
