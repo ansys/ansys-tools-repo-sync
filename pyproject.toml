@@ -33,10 +33,10 @@ dependencies = [
 
 [project.optional-dependencies]
 tests = [
-    "pytest==8.4.1",
-    "pytest-cov==6.2.1",
+    "pytest==8.4.2",
+    "pytest-cov==6.3.0",
     "click==8.2.1",
-    "PyGithub==2.7.0",
+    "PyGithub==2.8.1",
     "gitpython==3.1.45",
 ]
 doc = [
