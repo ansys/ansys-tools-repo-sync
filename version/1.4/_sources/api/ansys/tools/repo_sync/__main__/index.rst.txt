@@ -1,0 +1,104 @@
+
+
+
+
+
+
+The ``__main__.py`` module
+==========================
+
+.. py:module:: ansys.tools.repo_sync.__main__
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+.. py:currentmodule:: __main__
+.. tab-set::
+
+
+
+
+
+
+
+    .. tab-item:: Functions
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~synchronize`
+            - CLI command to execute the repository synchronization.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Tool to copy the content of one repo toward an other.
+
+Run with:
+
+.. code::
+
+    repo-sync --token <token> --owner <organization-name> --repository <repository-name> --from-dir <path-to-dir-containing-files-to-sync> --to-dir <target-dir-for-sync> --include-manifest <path-to-manifest>
+
+..
+    !! processed by numpydoc !!
+
+
+
+
+
+
+Module detail
+-------------
+
+.. py:function:: synchronize(owner, repository, token, from_dir, to_dir, include_manifest, branch_checked_out, clean_to_dir, clean_to_dir_based_on_manifest, dry_run, skip_ci, random_branch_name, target_branch_name, pull_request_title)
+
+   
+   CLI command to execute the repository synchronization.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+
