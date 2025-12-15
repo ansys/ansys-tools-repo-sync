@@ -81,7 +81,7 @@ jobs:
           pytest-extra-args: "--cov=ansys.tools.repo_sync --cov-report=term --cov-report=html:.cov/html --cov-report=xml:.cov/coverage.xml"
 
       - name: Upload coverage results (HTML)
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         if: (matrix.python-version == env.MAIN_PYTHON_VERSION) && (runner.os == 'Linux')
         with:
           name: coverage-html
