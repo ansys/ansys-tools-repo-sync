@@ -35,6 +35,7 @@ Run with:
 --include-manifest <path-to-manifest>
 
 """
+
 import click
 
 from .constants import DEFAULT_BRANCH_NAME, DEFAULT_PULL_REQUEST_TITLE
