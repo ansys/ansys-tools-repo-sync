@@ -1,0 +1,129 @@
+
+
+
+
+
+
+The ``constants.py`` module
+===========================
+
+.. py:module:: ansys.tools.repo_sync.constants
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+.. py:currentmodule:: constants
+.. tab-set::
+
+
+
+
+
+
+
+
+
+    .. tab-item:: Constants
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~DEFAULT_BRANCH_NAME`
+            - Default branch name for the synchronization process.
+
+
+          * - :py:obj:`~DEFAULT_PULL_REQUEST_TITLE`
+            - Default title for the pull request created during synchronization.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Module containing constants for the repo sync tool.
+
+..
+    !! processed by numpydoc !!
+
+
+
+
+
+
+Module detail
+-------------
+
+.. py:data:: DEFAULT_BRANCH_NAME
+   :value: 'sync/file-sync'
+
+
+   
+   Default branch name for the synchronization process.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:data:: DEFAULT_PULL_REQUEST_TITLE
+   :value: 'sync: file sync performed by ansys-tools-repo-sync'
+
+
+   
+   Default title for the pull request created during synchronization.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+
