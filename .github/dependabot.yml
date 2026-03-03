@@ -6,8 +6,6 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
-    cooldown:
-      default-days: 5
     groups:
        dev-dependencies:
           patterns:
@@ -19,8 +17,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    cooldown:
-      default-days: 5
     groups:
        action-deps:
           patterns:
