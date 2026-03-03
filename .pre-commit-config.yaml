@@ -19,6 +19,11 @@ repos:
   - id: check-yaml
   - id: trailing-whitespace
 
+- repo: https://github.com/zizmorcore/zizmor-pre-commit
+  rev: v1.22.0
+  hooks:
+    - id: zizmor
+
 # this validates our github workflow files
 - repo: https://github.com/python-jsonschema/check-jsonschema
   rev: 0.37.0
