@@ -50,6 +50,7 @@ def include_patterns(*patterns):
 
     def _ignore_patterns(path, names):
         keep = set(name for pattern in patterns for name in filter(names, pattern))
+        # Ignore names that are not present in the "keep" set and are not directories
         ignore = set(
             name for name in names if name not in keep and not (Path(path) / name).is_dir()
         )
@@ -110,13 +111,11 @@ def delete_folder_contents(
         # List all files and directories in the folder
         for item_path in folder.iterdir():
             if item_path.is_file():
-                if clean_to_dir_based_on_manifest and any(
-                    [re.match(entry, item_path.name) is not None for entry in accepted_extensions]
+                if not clean_to_dir_based_on_manifest or any(
+                    re.match(entry, item_path.name) is not None for entry in accepted_extensions
                 ):
-                    # If it's a file, delete it
-                    item_path.unlink()
-                elif not clean_to_dir_based_on_manifest:
-                    # No manifest-based deletion... just delete it.
+                    # Clean all files if clean_to_dir_based_on_manifest is False,
+                    #  otherwise only the ones matching the manifest regex
                     item_path.unlink()
 
             elif item_path.is_dir():
@@ -124,12 +123,9 @@ def delete_folder_contents(
                 delete_folder_contents(
                     item_path, accepted_extensions, clean_to_dir_based_on_manifest
                 )
-                # After the contents are deleted
-                if clean_to_dir_based_on_manifest and not any(item_path.iterdir()):
-                    # With manifest-based deletion, only remove the directory in case it is empty
-                    item_path.rmdir()
-                elif not clean_to_dir_based_on_manifest:
-                    # Just remove the directory
+                # After the contents are deleted, remove the directory if it is empty
+                # or if manifest-based filtering is off
+                if not clean_to_dir_based_on_manifest or not any(item_path.iterdir()):
                     item_path.rmdir()
 
     except (FileNotFoundError, PermissionError, OSError) as e:  # pragma: no cover
