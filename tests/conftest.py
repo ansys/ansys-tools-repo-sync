@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -20,13 +20,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+"""Pytest helpers and fixtures for repo sync tests."""
+
 import os
+from pathlib import Path
 
 from github import Auth, Github
 
-TEST_PATH = os.path.dirname(os.path.abspath(__file__))
-ROOT_PATH = os.path.split(TEST_PATH)[0]
-ASSETS_DIRECTORY = os.path.join(TEST_PATH, "assets")
+TEST_PATH = Path(__file__).resolve().parent
+ROOT_PATH = TEST_PATH.parent
+ASSETS_DIRECTORY = TEST_PATH / "assets"
 TOKEN = os.environ.get("TOKEN")
 SKIP_LOCALLY = False if os.environ.get("ON_WORKFLOW") else True
 

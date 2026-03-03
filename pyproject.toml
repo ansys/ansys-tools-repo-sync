@@ -1,14 +1,15 @@
 [build-system]
-requires = ["flit_core >=3.2,<3.13"] # THIS SHOULD BE REVERTED TO '["flit_core >=3.2,<4"]'
-build-backend = "flit_core.buildapi"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "ansys-tools-repo-sync"
-version = "1.3.dev0"
+version = "1.4.dev0"
 description = "Synchronize the content of two different repositories."
 readme = "README.rst"
 requires-python = ">=3.10,<4"
-license = {file = "LICENSE"}
+license = "MIT"
+license-files = [ "LICENSE" ]
 authors = [
     {name = "ANSYS, Inc.", email = "pyansys.core@ansys.com"},
 ]
@@ -21,7 +22,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.14",
     "Operating System :: OS Independent",
 ]
 
@@ -31,24 +32,26 @@ dependencies = [
     "gitpython>=3.1",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
+dev = [
+    "pre-commit",
+    { include-group = "tests" },
+    { include-group = "doc" },
+]
 tests = [
-    "pytest==8.4.1",
-    "pytest-cov==6.2.1",
-    "click==8.2.1",
-    "PyGithub==2.6.1",
-    "gitpython==3.1.44",
+    "pytest==9.0.2",
+    "pytest-cov==7.0.0",
+    "click==8.3.1",
+    "PyGithub==2.8.1",
+    "gitpython==3.1.46",
 ]
 doc = [
-    "ansys-sphinx-theme[autoapi]==1.5.3",
-    "numpydoc==1.9.0",
-    "sphinx==8.2.3",
-    "sphinx-autodoc-typehints==3.1.0",
+    "ansys-sphinx-theme[autoapi]==1.7.2",
+    "numpydoc==1.10.0",
+    "sphinx==9.1.0; python_version >= '3.12'",
+    "sphinx-autodoc-typehints==3.9.5; python_version >= '3.12'",
     "sphinx-copybutton==0.5.2",
 ]
-
-[tool.flit.module]
-name = "ansys.tools.repo_sync"
 
 [project.scripts]
 repo-sync = "ansys.tools.repo_sync.__main__:synchronize"
@@ -58,20 +61,44 @@ Source = "https://github.com/ansys/ansys-tools-repo-sync"
 Tracker = "https://github.com/ansys/ansys-tools-repo-sync/issues"
 Homepage = "https://github.com/ansys/ansys-tools-repo-sync"
 
+[tool.hatch.build.targets.wheel]
+packages = ["src/ansys"]
+
+[tool.uv]
+default-groups = ["dev"]
+package = true
+
 [tool.codespell]
 skip="*.pyc,*.xml,*.txt,*.gif,*.png,*.jpg,*.js,*.html,*.doctree,*.ttf,*.woff,*.woff2,*.eot,*.mp4,*.inv,*.pickle,*.ipynb,flycheck*,./.git/*,./.hypothesis/*,*.yml,./docs/build/*,./docs/images/*,./dist/*,*~,.hypothesis*,./docs/source/examples/*,*cover,*.dat,*.mac"
 
-[tool.black]
+[tool.ruff]
 line-length = 100
+fix = true
 
-[tool.isort]
-profile = "black"
-force_sort_within_sections = true
-line_length = 100
-src_paths = ["doc", "src", "tests"]
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
 
-[tool.pydocstyle]
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle, see https://docs.astral.sh/ruff/rules/#pycodestyle-e-w
+    "D",    # pydocstyle, see https://docs.astral.sh/ruff/rules/#pydocstyle-d
+    "F",    # pyflakes, see https://docs.astral.sh/ruff/rules/#pyflakes-f
+    "I",    # isort, see https://docs.astral.sh/ruff/rules/#isort-i
+    "N",    # pep8-naming, see https://docs.astral.sh/ruff/rules/#pep8-naming-n
+    "PTH",  # flake8-use-pathlib, https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth
+    "TD",   # flake8-todos, https://docs.astral.sh/ruff/rules/#flake8-todos-td
+]
+
+[tool.ruff.lint.pydocstyle]
 convention = "numpy"
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-sort-within-sections = true
+known-first-party = ["ansys.tools.repo_sync"]
 
 [tool.mypy]
 strict = true

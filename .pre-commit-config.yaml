@@ -1,34 +1,18 @@
 repos:
-- repo: https://github.com/psf/black
-  rev: 25.1.0
-  hooks:
-  - id: black
-
-- repo: https://github.com/pycqa/isort
-  rev: 6.0.1
-  hooks:
-  - id: isort
-
-- repo: https://github.com/PyCQA/flake8
-  rev: 7.3.0
-  hooks:
-  - id: flake8
-
 - repo: https://github.com/codespell-project/codespell
   rev: v2.4.1
   hooks:
   - id: codespell
     args: ["--ignore-words", "doc/styles/config/vocabularies/ANSYS/accept.txt", "-w"]
 
-- repo: https://github.com/pycqa/pydocstyle
-  rev: 6.3.0
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.15.1
   hooks:
-  - id: pydocstyle
-    args: ["--ignore=D205,D100,D213"]
-    additional_dependencies: [toml]
+    - id: ruff-check
+    - id: ruff-format
 
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v5.0.0
+  rev: v6.0.0
   hooks:
   - id: check-merge-conflict
   - id: debug-statements

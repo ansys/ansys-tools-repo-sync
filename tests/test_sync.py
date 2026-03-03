@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -20,7 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
+"""Integration tests for repo synchronization behavior."""
+
 import shutil
 import subprocess
 
@@ -41,13 +42,12 @@ from .conftest import (
 
 def test_synchronize():
     """Test synchronization tool (without manifest)."""
-
     # Define your test data here
     owner = "ansys"
     repository = "ansys-tools-repo-sync"
-    from_dir = os.path.join(ASSETS_DIRECTORY, "ansys")
+    from_dir = ASSETS_DIRECTORY / "ansys"
     to_dir = "src/ansys"
-    manifest = os.path.join(ASSETS_DIRECTORY, "manifest.txt")
+    manifest = ASSETS_DIRECTORY / "manifest.txt"
 
     # Call the function
     result = None
@@ -64,7 +64,7 @@ def test_synchronize():
         )
 
         # Assertions or validations
-        assert f"https://github.com/ansys/ansys-tools-repo-sync/pull/" in result
+        assert "https://github.com/ansys/ansys-tools-repo-sync/pull/" in result
 
         # Check that the proper modified files have been added
         list_of_files = ["src/ansys/api/test/v0/hello_world.py", "src/ansys/api/test/v0/test.proto"]
@@ -79,16 +79,16 @@ def test_synchronize():
 
 def test_synchronize_to_existing_pr():
     """Test synchronization tool (when PR already exists)."""
-
     # Define your test data here
     owner = "ansys"
     repository = "ansys-tools-repo-sync"
-    from_dir = os.path.join(ASSETS_DIRECTORY, "ansys")
+    from_dir = ASSETS_DIRECTORY / "ansys"
     to_dir = "src/ansys"
-    manifest = os.path.join(ASSETS_DIRECTORY, "manifest.txt")
+    manifest = ASSETS_DIRECTORY / "manifest.txt"
 
     # Call the function
     result = None
+    result_pr_already_exists = None
     try:
         result = synchronize(
             owner=owner,
@@ -101,7 +101,7 @@ def test_synchronize_to_existing_pr():
         )
 
         # Assertions or validations
-        assert f"https://github.com/ansys/ansys-tools-repo-sync/pull/" in result
+        assert "https://github.com/ansys/ansys-tools-repo-sync/pull/" in result
 
         # Call the function again - and check that the PR already exists.
         result_pr_already_exists = synchronize(
@@ -132,13 +132,12 @@ def test_synchronize_to_existing_pr():
 
 def test_synchronize_with_only_proto_manifest():
     """Test synchronization tool (with manifest)."""
-
     # Define your test data here
     owner = "ansys"
     repository = "ansys-tools-repo-sync"
-    from_dir = os.path.join(ASSETS_DIRECTORY, "ansys")
+    from_dir = ASSETS_DIRECTORY / "ansys"
     to_dir = "src/ansys"
-    manifest = os.path.join(ASSETS_DIRECTORY, "manifest_only_proto.txt")
+    manifest = ASSETS_DIRECTORY / "manifest_only_proto.txt"
 
     # Call the function
     result = None
@@ -155,7 +154,7 @@ def test_synchronize_with_only_proto_manifest():
         )
 
         # Assertions or validations
-        assert f"https://github.com/ansys/ansys-tools-repo-sync/pull/" in result
+        assert "https://github.com/ansys/ansys-tools-repo-sync/pull/" in result
 
         # Check that the proper modified files have been added
         list_of_files = ["src/ansys/api/test/v0/test.proto"]
@@ -170,13 +169,12 @@ def test_synchronize_with_only_proto_manifest():
 
 def test_synchronize_no_sync_needed():
     """Test synchronization tool (with manifest referring to non-existing files)."""
-
     # Define your test data here
     owner = "ansys"
     repository = "ansys-tools-repo-sync"
-    from_dir = os.path.join(ASSETS_DIRECTORY, "ansys")
+    from_dir = ASSETS_DIRECTORY / "ansys"
     to_dir = "src/ansys"
-    manifest = os.path.join(ASSETS_DIRECTORY, "manifest_no_files.txt")
+    manifest = ASSETS_DIRECTORY / "manifest_no_files.txt"
 
     # Call the function
     result = None
@@ -211,13 +209,12 @@ def test_synchronize_with_cleanup_and_dry_run(capsys):
     Executed in dry-run mode.
 
     """
-
     # Define your test data here
     owner = "ansys"
     repository = "ansys-tools-repo-sync"
-    from_dir = os.path.join(ASSETS_DIRECTORY, "ansys")
+    from_dir = ASSETS_DIRECTORY / "ansys"
     to_dir = "src/ansys"
-    manifest = os.path.join(ASSETS_DIRECTORY, "manifest.txt")
+    manifest = ASSETS_DIRECTORY / "manifest.txt"
 
     # Call the function
     result = synchronize(
@@ -248,22 +245,19 @@ def test_synchronize_with_cleanup_and_dry_run(capsys):
 
 
 def test_synchronize_with_cleanup_based_on_manifest_and_dry_run(capsys):
-    """
-    Test synchronization tool (with --clean-to-dir and
-    --clean-to-dir-based-on-manifest flags).
+    """Test synchronization tool with manifest-based cleanup.
 
     Notes
     -----
     Executed in dry-run mode.
 
     """
-
     # Define your test data here
     owner = "ansys"
     repository = "ansys-tools-repo-sync"
-    from_dir = os.path.join(ASSETS_DIRECTORY, "ansys")
+    from_dir = ASSETS_DIRECTORY / "ansys"
     to_dir = "src/ansys"
-    manifest = os.path.join(ASSETS_DIRECTORY, "manifest_proto_and_init.txt")
+    manifest = ASSETS_DIRECTORY / "manifest_proto_and_init.txt"
 
     # Call the function
     result = synchronize(
@@ -297,7 +291,6 @@ def test_synchronize_with_cleanup_based_on_manifest_and_dry_run(capsys):
 @pytest.mark.skipif(SKIP_LOCALLY, reason="Only runs on workflow")
 def test_synchronize_from_cli(tmpdir):
     """Test synchronization tool (without manifest) from CLI."""
-
     # Define a temp directory and copy assets in it
     shutil.copytree(
         ASSETS_DIRECTORY,
@@ -360,7 +353,6 @@ def test_synchronize_from_cli(tmpdir):
 @pytest.mark.skipif(SKIP_LOCALLY, reason="Only runs on workflow")
 def test_synchronize_with_only_proto_manifest_from_cli(tmpdir):
     """Test synchronization tool (with manifest) from CLI."""
-
     # Define a temp directory and copy assets in it
     shutil.copytree(
         ASSETS_DIRECTORY,
@@ -430,7 +422,6 @@ def test_synchronize_with_cleanup_cli(tmpdir):
     Executed in dry-run mode.
 
     """
-
     # Define a temp directory and copy assets in it
     shutil.copytree(
         ASSETS_DIRECTORY,
@@ -495,7 +486,6 @@ def test_synchronize_with_cleanup_cli(tmpdir):
 @pytest.mark.skipif(SKIP_LOCALLY, reason="Only runs on workflow")
 def test_synchronize_with_no_sync_cli(tmpdir):
     """Test synchronization tool (with no files needed to be synced) from CLI."""
-
     # Define a temp directory and copy assets in it
     shutil.copytree(
         ASSETS_DIRECTORY,
