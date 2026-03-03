@@ -22,6 +22,7 @@
 
 """Integration tests for repo synchronization behavior."""
 
+import dataclasses
 import shutil
 import subprocess
 
@@ -31,6 +32,7 @@ from ansys.tools.repo_sync.repo_sync import synchronize
 
 from .conftest import (
     ASSETS_DIRECTORY,
+    DEFAULT_SYNC_CONFIG,
     ROOT_PATH,
     SKIP_LOCALLY,
     TOKEN,
@@ -42,75 +44,67 @@ from .conftest import (
 
 def test_synchronize():
     """Test synchronization tool (without manifest)."""
-    # Define your test data here
-    owner = "ansys"
-    repository = "ansys-tools-repo-sync"
-    from_dir = ASSETS_DIRECTORY / "ansys"
-    to_dir = "src/ansys"
-    manifest = ASSETS_DIRECTORY / "manifest.txt"
+    cfg = DEFAULT_SYNC_CONFIG
 
     # Call the function
     result = None
     try:
         result = synchronize(
-            owner=owner,
-            repository=repository,
+            owner=cfg.owner,
+            repository=cfg.repository,
             token=TOKEN,
-            from_dir=from_dir,
-            to_dir=to_dir,
-            include_manifest=manifest,
+            from_dir=cfg.from_dir,
+            to_dir=cfg.to_dir,
+            include_manifest=cfg.manifest,
             skip_ci=True,
             random_branch_name=True,
         )
 
         # Assertions or validations
+        assert result is not None
         assert "https://github.com/ansys/ansys-tools-repo-sync/pull/" in result
 
         # Check that the proper modified files have been added
         list_of_files = ["src/ansys/api/test/v0/hello_world.py", "src/ansys/api/test/v0/test.proto"]
-        assert check_files_in_pr(owner, repository, result, list_of_files)
+        assert check_files_in_pr(cfg.owner, cfg.repository, result, list_of_files)
 
     except Exception as err:
         raise err
     finally:
         if result:
-            cleanup_remote_repo(owner, repository, result)
+            cleanup_remote_repo(cfg.owner, cfg.repository, result)
 
 
 def test_synchronize_to_existing_pr():
     """Test synchronization tool (when PR already exists)."""
-    # Define your test data here
-    owner = "ansys"
-    repository = "ansys-tools-repo-sync"
-    from_dir = ASSETS_DIRECTORY / "ansys"
-    to_dir = "src/ansys"
-    manifest = ASSETS_DIRECTORY / "manifest.txt"
+    cfg = DEFAULT_SYNC_CONFIG
 
     # Call the function
     result = None
     result_pr_already_exists = None
     try:
         result = synchronize(
-            owner=owner,
-            repository=repository,
+            owner=cfg.owner,
+            repository=cfg.repository,
             token=TOKEN,
-            from_dir=from_dir,
-            to_dir=to_dir,
-            include_manifest=manifest,
+            from_dir=cfg.from_dir,
+            to_dir=cfg.to_dir,
+            include_manifest=cfg.manifest,
             skip_ci=True,
         )
 
         # Assertions or validations
+        assert result is not None
         assert "https://github.com/ansys/ansys-tools-repo-sync/pull/" in result
 
         # Call the function again - and check that the PR already exists.
         result_pr_already_exists = synchronize(
-            owner=owner,
-            repository=repository,
+            owner=cfg.owner,
+            repository=cfg.repository,
             token=TOKEN,
-            from_dir=from_dir,
-            to_dir=to_dir,
-            include_manifest=manifest,
+            from_dir=cfg.from_dir,
+            to_dir=cfg.to_dir,
+            include_manifest=cfg.manifest,
             skip_ci=True,
         )
 
@@ -119,73 +113,68 @@ def test_synchronize_to_existing_pr():
 
         # Check that the proper modified files have been added
         list_of_files = ["src/ansys/api/test/v0/hello_world.py", "src/ansys/api/test/v0/test.proto"]
-        assert check_files_in_pr(owner, repository, result, list_of_files)
+        assert check_files_in_pr(cfg.owner, cfg.repository, result, list_of_files)
 
     except Exception as err:
         raise err
     finally:
         if result:
-            cleanup_remote_repo(owner, repository, result)
+            cleanup_remote_repo(cfg.owner, cfg.repository, result)
         if result_pr_already_exists and result != result_pr_already_exists:
-            cleanup_remote_repo(owner, result_pr_already_exists, result)
+            cleanup_remote_repo(cfg.owner, result_pr_already_exists, result)
 
 
 def test_synchronize_with_only_proto_manifest():
     """Test synchronization tool (with manifest)."""
-    # Define your test data here
-    owner = "ansys"
-    repository = "ansys-tools-repo-sync"
-    from_dir = ASSETS_DIRECTORY / "ansys"
-    to_dir = "src/ansys"
-    manifest = ASSETS_DIRECTORY / "manifest_only_proto.txt"
+    cfg = dataclasses.replace(
+        DEFAULT_SYNC_CONFIG, manifest=ASSETS_DIRECTORY / "manifest_only_proto.txt"
+    )
 
     # Call the function
     result = None
     try:
         result = synchronize(
-            owner=owner,
-            repository=repository,
+            owner=cfg.owner,
+            repository=cfg.repository,
             token=TOKEN,
-            from_dir=from_dir,
-            to_dir=to_dir,
-            include_manifest=manifest,
+            from_dir=cfg.from_dir,
+            to_dir=cfg.to_dir,
+            include_manifest=cfg.manifest,
             skip_ci=True,
             random_branch_name=True,
         )
 
         # Assertions or validations
+        assert result is not None
         assert "https://github.com/ansys/ansys-tools-repo-sync/pull/" in result
 
         # Check that the proper modified files have been added
         list_of_files = ["src/ansys/api/test/v0/test.proto"]
-        assert check_files_in_pr(owner, repository, result, list_of_files)
+        assert check_files_in_pr(cfg.owner, cfg.repository, result, list_of_files)
 
     except Exception as err:
         raise err
     finally:
         if result:
-            cleanup_remote_repo(owner, repository, result)
+            cleanup_remote_repo(cfg.owner, cfg.repository, result)
 
 
 def test_synchronize_no_sync_needed():
     """Test synchronization tool (with manifest referring to non-existing files)."""
-    # Define your test data here
-    owner = "ansys"
-    repository = "ansys-tools-repo-sync"
-    from_dir = ASSETS_DIRECTORY / "ansys"
-    to_dir = "src/ansys"
-    manifest = ASSETS_DIRECTORY / "manifest_no_files.txt"
+    cfg = dataclasses.replace(
+        DEFAULT_SYNC_CONFIG, manifest=ASSETS_DIRECTORY / "manifest_no_files.txt"
+    )
 
     # Call the function
     result = None
     try:
         result = synchronize(
-            owner=owner,
-            repository=repository,
+            owner=cfg.owner,
+            repository=cfg.repository,
             token=TOKEN,
-            from_dir=from_dir,
-            to_dir=to_dir,
-            include_manifest=manifest,
+            from_dir=cfg.from_dir,
+            to_dir=cfg.to_dir,
+            include_manifest=cfg.manifest,
             skip_ci=True,
             random_branch_name=True,
         )
@@ -197,7 +186,7 @@ def test_synchronize_no_sync_needed():
         raise err
     finally:
         if result:
-            cleanup_remote_repo(owner, repository, result)
+            cleanup_remote_repo(cfg.owner, cfg.repository, result)
 
 
 def test_synchronize_with_cleanup_and_dry_run(capsys):
@@ -209,21 +198,16 @@ def test_synchronize_with_cleanup_and_dry_run(capsys):
     Executed in dry-run mode.
 
     """
-    # Define your test data here
-    owner = "ansys"
-    repository = "ansys-tools-repo-sync"
-    from_dir = ASSETS_DIRECTORY / "ansys"
-    to_dir = "src/ansys"
-    manifest = ASSETS_DIRECTORY / "manifest.txt"
+    cfg = DEFAULT_SYNC_CONFIG
 
     # Call the function
     result = synchronize(
-        owner=owner,
-        repository=repository,
+        owner=cfg.owner,
+        repository=cfg.repository,
         token=TOKEN,
-        from_dir=from_dir,
-        to_dir=to_dir,
-        include_manifest=manifest,
+        from_dir=cfg.from_dir,
+        to_dir=cfg.to_dir,
+        include_manifest=cfg.manifest,
         clean_to_dir=True,
         skip_ci=True,
         random_branch_name=True,
@@ -252,21 +236,18 @@ def test_synchronize_with_cleanup_based_on_manifest_and_dry_run(capsys):
     Executed in dry-run mode.
 
     """
-    # Define your test data here
-    owner = "ansys"
-    repository = "ansys-tools-repo-sync"
-    from_dir = ASSETS_DIRECTORY / "ansys"
-    to_dir = "src/ansys"
-    manifest = ASSETS_DIRECTORY / "manifest_proto_and_init.txt"
+    cfg = dataclasses.replace(
+        DEFAULT_SYNC_CONFIG, manifest=ASSETS_DIRECTORY / "manifest_proto_and_init.txt"
+    )
 
     # Call the function
     result = synchronize(
-        owner=owner,
-        repository=repository,
+        owner=cfg.owner,
+        repository=cfg.repository,
         token=TOKEN,
-        from_dir=from_dir,
-        to_dir=to_dir,
-        include_manifest=manifest,
+        from_dir=cfg.from_dir,
+        to_dir=cfg.to_dir,
+        include_manifest=cfg.manifest,
         clean_to_dir=True,
         clean_to_dir_based_on_manifest=True,
         skip_ci=True,
@@ -291,6 +272,8 @@ def test_synchronize_with_cleanup_based_on_manifest_and_dry_run(capsys):
 @pytest.mark.skipif(SKIP_LOCALLY, reason="Only runs on workflow")
 def test_synchronize_from_cli(tmpdir):
     """Test synchronization tool (without manifest) from CLI."""
+    cfg = DEFAULT_SYNC_CONFIG
+
     # Define a temp directory and copy assets in it
     shutil.copytree(
         ASSETS_DIRECTORY,
@@ -317,22 +300,22 @@ def test_synchronize_from_cli(tmpdir):
             "--token",
             TOKEN,
             "--owner",
-            "ansys",
+            cfg.owner,
             "--repository",
-            "ansys-tools-repo-sync",
+            cfg.repository,
             "--from-dir",
-            "ansys",
+            cfg.from_dir.name,
             "--to-dir",
-            "src/ansys",
+            cfg.to_dir,
             "--include-manifest",
-            "manifest.txt",
+            cfg.manifest.name,
             "--skip-ci",
             "--random-branch-name",
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         cwd=tmpdir,
-    )
+    )  # ty:ignore[no-matching-overload]
 
     # Check output info
     print(completed_process.returncode)
@@ -340,19 +323,23 @@ def test_synchronize_from_cli(tmpdir):
     print(completed_process.stderr)
 
     # Get the PR associated to the CLI
-    pr_url = get_pr_from_cli("ansys", "ansys-tools-repo-sync", completed_process.stdout)
+    pr_url = get_pr_from_cli(cfg.owner, cfg.repository, completed_process.stdout)
 
     # Check that the proper modified files have been added
     list_of_files = ["src/ansys/api/test/v0/hello_world.py", "src/ansys/api/test/v0/test.proto"]
-    assert check_files_in_pr("ansys", "ansys-tools-repo-sync", pr_url, list_of_files)
+    assert check_files_in_pr(cfg.owner, cfg.repository, pr_url, list_of_files)
 
     # Clean up remote repo
-    cleanup_remote_repo("ansys", "ansys-tools-repo-sync", pr_url)
+    cleanup_remote_repo(cfg.owner, cfg.repository, pr_url)
 
 
 @pytest.mark.skipif(SKIP_LOCALLY, reason="Only runs on workflow")
 def test_synchronize_with_only_proto_manifest_from_cli(tmpdir):
     """Test synchronization tool (with manifest) from CLI."""
+    cfg = dataclasses.replace(
+        DEFAULT_SYNC_CONFIG, manifest=ASSETS_DIRECTORY / "manifest_only_proto.txt"
+    )
+
     # Define a temp directory and copy assets in it
     shutil.copytree(
         ASSETS_DIRECTORY,
@@ -379,22 +366,22 @@ def test_synchronize_with_only_proto_manifest_from_cli(tmpdir):
             "--token",
             TOKEN,
             "--owner",
-            "ansys",
+            cfg.owner,
             "--repository",
-            "ansys-tools-repo-sync",
+            cfg.repository,
             "--from-dir",
-            "ansys",
+            cfg.from_dir.name,
             "--to-dir",
-            "src/ansys",
+            cfg.to_dir,
             "--include-manifest",
-            "manifest_only_proto.txt",
+            cfg.manifest.name,
             "--skip-ci",
             "--random-branch-name",
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         cwd=tmpdir,
-    )
+    )  # ty:ignore[no-matching-overload]
 
     # Check output info
     print(completed_process.returncode)
@@ -402,14 +389,14 @@ def test_synchronize_with_only_proto_manifest_from_cli(tmpdir):
     print(completed_process.stderr)
 
     # Get the PR associated to the CLI
-    pr_url = get_pr_from_cli("ansys", "ansys-tools-repo-sync", completed_process.stdout)
+    pr_url = get_pr_from_cli(cfg.owner, cfg.repository, completed_process.stdout)
 
     # Check that the proper modified files have been added
     list_of_files = ["src/ansys/api/test/v0/test.proto"]
-    assert check_files_in_pr("ansys", "ansys-tools-repo-sync", pr_url, list_of_files)
+    assert check_files_in_pr(cfg.owner, cfg.repository, pr_url, list_of_files)
 
     # Clean up remote repo
-    cleanup_remote_repo("ansys", "ansys-tools-repo-sync", pr_url)
+    cleanup_remote_repo(cfg.owner, cfg.repository, pr_url)
 
 
 @pytest.mark.skipif(SKIP_LOCALLY, reason="Only runs on workflow")
@@ -422,6 +409,8 @@ def test_synchronize_with_cleanup_cli(tmpdir):
     Executed in dry-run mode.
 
     """
+    cfg = DEFAULT_SYNC_CONFIG
+
     # Define a temp directory and copy assets in it
     shutil.copytree(
         ASSETS_DIRECTORY,
@@ -448,15 +437,15 @@ def test_synchronize_with_cleanup_cli(tmpdir):
             "--token",
             TOKEN,
             "--owner",
-            "ansys",
+            cfg.owner,
             "--repository",
-            "ansys-tools-repo-sync",
+            cfg.repository,
             "--from-dir",
-            "ansys",
+            cfg.from_dir.name,
             "--to-dir",
-            "src/ansys",
+            cfg.to_dir,
             "--include-manifest",
-            "manifest.txt",
+            cfg.manifest.name,
             "--skip-ci",
             "--random-branch-name",
             "--clean-to-dir",
@@ -465,7 +454,7 @@ def test_synchronize_with_cleanup_cli(tmpdir):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         cwd=tmpdir,
-    )
+    )  # ty:ignore[no-matching-overload]
 
     # Check output info
     print(completed_process.returncode)
@@ -486,6 +475,10 @@ def test_synchronize_with_cleanup_cli(tmpdir):
 @pytest.mark.skipif(SKIP_LOCALLY, reason="Only runs on workflow")
 def test_synchronize_with_no_sync_cli(tmpdir):
     """Test synchronization tool (with no files needed to be synced) from CLI."""
+    cfg = dataclasses.replace(
+        DEFAULT_SYNC_CONFIG, manifest=ASSETS_DIRECTORY / "manifest_no_files.txt"
+    )
+
     # Define a temp directory and copy assets in it
     shutil.copytree(
         ASSETS_DIRECTORY,
@@ -512,22 +505,22 @@ def test_synchronize_with_no_sync_cli(tmpdir):
             "--token",
             TOKEN,
             "--owner",
-            "ansys",
+            cfg.owner,
             "--repository",
-            "ansys-tools-repo-sync",
+            cfg.repository,
             "--from-dir",
-            "ansys",
+            cfg.from_dir.name,
             "--to-dir",
-            "src/ansys",
+            cfg.to_dir,
             "--include-manifest",
-            "manifest_no_files.txt",
+            cfg.manifest.name,
             "--skip-ci",
             "--random-branch-name",
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         cwd=tmpdir,
-    )
+    )  # ty:ignore[no-matching-overload]
 
     # Check output info
     print(completed_process.returncode)

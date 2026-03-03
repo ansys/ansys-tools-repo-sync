@@ -140,9 +140,9 @@ def synchronize(
     owner: str,
     repository: str,
     token: str,
-    from_dir: str,
-    to_dir: str,
-    include_manifest: str,
+    from_dir: str | Path,
+    to_dir: str | Path,
+    include_manifest: str | Path,
     branch_checked_out: str = "main",
     clean_to_dir: bool = False,
     clean_to_dir_based_on_manifest: bool = False,
@@ -162,11 +162,11 @@ def synchronize(
         Repository name.
     token : str
         GitHub access token.
-    from_dir : str
+    from_dir : str | Path
         Directory from which files want to be synced.
-    to_dir : str
+    to_dir : str | Path
         Directory to which files want to be synced (w.r.t. the root of the repository).
-    include_manifest : str
+    include_manifest : str | Path
         Path to manifest which mentions accepted extension files.
     branch_checked_out : str, optional
         Branch to check out, by default "main".
