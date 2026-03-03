@@ -149,8 +149,8 @@ jobs:
     # Specifying a GitHub environment is optional, but strongly encouraged
     environment: release
     permissions:
-      id-token: write # Required for GitHub release
-      contents: write # Required for GitHub release
+      id-token: write # Required for OIDC authentication with PyPI
+      contents: write # Required for OIDC authentication with PyPI
     steps:
       - name: Release to GitHub
         uses: ansys/actions/release-github@3931ac9351b13ae11b1203c2ef6b51e5c75502ea # v10.2.5
@@ -207,8 +207,8 @@ jobs:
     needs: [build-library]
     if: github.event_name == 'pull_request'
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write # Required to allow automerge
+      pull-requests: write # Required to allow automerge
     steps:
       - name: Automerge PRs
         uses: ansys/actions/hk-automerge-prs@3931ac9351b13ae11b1203c2ef6b51e5c75502ea # v10.2.5
