@@ -4,7 +4,7 @@ requires = [ "hatchling" ]
 
 [project]
 name = "ansys-tools-repo-sync"
-version = "1.4.dev0"
+version = "1.5.0"
 description = "Synchronize the content of two different repositories."
 readme = "README.rst"
 license = "MIT"
