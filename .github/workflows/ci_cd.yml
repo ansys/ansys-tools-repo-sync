@@ -181,7 +181,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           library-name: ${{ env.LIBRARY_NAME }}
-          additional-artifacts: windows-core-dockerfile.zip linux-core-dockerfile.zip
           add-artifact-attestation-notes: true
           changelog-release-notes: true
 
