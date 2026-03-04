@@ -10,3 +10,4 @@
    :maxdepth: 3
 
    api/index
+   changelog

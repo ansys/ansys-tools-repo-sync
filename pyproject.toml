@@ -103,3 +103,20 @@ known-first-party = ["ansys.tools.repo_sync"]
 [tool.mypy]
 strict = true
 ignore_missing_imports = true
+
+[tool.towncrier]
+directory = "doc/changelog.d"
+filename = "doc/source/changelog.rst"
+template = "doc/changelog.d/changelog_template.jinja"
+start_string = ".. towncrier release notes start\n"
+title_format = "`{version} <https://github.com/ansys/ansys-tools-repo-sync/releases/tag/v{version}>`_ - {project_date}"
+issue_format = "`#{issue} <https://github.com/ansys/ansys-tools-repo-sync/pull/{issue}>`_"
+type = [
+  { directory = "added", name = "Added", showcontent = true },
+  { directory = "dependencies", name = "Dependencies", showcontent = true },
+  { directory = "documentation", name = "Documentation", showcontent = true },
+  { directory = "fixed", name = "Fixed", showcontent = true },
+  { directory = "maintenance", name = "Maintenance", showcontent = true },
+  { directory = "miscellaneous", name = "Miscellaneous", showcontent = true },
+  { directory = "test", name = "Test", showcontent = true },
+]

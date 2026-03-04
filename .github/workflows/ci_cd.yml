@@ -22,6 +22,20 @@ permissions:
 
 jobs:
 
+  update-changelog:
+    name: "Update CHANGELOG (on release)"
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to create the changelog on the release branch
+      pull-requests: write # Required to create on main the associated PR with the changelog
+    steps:
+      - uses: ansys/actions/doc-deploy-changelog@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
+        with:
+          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+          bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
+          bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
+
   actions-security:
     name: Actions Security
     runs-on: ubuntu-latest
@@ -154,7 +168,7 @@ jobs:
   release:
     name: Release project to GitHub
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-    needs: [build-library]
+    needs: [build-library, update-changelog]
     runs-on: ubuntu-latest
     # Specifying a GitHub environment is optional, but strongly encouraged
     environment: release
@@ -174,7 +188,7 @@ jobs:
   release-pypi:
     name: Release project to PyPI
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-    needs: [build-library]
+    needs: [build-library, update-changelog]
     runs-on: ubuntu-latest
     # Specifying a GitHub environment is optional, but strongly encouraged
     environment: release
