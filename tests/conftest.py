@@ -20,15 +20,39 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+"""Pytest helpers and fixtures for repo sync tests."""
+
+from dataclasses import dataclass
 import os
+from pathlib import Path
 
 from github import Auth, Github
 
-TEST_PATH = os.path.dirname(os.path.abspath(__file__))
-ROOT_PATH = os.path.split(TEST_PATH)[0]
-ASSETS_DIRECTORY = os.path.join(TEST_PATH, "assets")
-TOKEN = os.environ.get("TOKEN")
+TEST_PATH = Path(__file__).resolve().parent
+ROOT_PATH = TEST_PATH.parent
+ASSETS_DIRECTORY = TEST_PATH / "assets"
+TOKEN = os.environ.get("TOKEN", "NOTOKEN")
 SKIP_LOCALLY = False if os.environ.get("ON_WORKFLOW") else True
+
+
+@dataclass
+class SyncTestConfig:
+    """Configuration for a repo-sync test scenario."""
+
+    owner: str
+    repository: str
+    from_dir: Path
+    to_dir: str
+    manifest: Path
+
+
+DEFAULT_SYNC_CONFIG = SyncTestConfig(
+    owner="ansys",
+    repository="ansys-tools-repo-sync",
+    from_dir=ASSETS_DIRECTORY / "ansys",
+    to_dir="src/ansys",
+    manifest=ASSETS_DIRECTORY / "manifest.txt",
+)
 
 
 def cleanup_remote_repo(owner, repository, pull_request_url):

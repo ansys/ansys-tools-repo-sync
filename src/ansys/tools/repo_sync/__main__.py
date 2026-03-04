@@ -99,19 +99,28 @@ from .repo_sync import synchronize as _synchronize
     "--random-branch-name",
     is_flag=True,
     default=False,
-    help="Generates a random branch name instead of the typical ``sync/file-sync``. Used for testing purposes mainly.",
+    help=(
+        "Generates a random branch name instead of the typical ``sync/file-sync``. "
+        "Used for testing purposes mainly."
+    ),
 )
 @click.option(
     "--target-branch-name",
     type=str,
     default=DEFAULT_BRANCH_NAME,
-    help=f"Name of the branch to create for the synchronization, by default it is '{DEFAULT_BRANCH_NAME}'.",
+    help=(
+        "Name of the branch to create for the synchronization. "
+        f"By default it is '{DEFAULT_BRANCH_NAME}'."
+    ),
 )
 @click.option(
     "--pull-request-title",
     type=str,
     default=DEFAULT_PULL_REQUEST_TITLE,
-    help=f"Title of the pull request created after synchronization, by default it is {DEFAULT_PULL_REQUEST_TITLE}",
+    help=(
+        "Title of the pull request created after synchronization. "
+        f"By default it is {DEFAULT_PULL_REQUEST_TITLE}."
+    ),
 )
 def synchronize(
     owner,

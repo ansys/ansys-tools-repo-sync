@@ -23,7 +23,7 @@
 """Module containing the sync tool implementation."""
 
 from fnmatch import filter
-import os
+from pathlib import Path
 import re
 import shutil
 import tempfile
@@ -50,10 +50,9 @@ def include_patterns(*patterns):
 
     def _ignore_patterns(path, names):
         keep = set(name for pattern in patterns for name in filter(names, pattern))
+        # Ignore names that are not present in the "keep" set and are not directories
         ignore = set(
-            name
-            for name in names
-            if name not in keep and not os.path.isdir(os.path.join(path, name))
+            name for name in names if name not in keep and not (Path(path) / name).is_dir()
         )
         return ignore
 
@@ -85,13 +84,13 @@ def adapt_regex_from_manifest(accepted_extensions: List[str]) -> List[str]:
 
 
 def delete_folder_contents(
-    folder_path: str, accepted_extensions: List[str], clean_to_dir_based_on_manifest: bool
+    folder_path: str | Path, accepted_extensions: List[str], clean_to_dir_based_on_manifest: bool
 ):
     """Delete the content inside a folder without deleting the folder itself.
 
     Parameters
     ----------
-    folder_path : str
+    folder_path : str | Path
         Path to the folder whose content is requested to be deleted.
     accepted_extensions : List[str]
         List of accepted extensions coming from manifest file.
@@ -101,39 +100,33 @@ def delete_folder_contents(
 
     """
     # Check if the folder exists
-    if not os.path.exists(folder_path):
+    folder = Path(folder_path) if isinstance(folder_path, str) else folder_path
+    if not folder.exists():
         print(
-            f"Directory '{folder_path}' does not exist and will not be cleaned - process will continue."
+            f"Directory '{folder}' does not exist and will not be cleaned - process will continue."
         )
         return
 
     try:
         # List all files and directories in the folder
-        for item in os.listdir(folder_path):
-            item_path = os.path.join(folder_path, item)
-
-            if os.path.isfile(item_path):
-                if clean_to_dir_based_on_manifest and any(
-                    [re.match(entry, item) is not None for entry in accepted_extensions]
+        for item_path in folder.iterdir():
+            if item_path.is_file():
+                if not clean_to_dir_based_on_manifest or any(
+                    re.match(entry, item_path.name) is not None for entry in accepted_extensions
                 ):
-                    # If it's a file, delete it
-                    os.remove(item_path)
-                elif not clean_to_dir_based_on_manifest:
-                    # No manifest-based deletion... just delete it.
-                    os.remove(item_path)
+                    # Clean all files if clean_to_dir_based_on_manifest is False,
+                    #  otherwise only the ones matching the manifest regex
+                    item_path.unlink()
 
-            elif os.path.isdir(item_path):
+            elif item_path.is_dir():
                 # If it's a directory, use recursive call to delete its contents
                 delete_folder_contents(
                     item_path, accepted_extensions, clean_to_dir_based_on_manifest
                 )
-                # After the contents are deleted
-                if clean_to_dir_based_on_manifest and len(os.listdir(item_path)) == 0:
-                    # With manifest-based deletion, only remove the directory in case it is empty
-                    os.rmdir(item_path)
-                elif not clean_to_dir_based_on_manifest:
-                    # Just remove the directory
-                    os.rmdir(item_path)
+                # After the contents are deleted, remove the directory if it is empty
+                # or if manifest-based filtering is off
+                if not clean_to_dir_based_on_manifest or not any(item_path.iterdir()):
+                    item_path.rmdir()
 
     except (FileNotFoundError, PermissionError, OSError) as e:  # pragma: no cover
         print(f"An error occurred: {str(e)} - process will continue.")
@@ -143,9 +136,9 @@ def synchronize(
     owner: str,
     repository: str,
     token: str,
-    from_dir: str,
-    to_dir: str,
-    include_manifest: str,
+    from_dir: str | Path,
+    to_dir: str | Path,
+    include_manifest: str | Path,
     branch_checked_out: str = "main",
     clean_to_dir: bool = False,
     clean_to_dir_based_on_manifest: bool = False,
@@ -165,16 +158,17 @@ def synchronize(
         Repository name.
     token : str
         GitHub access token.
-    from_dir : str
+    from_dir : str | Path
         Directory from which files want to be synced.
-    to_dir : str
+    to_dir : str | Path
         Directory to which files want to be synced (w.r.t. the root of the repository).
-    include_manifest : str
+    include_manifest : str | Path
         Path to manifest which mentions accepted extension files.
     branch_checked_out : str, optional
         Branch to check out, by default "main".
     clean_to_dir : bool, optional
-        Delete the content inside the directory where the files will be synced, by default ``False``.
+        Delete the content inside the directory where the files will be synced, by default
+        ``False``.
     clean_to_dir_based_on_manifest : bool, optional
         In case ``clean_to_dir`` is requested, perform the cleanup of files that match the regex
         in the manifest. By default, ``False``. If ``clean_to_dir`` is ``False``, this option will
@@ -218,19 +212,19 @@ def synchronize(
 
     # Retrieve accepted extensions from manifest
     accepted_extensions = []
-    print(f">>> Considering manifest file at {include_manifest} ...")
-    with open(include_manifest, "r") as f:
-        accepted_extensions = f.read().splitlines()
+    include_manifest_path = Path(include_manifest)
+    print(f">>> Considering manifest file at {include_manifest_path} ...")
+    accepted_extensions = include_manifest_path.read_text().splitlines()
 
     # Clone the repository
     print(f">>> Cloning repository '{owner}/{repository}'...")
-    repo_path = os.path.join(temp_dir.name, repository)
+    repo_path = Path(temp_dir.name) / repository
     authenticated_url = f"https://{token}@{pygithub_repo.html_url.split('https://')[-1]}"
     Repo.clone_from(authenticated_url, repo_path)
 
     # Define the destination path for the files to be synced
-    destination_path = os.path.join(repo_path, to_dir)
-    os.makedirs(destination_path, exist_ok=True)
+    destination_path = repo_path / to_dir
+    destination_path.mkdir(parents=True, exist_ok=True)
 
     # If requested, clean the destination path
     if clean_to_dir:
@@ -242,7 +236,7 @@ def synchronize(
     print(f">>> Moving desired files from {from_dir} to {destination_path} ...")
     shutil.copytree(
         from_dir,
-        os.path.join(destination_path),
+        destination_path,
         ignore=include_patterns(*accepted_extensions),
         dirs_exist_ok=True,
     )
@@ -287,7 +281,7 @@ def synchronize(
                 )
             except GithubException as err:
                 if err.args[0] == 422 or err.data["message"] == "Validation Failed":
-                    print(f">>> Branch and pull request already existed, searching for it...")
+                    print(">>> Branch and pull request already existed, searching for it...")
 
                     # Pull request already exists
                     prs = pygithub_repo.get_pulls()
@@ -312,7 +306,7 @@ def synchronize(
             print(f">>> Pull request created: {pull_request.html_url}")
             return pull_request.html_url
         else:
-            print(f">>> Dry run successful.")
+            print(">>> Dry run successful.")
             return None
     finally:
         # Close local repo for proper file deletion
