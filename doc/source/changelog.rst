@@ -3,7 +3,7 @@
 Release notes
 #############
 
-This document contains the release notes for the Ansys Tools Repo Sync project.
+This document contains the release notes for the ``Ansys Tools Repo Sync`` project.
 
 .. vale off
 
