@@ -87,6 +87,8 @@ jobs:
         if: toJSON(github.event.pull_request.labels.*.name) == '{}'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           cat > comment.md <<'EOF'
           <!-- release-notes-label-reminder -->
@@ -100,7 +102,7 @@ jobs:
           EOF
 
           existing_comment_id="$(
-            gh api "repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments" \
+            gh api "repos/${REPOSITORY}/issues/${PR_NUMBER}/comments" \
               --paginate \
               --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | contains("<!-- release-notes-label-reminder -->"))) | .id' \
               | head -n 1
@@ -109,7 +111,7 @@ jobs:
           if [ -n "$existing_comment_id" ]; then
             echo "Label reminder comment already exists. Skipping."
           else
-            gh pr comment "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" --body-file comment.md
+            gh pr comment "${PR_NUMBER}" --repo "${REPOSITORY}" --body-file comment.md
           fi
 
   changelog-fragment:
