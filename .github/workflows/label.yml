@@ -83,19 +83,34 @@ jobs:
       pull-requests: write # Required to add comments to PRs
     steps:
       - name: Suggest to add labels
-        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5.0.0
         # Execute only when no labels have been applied to the pull request
         if: toJSON(github.event.pull_request.labels.*.name) == '{}'
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            Please add one of the following labels to add this contribution to the Release Notes :point_down:
-            - [bug](https://github.com/ansys/ansys-tools-repo-sync/pulls?q=label%3Abug+)
-            - [documentation](https://github.com/ansys/ansys-tools-repo-sync/pulls?q=label%3Adocumentation+)
-            - [enhancement](https://github.com/ansys/ansys-tools-repo-sync/pulls?q=label%3Aenhancement+)
-            - [good first issue](https://github.com/ansys/ansys-tools-repo-sync/pulls?q=label%3Agood+first+issue)
-            - [maintenance](https://github.com/ansys/ansys-tools-repo-sync/pulls?q=label%3Amaintenance+)
-            - [release](https://github.com/ansys/ansys-tools-repo-sync/pulls?q=label%3Arelease+)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cat > comment.md <<'EOF'
+          <!-- release-notes-label-reminder -->
+          Please add one of the following labels to add this contribution to the Release Notes :point_down:
+          - [bug](https://github.com/ansys/ansys-tools-repo-sync/pulls?q=label%3Abug+)
+          - [documentation](https://github.com/ansys/ansys-tools-repo-sync/pulls?q=label%3Adocumentation+)
+          - [enhancement](https://github.com/ansys/ansys-tools-repo-sync/pulls?q=label%3Aenhancement+)
+          - [good first issue](https://github.com/ansys/ansys-tools-repo-sync/pulls?q=label%3Agood+first+issue)
+          - [maintenance](https://github.com/ansys/ansys-tools-repo-sync/pulls?q=label%3Amaintenance+)
+          - [release](https://github.com/ansys/ansys-tools-repo-sync/pulls?q=label%3Arelease+)
+          EOF
+
+          existing_comment_id="$(
+            gh api "repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments" \
+              --paginate \
+              --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | contains("<!-- release-notes-label-reminder -->"))) | .id' \
+              | head -n 1
+          )"
+
+          if [ -n "$existing_comment_id" ]; then
+            echo "Label reminder comment already exists. Skipping."
+          else
+            gh pr comment "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" --body-file comment.md
+          fi
 
   changelog-fragment:
     name: "Create changelog fragment"
