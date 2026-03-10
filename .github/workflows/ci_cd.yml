@@ -111,7 +111,7 @@ jobs:
           pytest-extra-args: "--cov=ansys.tools.repo_sync --cov-report=term --cov-report=html:.cov/html --cov-report=xml:.cov/coverage.xml"
 
       - name: Upload coverage results (HTML)
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: (matrix.python-version == env.MAIN_PYTHON_VERSION) && (runner.os == 'Linux')
         with:
           name: coverage-html
@@ -196,7 +196,7 @@ jobs:
       contents: write # Required for OIDC authentication with PyPI
     steps:
       - name: "Download the library artifacts from build-library step"
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
         with:
           name: ${{ env.LIBRARY_NAME }}-artifacts
           path: ${{ env.LIBRARY_NAME }}-artifacts
