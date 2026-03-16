@@ -92,6 +92,10 @@ skip = """\
   *,*cover,*.dat,*.mac\
   """
 
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
+
 [tool.towncrier]
 directory = "doc/changelog.d"
 filename = "doc/source/changelog.rst"
@@ -108,7 +112,3 @@ type = [
   { directory = "miscellaneous", name = "Miscellaneous", showcontent = true },
   { directory = "test", name = "Test", showcontent = true },
 ]
-
-[tool.mypy]
-strict = true
-ignore_missing_imports = true
