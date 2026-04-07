@@ -52,9 +52,9 @@ doc = [
 tests = [
   "click==8.3.1",
   "gitpython==3.1.46",
-  "pygithub==2.8.1",
+  "pygithub==2.9.0",
   "pytest==9.0.2",
-  "pytest-cov==7.0.0",
+  "pytest-cov==7.1.0",
 ]
 
 [tool.hatch]
