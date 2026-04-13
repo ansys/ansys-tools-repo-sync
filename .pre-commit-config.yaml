@@ -11,7 +11,7 @@ repos:
     args: ["--ignore-words", "doc/styles/config/vocabularies/ANSYS/accept.txt", "-w"]
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.15.9
+  rev: v0.15.10
   hooks:
     - id: ruff-check
     - id: ruff-format
@@ -25,12 +25,12 @@ repos:
   - id: trailing-whitespace
 
 - repo: https://github.com/zizmorcore/zizmor-pre-commit
-  rev: v1.23.1
+  rev: v1.24.1
   hooks:
     - id: zizmor
 
 - repo: https://github.com/tox-dev/pyproject-fmt
-  rev: v2.21.0
+  rev: v2.21.1
   hooks:
     - id: pyproject-fmt
       args: [--keep-full-version]
