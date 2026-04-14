@@ -30,7 +30,7 @@ jobs:
       contents: write # Required to create the changelog on the release branch
       pull-requests: write # Required to create on main the associated PR with the changelog
     steps:
-      - uses: ansys/actions/doc-deploy-changelog@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
+      - uses: ansys/actions/doc-deploy-changelog@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
           bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
@@ -40,7 +40,7 @@ jobs:
     name: Actions Security
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/check-actions-security@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
+      - uses: ansys/actions/check-actions-security@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           generate-summary: true
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -52,7 +52,7 @@ jobs:
     steps:
       - name: PyAnsys Vulnerability check
         if: github.ref == 'refs/heads/main'
-        uses: ansys/actions/check-vulnerabilities@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
+        uses: ansys/actions/check-vulnerabilities@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           python-package-name: ${{ env.LIBRARY_NAME }}
@@ -65,7 +65,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check commit name
-        uses: ansys/actions/check-pr-title@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
+        uses: ansys/actions/check-pr-title@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -73,7 +73,7 @@ jobs:
     name: "Documentation style"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/doc-style@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
+      - uses: ansys/actions/doc-style@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -86,7 +86,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
     steps:
-      - uses: ansys/actions/build-wheelhouse@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
+      - uses: ansys/actions/build-wheelhouse@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           library-name: ${{ env.LIBRARY_NAME }}
           operating-system: ${{ matrix.os }}
@@ -103,7 +103,7 @@ jobs:
        python-version: ['3.10', '3.14']
       fail-fast: false
     steps:
-      - uses: ansys/actions/tests-pytest@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
+      - uses: ansys/actions/tests-pytest@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         env:
           TOKEN: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
         with:
@@ -131,7 +131,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [doc-style]
     steps:
-      - uses: ansys/actions/doc-build@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
+      - uses: ansys/actions/doc-build@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           group-dependencies-name: "doc"
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
@@ -144,7 +144,7 @@ jobs:
       attestations: write # Required to upload provenance attestations
       id-token: write # Required for OIDC authentication to upload provenance attestations
     steps:
-      - uses: ansys/actions/build-library@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
+      - uses: ansys/actions/build-library@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           library-name: ${{ env.LIBRARY_NAME }}
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
@@ -158,7 +158,7 @@ jobs:
     permissions:
       contents: write # Required to push to the documentation branch (gh-pages)
     steps:
-      - uses: ansys/actions/doc-deploy-dev@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
+      - uses: ansys/actions/doc-deploy-dev@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
@@ -177,7 +177,7 @@ jobs:
       contents: write # Required for OIDC authentication with PyPI
     steps:
       - name: Release to GitHub
-        uses: ansys/actions/release-github@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
+        uses: ansys/actions/release-github@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           library-name: ${{ env.LIBRARY_NAME }}
@@ -217,7 +217,7 @@ jobs:
     permissions:
       contents: write # Required to push to the documentation branch (gh-pages)
     steps:
-      - uses: ansys/actions/doc-deploy-stable@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
+      - uses: ansys/actions/doc-deploy-stable@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
@@ -234,7 +234,7 @@ jobs:
       pull-requests: write # Required to allow automerge
     steps:
       - name: Automerge PRs
-        uses: ansys/actions/hk-automerge-prs@1f4f0896a8e49d3aec2f02ced215b04a32c85f28 # v10.2.7
+        uses: ansys/actions/hk-automerge-prs@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           approver: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
           approver-token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
