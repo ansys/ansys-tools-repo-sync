@@ -131,7 +131,7 @@ tests = [
 ]
 
 [[package]]
-name = "astroid"
+name = "asteroid"
 version = "3.3.11"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
@@ -147,7 +147,7 @@ wheels = [
 ]
 
 [[package]]
-name = "astroid"
+name = "asteroid"
 version = "4.1.2"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
@@ -1331,8 +1331,8 @@ name = "sphinx-autoapi"
 version = "3.7.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "astroid", version = "3.3.11", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "astroid", version = "4.1.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "asteroid", version = "3.3.11", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "asteroid", version = "4.1.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "jinja2" },
     { name = "pyyaml" },
     { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
