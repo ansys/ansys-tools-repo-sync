@@ -37,6 +37,10 @@ jobs:
       contents: read
       pull-requests: write # Required to add labels to PRs
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      REPO: ${{ github.repository }}
     steps:
 
       # Label based on modified files
@@ -49,30 +53,22 @@ jobs:
       # Label based on branch name
       - name: Label docs
         if: startsWith(github.event.pull_request.head.ref, 'docs')
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr edit "${{ github.event.pull_request.number }}" --add-label "documentation" --repo "${{ github.repository }}"
+        run: gh pr edit "$PR_NUMBER" --add-label "documentation" --repo "$REPO"
 
       - name: Label maintenance
         if: |
           startsWith(github.event.pull_request.head.ref, 'maint') ||
           startsWith(github.event.pull_request.head.ref, 'no-ci') ||
           startsWith(github.event.pull_request.head.ref, 'ci')
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr edit "${{ github.event.pull_request.number }}" --add-label "maintenance" --repo "${{ github.repository }}"
+        run: gh pr edit "$PR_NUMBER" --add-label "maintenance" --repo "$REPO"
 
       - name: Label enhancement
         if: startsWith(github.event.pull_request.head.ref, 'feat')
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr edit "${{ github.event.pull_request.number }}" --add-label "enhancement" --repo "${{ github.repository }}"
+        run: gh pr edit "$PR_NUMBER" --add-label "enhancement" --repo "$REPO"
 
       - name: Label bug
         if: startsWith(github.event.pull_request.head.ref, 'fix')
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr edit "${{ github.event.pull_request.number }}" --add-label "bug" --repo "${{ github.repository }}"
+        run: gh pr edit "$PR_NUMBER" --add-label "bug" --repo "$REPO"
 
   commenter:
     name: "Suggest to add labels"
