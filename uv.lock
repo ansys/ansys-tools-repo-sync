@@ -30,7 +30,7 @@ wheels = [
 
 [[package]]
 name = "ansys-sphinx-theme"
-version = "1.7.2"
+version = "1.8.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "importlib-metadata" },
@@ -42,9 +42,9 @@ dependencies = [
     { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
     { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/7b/bc/756f3247fb35109ce44a6515fe0c21ac3cab29cc7889d88626b26440acdf/ansys_sphinx_theme-1.7.2.tar.gz", hash = "sha256:849768cfac9c1c32bf4211de99db9c3f82535b607ac6813b76040cd0d78f78c4", size = 1011160, upload-time = "2026-03-02T15:57:56.977Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/17/f4/2966fcf574d2d96c3775780e98b5a7179ed403cce197451a632284ccd2b2/ansys_sphinx_theme-1.8.1.tar.gz", hash = "sha256:ddddd52adabda99dcb33b67d90f4480931fe2c82ab7c3da579931c0784556d02", size = 1022060, upload-time = "2026-05-21T09:09:07.455Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/da/87/c238d338e1a3feed8242ed06a62362452b1363a9f094c06b5ea5365b1e91/ansys_sphinx_theme-1.7.2-py3-none-any.whl", hash = "sha256:9cf2aba62eede436b3ef4431dd9e20d22eb3601150ee5daa68977a98a212126c", size = 1607116, upload-time = "2026-03-02T15:57:54.896Z" },
+    { url = "https://files.pythonhosted.org/packages/4e/76/d1dedfe9bb7f3101f4a2ec2398ea66629a9bc40e2e07fde08ed8e97229da/ansys_sphinx_theme-1.8.1-py3-none-any.whl", hash = "sha256:3fb47969df735857f3ed60c60acdf2c8a59275a7dc353a9e8c990b97b937741e", size = 1627281, upload-time = "2026-05-21T09:09:05.385Z" },
 ]
 
 [package.optional-dependencies]
@@ -103,8 +103,8 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "ansys-sphinx-theme", extras = ["autoapi"], specifier = "==1.7.2" },
-    { name = "click", specifier = "==8.3.3" },
+    { name = "ansys-sphinx-theme", extras = ["autoapi"], specifier = "==1.8.1" },
+    { name = "click", specifier = "==8.4.1" },
     { name = "gitpython", specifier = "==3.1.50" },
     { name = "numpydoc", specifier = "==1.10.0" },
     { name = "pre-commit" },
@@ -116,14 +116,14 @@ dev = [
     { name = "sphinx-copybutton", specifier = "==0.5.2" },
 ]
 doc = [
-    { name = "ansys-sphinx-theme", extras = ["autoapi"], specifier = "==1.7.2" },
+    { name = "ansys-sphinx-theme", extras = ["autoapi"], specifier = "==1.8.1" },
     { name = "numpydoc", specifier = "==1.10.0" },
     { name = "sphinx", marker = "python_full_version >= '3.12'", specifier = "==9.1.0" },
     { name = "sphinx-autodoc-typehints", marker = "python_full_version >= '3.12'", specifier = "==3.9.5" },
     { name = "sphinx-copybutton", specifier = "==0.5.2" },
 ]
 tests = [
-    { name = "click", specifier = "==8.3.3" },
+    { name = "click", specifier = "==8.4.1" },
     { name = "gitpython", specifier = "==3.1.50" },
     { name = "pygithub", specifier = "==2.9.1" },
     { name = "pytest", specifier = "==9.0.3" },
@@ -371,14 +371,14 @@ wheels = [
 
 [[package]]
 name = "click"
-version = "8.3.3"
+version = "8.4.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/bb/63/f9e1ea081ce35720d8b92acde70daaedace594dc93b693c869e0d5910718/click-8.3.3.tar.gz", hash = "sha256:398329ad4837b2ff7cbe1dd166a4c0f8900c3ca3a218de04466f38f6497f18a2", size = 328061, upload-time = "2026-04-22T15:11:27.506Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9b/98/518d8e5081007684232226f475082b30087d0f585e8457db087298259f49/click-8.4.1.tar.gz", hash = "sha256:918b5633eddf6b41c32d4f454bf0de810065c74e3f7dbf8ee5452f8be88d3e96", size = 353007, upload-time = "2026-05-22T04:08:37.769Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ae/44/c1221527f6a71a01ec6fbad7fa78f1d50dfa02217385cf0fa3eec7087d59/click-8.3.3-py3-none-any.whl", hash = "sha256:a2bf429bb3033c89fa4936ffb35d5cb471e3719e1f3c8a7c3fff0b8314305613", size = 110502, upload-time = "2026-04-22T15:11:25.044Z" },
+    { url = "https://files.pythonhosted.org/packages/c7/0d/67e5b4109ea4a837e80daa87c2c696711955e40449a97e8926672534def2/click-8.4.1-py3-none-any.whl", hash = "sha256:482be17c6991b8c19c5429a1e995d9b0efdbb63172824c41f99965dc0ade8ec2", size = 116639, upload-time = "2026-05-22T04:08:35.26Z" },
 ]
 
 [[package]]
