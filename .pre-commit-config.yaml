@@ -3,6 +3,8 @@ ci:
   autoupdate_commit_msg: 'chore: pre-commit automatic update'
   autoupdate_schedule: weekly
 
+exclude: "uv\\.lock"
+
 repos:
 - repo: https://github.com/codespell-project/codespell
   rev: v2.4.2
