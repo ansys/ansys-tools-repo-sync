@@ -26,3 +26,5 @@ emiss
 vise
 datas
 fo
+Synopsys
+synopsys
