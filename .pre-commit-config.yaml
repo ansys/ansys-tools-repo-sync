@@ -7,13 +7,13 @@ exclude: "uv\\.lock"
 
 repos:
 - repo: https://github.com/codespell-project/codespell
-  rev: v2.4.2
+  rev: v2.4.3
   hooks:
   - id: codespell
     args: ["--ignore-words", "doc/styles/config/vocabularies/ANSYS/accept.txt", "-w"]
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.15.21
+  rev: v0.15.22
   hooks:
     - id: ruff-check
     - id: ruff-format
@@ -27,7 +27,7 @@ repos:
   - id: trailing-whitespace
 
 - repo: https://github.com/zizmorcore/zizmor-pre-commit
-  rev: v1.26.1
+  rev: v1.27.0
   hooks:
     - id: zizmor
 
