@@ -1,0 +1,57 @@
+:orphan:
+
+:py:mod:`ansys.tools.repo_sync.__main__`
+========================================
+
+.. py:module:: ansys.tools.repo_sync.__main__
+
+.. autoapi-nested-parse::
+
+   Tool to copy the content of one repo toward an other.
+
+   Run with:
+
+   .. code::
+
+       repo-sync       --token <token>       --owner <organization-name>       --repository <repository-name>       --from-dir <path-to-dir-containing-files-to-sync>       --to-dir <target-dir-for-sync>       --include-manifest <path-to-manifest>
+
+   ..
+       !! processed by numpydoc !!
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   ansys.tools.repo_sync.__main__.synchronize
+
+
+
+.. py:function:: synchronize(owner, repository, token, from_dir, to_dir, include_manifest, branch_checked_out, clean_to_dir, clean_to_dir_based_on_manifest, dry_run, skip_ci, random_branch_name)
+
+   
+   CLI command to execute the repository synchronization.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+

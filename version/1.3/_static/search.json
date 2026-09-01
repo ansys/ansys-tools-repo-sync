@@ -1,0 +1,128 @@
+[
+    {
+        "objectID": "autoapi/ansys/tools/repo_sync/index",
+        "href": "autoapi/ansys/tools/repo_sync/index.html#ansystoolsrepo_sync",
+        "title": "ansys.tools.repo_sync",
+        "section": "ansys.tools.repo_sync",
+        "text": "Tool to synchronize the content of different repositories.\nansys.tools.repo_sync"
+    },
+    {
+        "objectID": "autoapi/ansys/tools/repo_sync/index",
+        "href": "autoapi/ansys/tools/repo_sync/index.html#submodules",
+        "title": "ansys.tools.repo_sync > Submodules",
+        "section": "Submodules",
+        "text": "Submodules"
+    },
+    {
+        "objectID": "autoapi/ansys/tools/repo_sync/index",
+        "href": "autoapi/ansys/tools/repo_sync/index.html#functions",
+        "title": "ansys.tools.repo_sync > Functions",
+        "section": "Functions",
+        "text": "synchronize(→ Union[str, None])\nSynchronize a folder to a remote repository.\nFunctions\nsynchronize"
+    },
+    {
+        "objectID": "autoapi/ansys/tools/repo_sync/index",
+        "href": "autoapi/ansys/tools/repo_sync/index.html#package-contents",
+        "title": "ansys.tools.repo_sync > Package Contents",
+        "section": "Package Contents",
+        "text": "Synchronize a folder to a remote repository.\nRepository owner (user or organization).\nRepository name.\nGitHub access token.\nDirectory from which files want to be synced.\nDirectory to which files want to be synced (w.r.t. the root of the repository).\nPath to manifest which mentions accepted extension files.\nBranch to check out, by default “main”.\nDelete the content inside the directory where the files will be synced, by default False.\nIn case clean_to_dir is requested, perform the cleanup of files that match the regex\nin the manifest. By default, False. If clean_to_dir is False, this option will\nnot have an effect.\nSimulate the behavior of the synchronization without performing it, by default False.\nWhether to add a [skip ci] prefix to the commit message or not. By default False.\nFor testing purposes - generates a random suffix for the branch name sync/file-sync.\nPull request URL. In case of dry-run or no files modified, None is returned.\nPackage Contents\npython:str\npython:str\npython:str\npython:str\npython:str\npython:str\npython:str\noptional\noptional\nFalse\noptional\nclean_to_dir\nFalse\nclean_to_dir\nFalse\noptional\nFalse\noptional\n[skip ci]\nFalse\noptional\nsync/file-sync\nUnion\npython:str\npython:None\nNone"
+    },
+    {
+        "objectID": "autoapi/ansys/tools/repo_sync/index",
+        "href": "autoapi/ansys/tools/repo_sync/index.html#ansys.tools.repo_sync.synchronize",
+        "title": "ansys.tools.repo_sync > Package Contents > synchronize",
+        "section": "Package Contents > synchronize",
+        "text": "ansys.tools.repo_sync.synchronize(owner: str, repository: str, token: str, from_dir: str, to_dir: str, include_manifest: str, branch_checked_out: str = 'main', clean_to_dir: bool = False, clean_to_dir_based_on_manifest: bool = False, dry_run: bool = False, skip_ci: bool = False, random_branch_name: bool = False) -> str | None\n\nSynchronize a folder to a remote repository.\n\nParameters\n\nowner\n\npython:str\n\nRepository owner (user or organization).\n\nrepository\n\npython:str\n\nRepository name.\n\ntoken\n\npython:str\n\nGitHub access token.\n\nfrom_dir\n\npython:str\n\nDirectory from which files want to be synced.\n\nto_dir\n\npython:str\n\nDirectory to which files want to be synced (w.r.t. the root of the repository).\n\ninclude_manifest\n\npython:str\n\nPath to manifest which mentions accepted extension files.\n\nbranch_checked_out\n\npython:str, optional\n\nBranch to check out, by default “main”.\n\nclean_to_dir\n\nbool, optional\n\nDelete the content inside the directory where the files will be synced, by default False.\n\nclean_to_dir_based_on_manifest\n\nbool, optional\n\nIn case clean_to_dir is requested, perform the cleanup of files that match the regex\nin the manifest. By default, False. If clean_to_dir is False, this option will\nnot have an effect.\n\ndry_run\n\nbool, optional\n\nSimulate the behavior of the synchronization without performing it, by default False.\n\nskip_ci\n\nbool, optional\n\nWhether to add a [skip ci] prefix to the commit message or not. By default False.\n\nrandom_branch_name\n\nbool, optional\n\nFor testing purposes - generates a random suffix for the branch name sync/file-sync.\n\nReturns\n\nUnion[python:str, python:None]\n\nPull request URL. In case of dry-run or no files modified, None is returned.\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "index",
+        "href": "index.html#ansys-tools-repo-sync",
+        "title": "ansys-tools-repo-sync",
+        "section": "ansys-tools-repo-sync",
+        "text": "PyAnsys Python PyPI GH-CI Codecov MIT Black pre-commit.ci status\nThe ansys-tools-repo-sync library is intended to synchronize the content\nof two different repositories.\nansys-tools-repo-sync\nansys-tools-repo-sync"
+    },
+    {
+        "objectID": "index",
+        "href": "index.html#what-does-this-library-do",
+        "title": "ansys-tools-repo-sync > What does this library do?",
+        "section": "What does this library do?",
+        "text": "For instance, due to intellectual properties concerns, it might not be possible\nto expose publicly the entire content of a private repository.\nIts owner could decide to have a second repository, a public one.\nPart of the content for this public repo would come from the private repository.\nansys-tools-repo-sync allows you to do so by copying a folder and its content\nfrom one repo to the other.\nBy default, nothing is synced to the secondary repository (in order to avoid undesired\ncontent). For that purpose, users have to provide a manifest file (in ASCII format)\nthat contains regular expressions for the files accepted.\nFor example, if we wanted to sync all *.py files, one should generate a\nmanifest file as follows:\nWhat does this library do?\nansys-tools-repo-sync\nmanifest\n*.py\nmanifest"
+    },
+    {
+        "objectID": "index",
+        "href": "index.html#how-to-use-it",
+        "title": "ansys-tools-repo-sync > How to use it?",
+        "section": "How to use it?",
+        "text": "A common usage for this tool consist to integrate it in one of your CI/CD pipeline or workflow.\nFirstly, the tool must be installed.\nThen, it can be used in the considered workflow with the appropriate arguments.\nRun it as follows:\nThe options above are compulsory in order to run the tool. If an option is missing,\nthe operation will fail. For more information on all the available options for this tool,\nusers can run:\nThe --dry-run flag can be set while establishing the entire\nworkflow for the first time. It helps preventing unnecessary commits\nof sensitive data. It will print the content expected to be committed in the\npublic repository.\nHow to use it?\n--dry-run"
+    },
+    {
+        "objectID": "index",
+        "href": "index.html#issues",
+        "title": "ansys-tools-repo-sync > Issues",
+        "section": "Issues",
+        "text": "To post issues, questions, and code, go to ansys-tools-repo-sync Issues.\nIssues"
+    },
+    {
+        "objectID": "index",
+        "href": "index.html#license",
+        "title": "ansys-tools-repo-sync > License",
+        "section": "License",
+        "text": "ansys-tools-repo-sync is licensed under the MIT license.\nLicense\nansys-tools-repo-sync"
+    },
+    {
+        "objectID": "autoapi/ansys/tools/repo_sync/repo_sync/index",
+        "href": "autoapi/ansys/tools/repo_sync/repo_sync/index.html#ansystoolsrepo_syncrepo_sync",
+        "title": "ansys.tools.repo_sync.repo_sync",
+        "section": "ansys.tools.repo_sync.repo_sync",
+        "text": "ansys.tools.repo_sync.repo_sync"
+    },
+    {
+        "objectID": "autoapi/ansys/tools/repo_sync/repo_sync/index",
+        "href": "autoapi/ansys/tools/repo_sync/repo_sync/index.html#functions",
+        "title": "ansys.tools.repo_sync.repo_sync > Functions",
+        "section": "Functions",
+        "text": "include_patterns(*patterns)\nInclude listed patterns in copytree().\nadapt_regex_from_manifest(→ List[str])\nAdapt regex expressions from manifest read.\ndelete_folder_contents(folder_path, ...)\nDelete the content inside a folder without deleting the folder itself.\nsynchronize(→ Union[str, None])\nSynchronize a folder to a remote repository.\nFunctions\ninclude_patterns\ncopytree()\nadapt_regex_from_manifest\ndelete_folder_contents\nsynchronize"
+    },
+    {
+        "objectID": "autoapi/ansys/tools/repo_sync/repo_sync/index",
+        "href": "autoapi/ansys/tools/repo_sync/repo_sync/index.html#module-contents",
+        "title": "ansys.tools.repo_sync.repo_sync > Module Contents",
+        "section": "Module Contents",
+        "text": "Include listed patterns in copytree().\nFactory function that can be used with copytree() ignore parameter.\nArguments define a sequence of glob-style patterns\nthat are used to specify which files to NOT ignore.\nCreates and returns a function that determines this for each directory\nin the file hierarchy rooted at the source directory when used with\nshutil.copytree().\nAdapt regex expressions from manifest read.\nList of accepted extensions coming from manifest file.\nList of accepted extensions coming from manifest file (adapted).\nDelete the content inside a folder without deleting the folder itself.\nPath to the folder whose content is requested to be deleted.\nList of accepted extensions coming from manifest file.\nWhether to perform the cleanup of files that match the regex\nin the manifest.\nSynchronize a folder to a remote repository.\nRepository owner (user or organization).\nRepository name.\nGitHub access token.\nDirectory from which files want to be synced.\nDirectory to which files want to be synced (w.r.t. the root of the repository).\nPath to manifest which mentions accepted extension files.\nBranch to check out, by default “main”.\nDelete the content inside the directory where the files will be synced, by default False.\nIn case clean_to_dir is requested, perform the cleanup of files that match the regex\nin the manifest. By default, False. If clean_to_dir is False, this option will\nnot have an effect.\nSimulate the behavior of the synchronization without performing it, by default False.\nWhether to add a [skip ci] prefix to the commit message or not. By default False.\nFor testing purposes - generates a random suffix for the branch name sync/file-sync.\nPull request URL. In case of dry-run or no files modified, None is returned.\nModule Contents\ncopytree()\ncopytree()\nList\npython:str\nList\npython:str\npython:str\nList\npython:str\npython:str\npython:str\npython:str\npython:str\npython:str\npython:str\npython:str\noptional\noptional\nFalse\noptional\nclean_to_dir\nFalse\nclean_to_dir\nFalse\noptional\nFalse\noptional\n[skip ci]\nFalse\noptional\nsync/file-sync\nUnion\npython:str\npython:None\nNone"
+    },
+    {
+        "objectID": "autoapi/ansys/tools/repo_sync/repo_sync/index",
+        "href": "autoapi/ansys/tools/repo_sync/repo_sync/index.html#ansys.tools.repo_sync.repo_sync.include_patterns",
+        "title": "ansys.tools.repo_sync.repo_sync > Module Contents > include_patterns",
+        "section": "Module Contents > include_patterns",
+        "text": "ansys.tools.repo_sync.repo_sync.include_patterns(*patterns)\n\nInclude listed patterns in copytree().\n\nFactory function that can be used with copytree() ignore parameter.\n\nArguments define a sequence of glob-style patterns\nthat are used to specify which files to NOT ignore.\n\nCreates and returns a function that determines this for each directory\nin the file hierarchy rooted at the source directory when used with\nshutil.copytree().\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "autoapi/ansys/tools/repo_sync/repo_sync/index",
+        "href": "autoapi/ansys/tools/repo_sync/repo_sync/index.html#ansys.tools.repo_sync.repo_sync.adapt_regex_from_manifest",
+        "title": "ansys.tools.repo_sync.repo_sync > Module Contents > adapt_regex_from_manifest",
+        "section": "Module Contents > adapt_regex_from_manifest",
+        "text": "ansys.tools.repo_sync.repo_sync.adapt_regex_from_manifest(accepted_extensions: List[str]) -> List[str]\n\nAdapt regex expressions from manifest read.\n\nParameters\n\naccepted_extensions\n\nList[python:str]\n\nList of accepted extensions coming from manifest file.\n\nReturns\n\nList[python:str]\n\nList of accepted extensions coming from manifest file (adapted).\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "autoapi/ansys/tools/repo_sync/repo_sync/index",
+        "href": "autoapi/ansys/tools/repo_sync/repo_sync/index.html#ansys.tools.repo_sync.repo_sync.delete_folder_contents",
+        "title": "ansys.tools.repo_sync.repo_sync > Module Contents > delete_folder_contents",
+        "section": "Module Contents > delete_folder_contents",
+        "text": "ansys.tools.repo_sync.repo_sync.delete_folder_contents(folder_path: str, accepted_extensions: List[str], clean_to_dir_based_on_manifest: bool)\n\nDelete the content inside a folder without deleting the folder itself.\n\nParameters\n\nfolder_path\n\npython:str\n\nPath to the folder whose content is requested to be deleted.\n\naccepted_extensions\n\nList[python:str]\n\nList of accepted extensions coming from manifest file.\n\nclean_to_dir_based_on_manifest\n\nbool\n\nWhether to perform the cleanup of files that match the regex\nin the manifest.\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "autoapi/ansys/tools/repo_sync/repo_sync/index",
+        "href": "autoapi/ansys/tools/repo_sync/repo_sync/index.html#ansys.tools.repo_sync.repo_sync.synchronize",
+        "title": "ansys.tools.repo_sync.repo_sync > Module Contents > synchronize",
+        "section": "Module Contents > synchronize",
+        "text": "ansys.tools.repo_sync.repo_sync.synchronize(owner: str, repository: str, token: str, from_dir: str, to_dir: str, include_manifest: str, branch_checked_out: str = 'main', clean_to_dir: bool = False, clean_to_dir_based_on_manifest: bool = False, dry_run: bool = False, skip_ci: bool = False, random_branch_name: bool = False) -> str | None\n\nSynchronize a folder to a remote repository.\n\nParameters\n\nowner\n\npython:str\n\nRepository owner (user or organization).\n\nrepository\n\npython:str\n\nRepository name.\n\ntoken\n\npython:str\n\nGitHub access token.\n\nfrom_dir\n\npython:str\n\nDirectory from which files want to be synced.\n\nto_dir\n\npython:str\n\nDirectory to which files want to be synced (w.r.t. the root of the repository).\n\ninclude_manifest\n\npython:str\n\nPath to manifest which mentions accepted extension files.\n\nbranch_checked_out\n\npython:str, optional\n\nBranch to check out, by default “main”.\n\nclean_to_dir\n\nbool, optional\n\nDelete the content inside the directory where the files will be synced, by default False.\n\nclean_to_dir_based_on_manifest\n\nbool, optional\n\nIn case clean_to_dir is requested, perform the cleanup of files that match the regex\nin the manifest. By default, False. If clean_to_dir is False, this option will\nnot have an effect.\n\ndry_run\n\nbool, optional\n\nSimulate the behavior of the synchronization without performing it, by default False.\n\nskip_ci\n\nbool, optional\n\nWhether to add a [skip ci] prefix to the commit message or not. By default False.\n\nrandom_branch_name\n\nbool, optional\n\nFor testing purposes - generates a random suffix for the branch name sync/file-sync.\n\nReturns\n\nUnion[python:str, python:None]\n\nPull request URL. In case of dry-run or no files modified, None is returned.\n\n!! processed by numpydoc !!"
+    },
+    {
+        "objectID": "autoapi/index",
+        "href": "autoapi/index.html#api-reference",
+        "title": "API reference",
+        "section": "API reference",
+        "text": "This page contains the ansys-tools-repo-sync API reference.\nAPI reference\nansys-tools-repo-sync"
+    }
+]
