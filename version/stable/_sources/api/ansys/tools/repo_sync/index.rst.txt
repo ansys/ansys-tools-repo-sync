@@ -1,0 +1,137 @@
+
+
+
+
+
+
+The ``ansys.tools.repo_sync`` library
+=====================================
+
+.. py:module:: ansys.tools.repo_sync
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+.. py:currentmodule:: repo_sync
+.. tab-set::
+
+
+    .. tab-item:: Submodules
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.repo_sync.__main__`
+            - Tool to copy the content of one repo toward an other.
+
+
+          * - :py:obj:`~ansys.tools.repo_sync.constants`
+            - Module containing constants for the repo sync tool.
+
+
+          * - :py:obj:`~ansys.tools.repo_sync.repo_sync`
+            - Module containing the sync tool implementation.
+
+
+
+
+
+
+
+    .. tab-item:: Functions
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~synchronize`
+            - Synchronize a folder to a remote repository.
+
+
+
+
+    .. tab-item:: Constants
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~DEFAULT_BRANCH_NAME`
+            - Default branch name for the synchronization process.
+
+
+          * - :py:obj:`~DEFAULT_PULL_REQUEST_TITLE`
+            - Default title for the pull request created during synchronization.
+
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-fa-file"></span> __main__</api/ansys/tools/repo_sync/__main__/index>
+    <span class="nf nf-fa-file"></span> constants</api/ansys/tools/repo_sync/constants/index>
+    <span class="nf nf-fa-file"></span> repo_sync</api/ansys/tools/repo_sync/repo_sync/index>
+
+
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+
+Tool to synchronize the content of different repositories.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+..
+    !! processed by numpydoc !!
+
+
+
+
+
+
+Module detail
+-------------
+
+
+
+
+
+

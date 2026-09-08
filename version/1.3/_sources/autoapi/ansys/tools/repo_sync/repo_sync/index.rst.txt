@@ -1,0 +1,182 @@
+ansys.tools.repo_sync.repo_sync
+===============================
+
+.. py:module:: ansys.tools.repo_sync.repo_sync
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ansys.tools.repo_sync.repo_sync.include_patterns
+   ansys.tools.repo_sync.repo_sync.adapt_regex_from_manifest
+   ansys.tools.repo_sync.repo_sync.delete_folder_contents
+   ansys.tools.repo_sync.repo_sync.synchronize
+
+
+Module Contents
+---------------
+
+.. py:function:: include_patterns(*patterns)
+
+   
+   Include listed patterns in ``copytree()``.
+
+   Factory function that can be used with ``copytree()`` ignore parameter.
+
+   Arguments define a sequence of glob-style patterns
+   that are used to specify which files to NOT ignore.
+
+   Creates and returns a function that determines this for each directory
+   in the file hierarchy rooted at the source directory when used with
+   shutil.copytree().
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: adapt_regex_from_manifest(accepted_extensions: List[str]) -> List[str]
+
+   
+   Adapt regex expressions from manifest read.
+
+
+   :Parameters:
+
+       **accepted_extensions** : :obj:`List`\[:class:`python:str`]
+           List of accepted extensions coming from manifest file.
+
+
+
+   :Returns:
+
+       :obj:`List`\[:class:`python:str`]
+           List of accepted extensions coming from manifest file (adapted).
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: delete_folder_contents(folder_path: str, accepted_extensions: List[str], clean_to_dir_based_on_manifest: bool)
+
+   
+   Delete the content inside a folder without deleting the folder itself.
+
+
+   :Parameters:
+
+       **folder_path** : :class:`python:str`
+           Path to the folder whose content is requested to be deleted.
+
+       **accepted_extensions** : :obj:`List`\[:class:`python:str`]
+           List of accepted extensions coming from manifest file.
+
+       **clean_to_dir_based_on_manifest** : :ref:`bool <python:bltin-boolean-values>`
+           Whether to perform the cleanup of files that match the regex
+           in the manifest.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: synchronize(owner: str, repository: str, token: str, from_dir: str, to_dir: str, include_manifest: str, branch_checked_out: str = 'main', clean_to_dir: bool = False, clean_to_dir_based_on_manifest: bool = False, dry_run: bool = False, skip_ci: bool = False, random_branch_name: bool = False) -> Union[str, None]
+
+   
+   Synchronize a folder to a remote repository.
+
+
+   :Parameters:
+
+       **owner** : :class:`python:str`
+           Repository owner (user or organization).
+
+       **repository** : :class:`python:str`
+           Repository name.
+
+       **token** : :class:`python:str`
+           GitHub access token.
+
+       **from_dir** : :class:`python:str`
+           Directory from which files want to be synced.
+
+       **to_dir** : :class:`python:str`
+           Directory to which files want to be synced (w.r.t. the root of the repository).
+
+       **include_manifest** : :class:`python:str`
+           Path to manifest which mentions accepted extension files.
+
+       **branch_checked_out** : :class:`python:str`, :obj:`optional`
+           Branch to check out, by default "main".
+
+       **clean_to_dir** : :ref:`bool <python:bltin-boolean-values>`, :obj:`optional`
+           Delete the content inside the directory where the files will be synced, by default ``False``.
+
+       **clean_to_dir_based_on_manifest** : :ref:`bool <python:bltin-boolean-values>`, :obj:`optional`
+           In case ``clean_to_dir`` is requested, perform the cleanup of files that match the regex
+           in the manifest. By default, ``False``. If ``clean_to_dir`` is ``False``, this option will
+           not have an effect.
+
+       **dry_run** : :ref:`bool <python:bltin-boolean-values>`, :obj:`optional`
+           Simulate the behavior of the synchronization without performing it, by default ``False``.
+
+       **skip_ci** : :ref:`bool <python:bltin-boolean-values>`, :obj:`optional`
+           Whether to add a ``[skip ci]`` prefix to the commit message or not. By default ``False``.
+
+       **random_branch_name** : :ref:`bool <python:bltin-boolean-values>`, :obj:`optional`
+           For testing purposes - generates a random suffix for the branch name ``sync/file-sync``.
+
+
+
+   :Returns:
+
+       :obj:`Union`\[:class:`python:str`, :data:`python:None`]
+           Pull request URL. In case of dry-run or no files modified, ``None`` is returned.
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
