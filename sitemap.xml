@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- managed-by: ansys/actions/_doc-gen-sitemap -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://ansys.github.io/ansys-tools-repo-sync/</loc>
+    <lastmod>2026-09-22T03:45:15+00:00</lastmod>
+  </url>
+  <url>
+    <loc>https://ansys.github.io/ansys-tools-repo-sync/version/stable/changelog.html</loc>
+  </url>
+  <url>
+    <loc>https://ansys.github.io/ansys-tools-repo-sync/version/stable/index.html</loc>
+  </url>
+  <url>
+    <loc>https://ansys.github.io/ansys-tools-repo-sync/version/stable/api/index.html</loc>
+  </url>
+  <url>
+    <loc>https://ansys.github.io/ansys-tools-repo-sync/version/stable/api/ansys/tools/repo_sync/repo_sync/index.html</loc>
+  </url>
+  <url>
+    <loc>https://ansys.github.io/ansys-tools-repo-sync/version/stable/api/ansys/tools/repo_sync/__main__/index.html</loc>
+  </url>
+  <url>
+    <loc>https://ansys.github.io/ansys-tools-repo-sync/version/stable/api/ansys/tools/repo_sync/constants/index.html</loc>
+  </url>
+  <url>
+    <loc>https://ansys.github.io/ansys-tools-repo-sync/version/stable/api/ansys/tools/repo_sync/index.html</loc>
+  </url>
+</urlset>
