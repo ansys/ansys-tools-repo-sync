@@ -1,0 +1,10 @@
+API reference
+=============
+
+This page contains the ``ansys-tools-repo-sync`` API reference.
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 2
+
+   /autoapi/ansys/tools/repo_sync/index
