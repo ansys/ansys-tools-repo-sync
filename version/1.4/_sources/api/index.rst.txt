@@ -1,0 +1,11 @@
+API reference
+=============
+
+This section describes ansys-tools-repo-sync endpoints, their capabilities, and how
+to interact with them programmatically.
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   <span class="nf nf-md-package"></span> ansys.tools.repo_sync</api/ansys/tools/repo_sync/index>
