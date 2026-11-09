@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package ansys.api.test.v0.test;
+
+service Test {
+  rpc DoSomething (TestingRequest) returns (TestingReply) {}
+}
+
+message TestingRequest {
+  string name = 1;
+}
+
+message TestingReply {
+  string message = 1;
+}
