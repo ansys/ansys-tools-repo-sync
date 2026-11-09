@@ -8,7 +8,7 @@ repos:
     args: ["--ignore-words", "doc/styles/config/vocabularies/ANSYS/accept.txt", "-w"]
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.17.3
+  rev: v0.17.4
   hooks:
     - id: ruff-check
     - id: ruff-format
@@ -22,12 +22,12 @@ repos:
   - id: trailing-whitespace
 
 - repo: https://github.com/zizmorcore/zizmor-pre-commit
-  rev: v1.31.1
+  rev: v1.32.0
   hooks:
     - id: zizmor
 
 - repo: https://github.com/tox-dev/pyproject-fmt
-  rev: v2.30.3
+  rev: v2.30.6
   hooks:
     - id: pyproject-fmt
       args: [--keep-full-version]
@@ -39,7 +39,7 @@ repos:
     - id: check-github-workflows
 
 - repo: https://github.com/ansys/pre-commit-hooks
-  rev: v0.8.0
+  rev: v0.8.1
   hooks:
   - id: add-license-headers
     exclude: ^tests/assets/.*$
