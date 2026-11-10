@@ -25,7 +25,7 @@ wheels = [
 
 [[package]]
 name = "ansys-sphinx-theme"
-version = "1.12.0"
+version = "1.12.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "importlib-metadata" },
@@ -35,9 +35,9 @@ dependencies = [
     { name = "pyyaml" },
     { name = "sphinx" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c5/bb/ac6f1ed9340c66eaecde0e863cb345f5c86f19c771a91ca9a4ea048bd3e8/ansys_sphinx_theme-1.12.0.tar.gz", hash = "sha256:59f2008526314d0eb0905960bb9f2a460b9e08959c3f1fb1ef59a18893d58991", size = 1210065, upload-time = "2026-10-22T13:46:22.24Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/51/d1/04a618bbdbed17ca7411e341954893167f7f7223e461e9bdc8468a36f8d4/ansys_sphinx_theme-1.12.1.tar.gz", hash = "sha256:33180f5f8e6b1cafcd4e0fc67fe4522ce1f17e5ad49c1eac7d93ec7788fe00c7", size = 1212362, upload-time = "2026-10-26T08:28:44.693Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ba/4c/d635ed66bbff74159df486f19f961151f2b0adb06c10d73991057c9b5baf/ansys_sphinx_theme-1.12.0-py3-none-any.whl", hash = "sha256:9dedca8982fc5650166d9238fbb91d7e6b0bc5430e35cebe98c04ee0c99c0632", size = 1717696, upload-time = "2026-10-22T13:46:20.16Z" },
+    { url = "https://files.pythonhosted.org/packages/ac/d7/0265fc0320393f1258af7043118a39b61d051ca555f0fad902a6a5020b79/ansys_sphinx_theme-1.12.1-py3-none-any.whl", hash = "sha256:a355cc7cdb8253411eb8ceeed642bd483b48e82fc4672a36758edf3e38c87b4b", size = 1718857, upload-time = "2026-10-26T08:28:43.045Z" },
 ]
 
 [package.optional-dependencies]
@@ -95,30 +95,30 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "ansys-sphinx-theme", extras = ["autoapi"], specifier = "==1.12.0" },
+    { name = "ansys-sphinx-theme", extras = ["autoapi"], specifier = "==1.12.1" },
     { name = "click", specifier = "==8.5.0" },
     { name = "gitpython", specifier = "==3.2.1" },
     { name = "numpydoc", specifier = "==1.11.0" },
     { name = "pre-commit" },
     { name = "pygithub", specifier = "==2.10.0" },
-    { name = "pytest", specifier = "==9.1.1" },
+    { name = "pytest", specifier = "==9.2.0" },
     { name = "pytest-cov", specifier = "==7.1.0" },
     { name = "sphinx", specifier = "==9.1.1" },
-    { name = "sphinx-autodoc-typehints", specifier = "==3.17.2" },
+    { name = "sphinx-autodoc-typehints", specifier = "==3.17.4" },
     { name = "sphinx-copybutton", specifier = "==0.5.2" },
 ]
 doc = [
-    { name = "ansys-sphinx-theme", extras = ["autoapi"], specifier = "==1.12.0" },
+    { name = "ansys-sphinx-theme", extras = ["autoapi"], specifier = "==1.12.1" },
     { name = "numpydoc", specifier = "==1.11.0" },
     { name = "sphinx", specifier = "==9.1.1" },
-    { name = "sphinx-autodoc-typehints", specifier = "==3.17.2" },
+    { name = "sphinx-autodoc-typehints", specifier = "==3.17.4" },
     { name = "sphinx-copybutton", specifier = "==0.5.2" },
 ]
 tests = [
     { name = "click", specifier = "==8.5.0" },
     { name = "gitpython", specifier = "==3.2.1" },
     { name = "pygithub", specifier = "==2.10.0" },
-    { name = "pytest", specifier = "==9.1.1" },
+    { name = "pytest", specifier = "==9.2.0" },
     { name = "pytest-cov", specifier = "==7.1.0" },
 ]
 
@@ -878,7 +878,7 @@ wheels = [
 
 [[package]]
 name = "pytest"
-version = "9.1.1"
+version = "9.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorama", marker = "sys_platform == 'win32'" },
@@ -887,9 +887,9 @@ dependencies = [
     { name = "pluggy" },
     { name = "pygments" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e4/47/b9efed96c114afcfa3c9d3fe98a76a1d14c74a9e266d397cf6eb64be5e01/pytest-9.1.1.tar.gz", hash = "sha256:1088fbde8f2b49d95a549a195707afa7a76a3ce9bcadc26b6d71f0ffda5fe313", size = 1636369, upload-time = "2026-06-19T10:58:32.857Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/79/42/bb4641652e58dedeac2ec51abc1f8cae4fee4ec63899a0999016229a0f2a/pytest-9.2.0.tar.gz", hash = "sha256:97c4f3b1f3c7414aa36465e09b8220f1d03627993bd51b1282e193753c80557b", size = 1797555, upload-time = "2026-10-27T21:30:20.728Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/24/25/1de2678b631f5a49215c6c96fff41ba892b0a34df68d6d80292b1b48aa7f/pytest-9.1.1-py3-none-any.whl", hash = "sha256:37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c", size = 386536, upload-time = "2026-06-19T10:58:31.347Z" },
+    { url = "https://files.pythonhosted.org/packages/51/39/1f5d8c8877a0fa327db959c19341d4be61660de1ab6b7391f9eb805bcd67/pytest-9.2.0-py3-none-any.whl", hash = "sha256:07acdcf88ec174f907dc01af70bf52d49b014bbab03faeeade31c96b18c2e588", size = 411776, upload-time = "2026-10-27T21:30:19.131Z" },
 ]
 
 [[package]]
@@ -1061,15 +1061,15 @@ wheels = [
 
 [[package]]
 name = "sphinx-autodoc-typehints"
-version = "3.17.2"
+version = "3.17.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "sphinx" },
     { name = "typing-extensions", marker = "python_full_version < '3.15'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9c/fa/c967fd665cc102c90338a90292aba336f852ee6f9b3477ffe4da565edb11/sphinx_autodoc_typehints-3.17.2.tar.gz", hash = "sha256:de41ed4001f4818bb6d37c22fd10ee44a93e6c8e945c6c7e3984e28a9df87d1c", size = 570767, upload-time = "2026-10-17T18:30:30.923Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9e/a9/cfe13ff89678c6d310a8a9060333b7823bae1dbce9615c7032be89aaec20/sphinx_autodoc_typehints-3.17.4.tar.gz", hash = "sha256:a5ddd545192380292f13dd9fc232717a0925fbc66617bc51b3db1e0480db0fec", size = 511398, upload-time = "2026-10-27T19:18:44.225Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/78/d4/8fc500ff2fafe8a6e1847abd8b1072494dc1a5f136f8e890e973db7de4eb/sphinx_autodoc_typehints-3.17.2-py3-none-any.whl", hash = "sha256:b0ad1f96503d69b63c2a1c043f12e2a727c9549e6503d4adbf2125dbf5ff50ed", size = 140285, upload-time = "2026-10-17T18:30:28.728Z" },
+    { url = "https://files.pythonhosted.org/packages/fa/66/40004fe2aea60edc4800328599dd115b3058f79bf148be1746349281f308/sphinx_autodoc_typehints-3.17.4-py3-none-any.whl", hash = "sha256:251271a49e46573c2e752bcc92dae232def822a2c9983272cb04d282eadc2bfa", size = 140603, upload-time = "2026-10-27T19:18:42.674Z" },
 ]
 
 [[package]]
