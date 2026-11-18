@@ -72,6 +72,9 @@ jobs:
   doc-style:
     name: "Documentation style"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # Required to checkout the repository
+      checks: write # Required to report Vale results in a check run
     steps:
       - uses: ansys/actions/doc-style@5a91d7c2c4da2e86f2b3b62ba62daad189a6b77c # v11.2.0
         with:
